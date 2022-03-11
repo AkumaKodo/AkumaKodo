@@ -47,10 +47,12 @@ export async function createAkumaKomoBot(
   AkumaKomoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
   AkumaKomoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
   AkumaKomoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
-  AkumaKomoBot.inhibitor = new AkumaKodoCollection();
-  AkumaKomoBot.task = new AkumaKodoCollection();
+  AkumaKomoBot.inhibitorCollection = new AkumaKodoCollection();
+  AkumaKomoBot.taskCollection = new AkumaKodoCollection();
   AkumaKomoBot.languageCollection = new AkumaKodoCollection();
   AkumaKomoBot.prefixCollection = new AkumaKodoCollection();
+  AkumaKomoBot.argumentsCollection = new AkumaKodoCollection();
+
   // Start the bot
   await startBot(internal_client);
   return internal_client;
@@ -60,3 +62,11 @@ export async function createAkumaKomoBot(
  * The main bot client. You can access everything from here.
  */
 export const AkumaKomoBot = createAkumaKomoBot as unknown as AkumaKomoBotInterface;
+
+/**
+ * Exports
+ */
+
+export * from "./utils/Collection.ts";
+export * from "./utils/Embed.ts";
+export * from "./utils/Component.ts";

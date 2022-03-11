@@ -8,6 +8,7 @@ import {
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { InteractionCommand, MessageCommand } from "./Command.ts";
 import { _runningTaskInterface, Task } from "./Task.ts";
+import { Argument } from "./Arugment.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -33,7 +34,8 @@ export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin
   container: AkumaCreateBotOptions;
   prefixCollection: AkumaKodoCollection<bigint, string>;
   languageCollection: AkumaKodoCollection<bigint, string>;
-  inhibitor: AkumaKodoCollection<
+  argumentsCollection: AkumaKodoCollection<string, Argument>;
+  inhibitorCollection: AkumaKodoCollection<
     string,
     (
       message: DiscordenoMessage,
@@ -41,6 +43,6 @@ export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin
       command: MessageCommand<any> | InteractionCommand,
     ) => boolean
   >;
-  task: AkumaKodoCollection<string, Task>;
+  taskCollection: AkumaKodoCollection<string, Task>;
   runningTasks: _runningTaskInterface;
 }

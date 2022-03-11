@@ -1,6 +1,6 @@
 import { AkumaKomoBot } from "../AkumaKodo.ts";
 
-AkumaKomoBot.inhibitor.set("nsfw", (message, command) => {
+AkumaKomoBot.inhibitorCollection.set("nsfw", (message, command) => {
   // Returns false so the command can be executed if the command is not NSFW
   if (!command.nsfw) return false;
 
