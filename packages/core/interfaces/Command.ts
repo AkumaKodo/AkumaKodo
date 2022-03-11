@@ -4,11 +4,11 @@ import {
   ApplicationCommandTypes,
   DiscordenoInteraction,
   DiscordenoMessage,
-  Permission
+  Permission,
 } from "../../../deps.ts";
-import {ArgumentDefinition, ConvertArgumentDefinitionsToArgs} from "./Arugment.ts";
-import {AkumaKomoBotInterface} from "./Client.ts";
-import {AkumaKodoCollection} from "../../internal/Collection.ts";
+import { ArgumentDefinition, ConvertArgumentDefinitionsToArgs } from "./Arugment.ts";
+import { AkumaKomoBotInterface } from "./Client.ts";
+import { AkumaKodoCollection } from "../../internal/Collection.ts";
 
 export interface ParentCommand {
   /** The name of this command. */
@@ -47,9 +47,9 @@ export interface MessageCommand<T extends readonly ArgumentDefinition[]> extends
   /**A collection of subcommands*/
   subcommands?: AkumaKodoCollection<string, Omit<MessageCommand<T>, "category">>;
   execute: (
-      bot: AkumaKomoBotInterface,
-      message: DiscordenoMessage,
-      args: ConvertArgumentDefinitionsToArgs<T>
+    bot: AkumaKomoBotInterface,
+    message: DiscordenoMessage,
+    args: ConvertArgumentDefinitionsToArgs<T>,
   ) => unknown | Promise<unknown>;
 }
 

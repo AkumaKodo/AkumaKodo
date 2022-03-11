@@ -1,7 +1,7 @@
 /** Enables sweepers for your bot but will require, enabling cache first. */
 import { Bot } from "../../../deps.ts";
 import { BotWithCache } from "./addCacheCollections.ts";
-import {dispatchRequirements} from "./dispatchRequirements.ts";
+import { dispatchRequirements } from "./dispatchRequirements.ts";
 
 export function enableCacheSweepers<B extends Bot>(bot: BotWithCache<B>) {
   bot.guilds.startSweeper({

@@ -3,17 +3,17 @@ import {
   DiscordenoGuild,
   DiscordenoMember,
   DiscordenoMessage,
-  DiscordenoRole
+  DiscordenoRole,
 } from "../../../deps.ts";
 import { MessageCommand } from "./Command.ts";
 
 export interface Argument {
   name: string;
   execute<T extends readonly ArgumentDefinition[]>(
-      arg: CommandArgument,
-      parameter: string[],
-      message: DiscordenoMessage,
-      command: MessageCommand<T>
+    arg: CommandArgument,
+    parameter: string[],
+    message: DiscordenoMessage,
+    command: MessageCommand<T>,
   ): unknown;
 }
 
@@ -184,79 +184,55 @@ type GuildOptionalArgumentDefinition<N extends string = string> = BaseDefinition
 
 // Add each of known ArgumentDefinitions to this union.
 export type ArgumentDefinition =
-    | BooleanArgumentDefinition
-    | StringArgumentDefinition
-    | StringOptionalArgumentDefinition
-    | MultiStringArgumentDefinition
-    | MultiStringOptionalArgumentDefinition
-    | NumberArgumentDefinition
-    | EmojiArgumentDefinition
-    | MultiEmojiArgumentDefinition
-    | EmojiOptionalArgumentDefinition
-    | MultiEmojiOptionalArgumentDefinition
-    | MemberArgumentDefinition
-    | RoleArgumentDefinition
-    | MultiRoleArgumentDefinition
-    | RoleOptionalArgumentDefinition
-    | MultiRoleOptionalArgumentDefinition
-    | ChannelOptionalArgumentDefinition
-    | ChannelArgumentDefinition
-    | CommandArgumentDefinition
-    | GuildArgumentDefinition;
+  | BooleanArgumentDefinition
+  | StringArgumentDefinition
+  | StringOptionalArgumentDefinition
+  | MultiStringArgumentDefinition
+  | MultiStringOptionalArgumentDefinition
+  | NumberArgumentDefinition
+  | EmojiArgumentDefinition
+  | MultiEmojiArgumentDefinition
+  | EmojiOptionalArgumentDefinition
+  | MultiEmojiOptionalArgumentDefinition
+  | MemberArgumentDefinition
+  | RoleArgumentDefinition
+  | MultiRoleArgumentDefinition
+  | RoleOptionalArgumentDefinition
+  | MultiRoleOptionalArgumentDefinition
+  | ChannelOptionalArgumentDefinition
+  | ChannelArgumentDefinition
+  | CommandArgumentDefinition
+  | GuildArgumentDefinition;
 
 // OPTIONALS MUST BE FIRST!!!
 export type ConvertArgumentDefinitionsToArgs<T extends readonly ArgumentDefinition[]> = Identity<
-    UnionToIntersection<
-        {
-          [P in keyof T]: T[P] extends BooleanOptionalArgumentDefinition<infer N>
-            ? { [_ in N]?: boolean }
-            : T[P] extends BooleanArgumentDefinition<infer N>
-                ? { [_ in N]: boolean }
-                : T[P] extends StringOptionalArgumentDefinition<infer N>
-                    ? { [_ in N]?: string }
-                    : T[P] extends StringArgumentDefinition<infer N>
-                        ? { [_ in N]: string }
-                        : T[P] extends MultiStringOptionalArgumentDefinition<infer N>
-                            ? { [_ in N]?: string[] }
-                            : T[P] extends MultiStringArgumentDefinition<infer N>
-                                ? { [_ in N]: string[] }
-                                : T[P] extends NumberOptionalArgumentDefinition<infer N>
-                                    ? { [_ in N]?: number }
-                                    : T[P] extends NumberArgumentDefinition<infer N>
-                                        ? { [_ in N]: number }
-                                        : T[P] extends EmojiOptionalArgumentDefinition<infer N>
-                                            ? { [_ in N]?: string }
-                                            : T[P] extends EmojiArgumentDefinition<infer N>
-                                                ? { [_ in N]: string }
-                                                : T[P] extends MultiEmojiOptionalArgumentDefinition<infer N>
-                                                    ? { [_ in N]?: string[] }
-                                                    : T[P] extends MultiEmojiArgumentDefinition<infer N>
-                                                        ? { [_ in N]: string[] }
-                                                        : T[P] extends MemberOptionalArgumentDefinition<infer N>
-                                                            ? { [_ in N]?: DiscordenoMember }
-                                                            : T[P] extends MemberArgumentDefinition<infer N>
-                                                                ? { [_ in N]: DiscordenoMember }
-                                                                : T[P] extends RoleOptionalArgumentDefinition<infer N>
-                                                                    ? { [_ in N]?: DiscordenoRole }
-                                                                    : T[P] extends RoleArgumentDefinition<infer N>
-                                                                        ? { [_ in N]: DiscordenoRole }
-                                                                        : T[P] extends MultiRoleOptionalArgumentDefinition<infer N>
-                                                                            ? { [_ in N]?: DiscordenoRole[] }
-                                                                            : T[P] extends MultiRoleArgumentDefinition<infer N>
-                                                                                ? { [_ in N]: DiscordenoRole[] }
-                                                                                : T[P] extends ChannelOptionalArgumentDefinition<infer N>
-                                                                                    ? { [_ in N]?: DiscordenoChannel }
-                                                                                    : T[P] extends ChannelArgumentDefinition<infer N>
-                                                                                        ? { [_ in N]: DiscordenoChannel }
-                                                                                        : T[P] extends CommandOptionalArgumentDefinition<infer N>
-                                                                                            ? { [_ in N]?: MessageCommand<T> }
-                                                                                            : T[P] extends CommandArgumentDefinition<infer N>
-                                                                                                ? { [_ in N]: MessageCommand<T> }
-                                                                                                : T[P] extends GuildOptionalArgumentDefinition<infer N>
-                                                                                                    ? { [_ in N]?: DiscordenoGuild }
-                                                                                                    : T[P] extends GuildArgumentDefinition<infer N>
-                                                                                                        ? { [_ in N]: DiscordenoGuild }
-                                                                                                        : never;
-        }[number]
-        >
-    >;
+  UnionToIntersection<
+    {
+      [P in keyof T]: T[P] extends BooleanOptionalArgumentDefinition<infer N> ? { [_ in N]?: boolean }
+        : T[P] extends BooleanArgumentDefinition<infer N> ? { [_ in N]: boolean }
+        : T[P] extends StringOptionalArgumentDefinition<infer N> ? { [_ in N]?: string }
+        : T[P] extends StringArgumentDefinition<infer N> ? { [_ in N]: string }
+        : T[P] extends MultiStringOptionalArgumentDefinition<infer N> ? { [_ in N]?: string[] }
+        : T[P] extends MultiStringArgumentDefinition<infer N> ? { [_ in N]: string[] }
+        : T[P] extends NumberOptionalArgumentDefinition<infer N> ? { [_ in N]?: number }
+        : T[P] extends NumberArgumentDefinition<infer N> ? { [_ in N]: number }
+        : T[P] extends EmojiOptionalArgumentDefinition<infer N> ? { [_ in N]?: string }
+        : T[P] extends EmojiArgumentDefinition<infer N> ? { [_ in N]: string }
+        : T[P] extends MultiEmojiOptionalArgumentDefinition<infer N> ? { [_ in N]?: string[] }
+        : T[P] extends MultiEmojiArgumentDefinition<infer N> ? { [_ in N]: string[] }
+        : T[P] extends MemberOptionalArgumentDefinition<infer N> ? { [_ in N]?: DiscordenoMember }
+        : T[P] extends MemberArgumentDefinition<infer N> ? { [_ in N]: DiscordenoMember }
+        : T[P] extends RoleOptionalArgumentDefinition<infer N> ? { [_ in N]?: DiscordenoRole }
+        : T[P] extends RoleArgumentDefinition<infer N> ? { [_ in N]: DiscordenoRole }
+        : T[P] extends MultiRoleOptionalArgumentDefinition<infer N> ? { [_ in N]?: DiscordenoRole[] }
+        : T[P] extends MultiRoleArgumentDefinition<infer N> ? { [_ in N]: DiscordenoRole[] }
+        : T[P] extends ChannelOptionalArgumentDefinition<infer N> ? { [_ in N]?: DiscordenoChannel }
+        : T[P] extends ChannelArgumentDefinition<infer N> ? { [_ in N]: DiscordenoChannel }
+        : T[P] extends CommandOptionalArgumentDefinition<infer N> ? { [_ in N]?: MessageCommand<T> }
+        : T[P] extends CommandArgumentDefinition<infer N> ? { [_ in N]: MessageCommand<T> }
+        : T[P] extends GuildOptionalArgumentDefinition<infer N> ? { [_ in N]?: DiscordenoGuild }
+        : T[P] extends GuildArgumentDefinition<infer N> ? { [_ in N]: DiscordenoGuild }
+        : never;
+    }[number]
+  >
+>;
