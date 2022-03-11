@@ -43,5 +43,4 @@ export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin
   >;
   task: AkumaKodoCollection<string, Task>;
   runningTasks: _runningTaskInterface;
-
 }
