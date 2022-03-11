@@ -1,16 +1,16 @@
-import { AkumaKomoBotWithCache } from "../../core/lib/mod.ts";
+import { AkumaKomoBot } from "../../core/lib/mod.ts";
 
 /**
  * CacheController
  * @author ThatGuyJamal
  */
 export class CacheController {
-  public channels = AkumaKomoBotWithCache.channels;
-  public guilds = AkumaKomoBotWithCache.guilds;
-  public users = AkumaKomoBotWithCache.members;
-  public messages = AkumaKomoBotWithCache.messages;
-  public presences = AkumaKomoBotWithCache.presences;
-  public dispatchedGuildIds = AkumaKomoBotWithCache.dispatchedGuildIds;
-  public dispatchedChannelIds = AkumaKomoBotWithCache.dispatchedChannelIds;
-  public activeGuildIds = AkumaKomoBotWithCache.activeGuildIds;
+  public channels = AkumaKomoBot.channels;
+  public guilds = AkumaKomoBot.guilds;
+  public users = AkumaKomoBot.members;
+  public messages = AkumaKomoBot.messages;
+  public presences = AkumaKomoBot.presences;
+  public dispatchedGuildIds = AkumaKomoBot.dispatchedGuildIds;
+  public dispatchedChannelIds = AkumaKomoBot.dispatchedChannelIds;
+  public activeGuildIds = AkumaKomoBot.activeGuildIds;
 }
