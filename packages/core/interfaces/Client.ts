@@ -39,8 +39,9 @@ export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin
       message: DiscordenoMessage,
       // deno-lint-ignore no-explicit-any
       command: MessageCommand<any> | InteractionCommand,
-    ) => Promise<boolean> | boolean
+    ) => boolean
   >;
   task: AkumaKodoCollection<string, Task>;
   runningTasks: _runningTaskInterface;
+
 }
