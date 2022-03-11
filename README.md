@@ -6,13 +6,13 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 
 - [ ] Slash commands
 - [ ] Inhibitors
-- [ ] Scueduaed task
+- [ ] Scheduled task
 - [ ] Monitors
 
 ## Core plugins
 
 - [ ] Cache
-- [ ] rest api
+- [ ] Rest API
 - [ ] il8n
 
 ## Development Timeline
