@@ -10,6 +10,7 @@ import { ArgumentDefinition, ConvertArgumentDefinitionsToArgs } from "./Arugment
 import { AkumaKomoBotInterface } from "./Client.ts";
 import { AkumaKodoCollection } from "../../internal/Collection.ts";
 
+/** Base command interface. All commands have these options */
 export interface ParentCommand {
   /** The name of this command. */
   name: string;
@@ -38,7 +39,6 @@ export interface ParentCommand {
   /** Runs the command function */
 }
 
-/** Structure for our commands */
 export interface MessageCommand<T extends readonly ArgumentDefinition[]> extends ParentCommand {
   /** The command aliases. Do not work with slash commands. */
   aliases?: string[];
@@ -53,6 +53,7 @@ export interface MessageCommand<T extends readonly ArgumentDefinition[]> extends
   ) => unknown | Promise<unknown>;
 }
 
+/** Used for making slash commands */
 export interface InteractionCommand extends ParentCommand {
   /** The scope of the command. */
   scope: "Guild" | "Global" | "Development";
