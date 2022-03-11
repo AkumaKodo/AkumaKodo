@@ -10,6 +10,7 @@ import {
 } from "../../../deps.ts";
 import {BotWithCache, enableCachePlugin, enableCacheSweepers} from "../../internal/cache/mod.ts";
 import {validateCreateBotOptions} from "./AkumaKodoUtils.ts";
+import {Collection} from "../../internal/Collection.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -19,9 +20,10 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   bot_supporters_ids?: bigint[];
   /** The ID's of the bot staff */
   bot_staff_ids?: bigint[];
-  bot_prefix?: string;
+  bot_default_prefix?: string;
   /** The development server for your bot */
   bot_development_server_id?: bigint;
+
 }
 
 /**
@@ -31,7 +33,10 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
 export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin> {
   /** Allows access to the gateway manager */
   ws: ReturnType<typeof createGatewayManager>;
-  /** Prefix for the bot to use on message commands */
+  /** Container for bot config options */
+  container: AkumaCreateBotOptions
+  prefixCollection: Collection<bigint, string>
+  languageCollection: Collection<bigint, string>
 }
 
 /**
@@ -58,6 +63,14 @@ export async function createAkumaKomoBot(
   enableCachePlugin(bot);
   enableCacheSweepers(bot as BotWithCache);
   enablePermissionsPlugin(bot as BotWithCache);
+
+  // Initializes the bot values
+  AkumaKomoBot.container.bot_owners_ids = options?.bot_owners_ids ?? [];
+  AkumaKomoBot.container.bot_supporters_ids = options?.bot_supporters_ids ?? [];
+  AkumaKomoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
+  AkumaKomoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
+  AkumaKomoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
+
   await startBot(internal_client);
   return internal_client;
 }
