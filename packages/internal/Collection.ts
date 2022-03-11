@@ -1,6 +1,6 @@
-import { AkumaKomoBotInterface } from "../core/lib/AkumaKodo.ts";
+import {Bot} from "../../deps.ts";
 
-export class Collection<K, V> extends Map<K, V> {
+export class AkumaKodoCollection<K, V> extends Map<K, V> {
   public maxSize?: number;
   public sweeper?: CollectionSweeper<K, V> & { intervalId?: number };
 
@@ -39,7 +39,7 @@ export class Collection<K, V> extends Map<K, V> {
     this.startSweeper({ filter: this.sweeper.filter, interval: newInterval });
   }
 
-  public changeSweeperFilter(newFilter: (value: V, key: K, bot: AkumaKomoBotInterface) => boolean) {
+  public changeSweeperFilter(newFilter: (value: V, key: K, bot: Bot) => boolean) {
     if (!this.sweeper) return;
 
     this.startSweeper({ filter: newFilter, interval: this.sweeper.interval });
@@ -82,7 +82,7 @@ export class Collection<K, V> extends Map<K, V> {
   }
 
   public filter(callback: (value: V, key: K) => boolean) {
-    const relevant = new Collection<K, V>();
+    const relevant = new AkumaKodoCollection<K, V>();
     this.forEach((value, key) => {
       if (callback(value, key)) relevant.set(key, value);
     });
@@ -140,5 +140,5 @@ export interface CollectionSweeper<K, V> {
   /** The interval in which the sweeper should run */
   interval: number;
   /** The bot object itself */
-  bot?: AkumaKomoBotInterface;
+  bot?: Bot;
 }
