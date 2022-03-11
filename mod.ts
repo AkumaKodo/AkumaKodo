@@ -1,2 +1,2 @@
 // Core lib exports
-export * from "./packages/core/lib/mod.ts";
+export * from "./packages/core/lib/AkumaKodo.ts";

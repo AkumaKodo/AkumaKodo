@@ -31,17 +31,16 @@ interface create_bot_options extends CreateBotOptions {
 interface extended_bot_client extends BotWithCache<BotWithHelpersPlugin> {
   /** Allows access to the gateway manager */
   ws: ReturnType<typeof createGatewayManager>;
-  default_prefix?: string;
+  /** Prefix for the bot to use on message commands */
+  bot_prefix?: string;
 }
 
 /**
  * Creates a bot client and starts it.
  * This function is similar to a constructor, each option configures the bot client and its functions.
  * Almost everything is done in this create function, for configurations.
- * @param bot
- * @link https://deno.land/x/discordeno@13.0.0-rc20/bot.ts#L270
- * @param options
- * @link https://deno.land/x/discordeno@13.0.0-rc20/bot.ts#L70
+ * @param bot The bot interface from discordeno
+ * @param options The options for the bot client
  * @returns The Bot
  */
 export async function createAkumaKomoBot(

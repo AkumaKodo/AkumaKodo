@@ -1,4 +1,4 @@
-import { AkumaKomoBot } from "../../core/lib/mod.ts";
+import { AkumaKomoBot } from "../../core/lib/AkumaKodo.ts";
 
 /**
  * CacheController

@@ -1,4 +1,4 @@
-import { AkumaKomoBot, createAkumaKomoBot } from "../packages/core/lib/mod.ts";
+import { AkumaKomoBot, createAkumaKomoBot } from "../packages/core/lib/AkumaKodo.ts";
 
 createAkumaKomoBot(AkumaKomoBot, {
   botId: 1n,
