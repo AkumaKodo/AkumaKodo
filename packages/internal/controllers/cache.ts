@@ -13,6 +13,4 @@ export class CacheController {
   public dispatchedGuildIds = AkumaKomoBotWithCache.dispatchedGuildIds;
   public dispatchedChannelIds = AkumaKomoBotWithCache.dispatchedChannelIds;
   public activeGuildIds = AkumaKomoBotWithCache.activeGuildIds;
-
-  
 }
