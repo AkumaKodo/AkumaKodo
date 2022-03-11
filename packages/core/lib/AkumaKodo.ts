@@ -9,6 +9,7 @@ import {
   startBot,
 } from "../../../deps.ts";
 import {BotWithCache, enableCachePlugin, enableCacheSweepers} from "../../internal/cache/mod.ts";
+import {validateCreateBotOptions} from "./AkumaKodoUtils.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -45,6 +46,7 @@ export async function createAkumaKomoBot(
   bot: Bot,
   options?: AkumaCreateBotOptions,
 ): Promise<AkumaKomoBotInterface & CacheProps> {
+  validateCreateBotOptions(options);
   // Creates the bot client with the cache plugin
   const internal_client = enableCachePlugin(createBot(
     <AkumaCreateBotOptions> {
