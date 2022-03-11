@@ -3,7 +3,7 @@
     "/": "./",
     "./": "./",
     "@deps": "./deps.ts",
-    "@discordeno": "https://deno.land/x/discordeno@13.0.0-rc22/mod.ts",
-    "@mongodb": "https://deno.land/x/mongo@v0.29.0/mod.ts"
+    "@mongodb": "https://deno.land/x/mongo@v0.29.0/mod.ts",
+    "@core": "./packages/core/lib/mod.ts"
   }
 }
