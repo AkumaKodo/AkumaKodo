@@ -20,5 +20,5 @@ export interface Monitor {
   /** The permissions the BOT must have in the current channel. */
   botChannelPermissions?: PermissionStrings[];
   /** The main code that will be run when this monitor is triggered. */
-  execute: (message: DiscordenoMessage) => unknown;
+  execute: (message: DiscordenoMessage) => unknown | Promise<unknown>;
 }

@@ -7,7 +7,7 @@ export interface Command {
   /** The command description */
   description?: string;
   /** Runs the command function */
-  execute: () => unknown;
+  execute: () => unknown | Promise<unknown>;
   /** The command type */
   type?: "simple" | "slash" | undefined;
   /** Rate limits the command for users or the guild */
