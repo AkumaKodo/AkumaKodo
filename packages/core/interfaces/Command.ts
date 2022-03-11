@@ -8,7 +8,7 @@ import {
 } from "../../../deps.ts";
 import { ArgumentDefinition, ConvertArgumentDefinitionsToArgs } from "./Arugment.ts";
 import { AkumaKomoBotInterface } from "./Client.ts";
-import { AkumaKodoCollection } from "../../internal/Collection.ts";
+import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 
 /** Base command interface. All commands have these options */
 export interface ParentCommand {

@@ -1,4 +1,4 @@
-import { Bot } from "../../deps.ts";
+import { Bot } from "../../../../deps.ts";
 
 export class AkumaKodoCollection<K, V> extends Map<K, V> {
   public maxSize?: number;

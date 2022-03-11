@@ -1,5 +1,5 @@
 import { BotWithCache, BotWithHelpersPlugin, CreateBotOptions, createGatewayManager } from "../../../deps.ts";
-import { AkumaKodoCollection } from "../../internal/Collection.ts";
+import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
