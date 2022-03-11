@@ -1,39 +1,39 @@
-import {Collection} from "../Collection.ts";
+import { AkumaKodoCollection } from "../Collection.ts";
 import {
-    Bot,
-    DiscordenoChannel,
-    DiscordenoGuild,
-    DiscordenoMember,
-    DiscordenoMessage,
-    DiscordenoPresence, DiscordenoUser
+  Bot,
+  DiscordenoChannel,
+  DiscordenoGuild,
+  DiscordenoMember,
+  DiscordenoMessage,
+  DiscordenoPresence,
+  DiscordenoUser,
 } from "../../../deps.ts";
-
 
 export type BotWithCache<B extends Bot = Bot> = B & CacheProps;
 
 export interface CacheProps extends Bot {
-    guilds: Collection<bigint, DiscordenoGuild>;
-    users: Collection<bigint, DiscordenoUser>;
-    members: Collection<bigint, DiscordenoMember>;
-    channels: Collection<bigint, DiscordenoChannel>;
-    messages: Collection<bigint, DiscordenoMessage>;
-    presences: Collection<bigint, DiscordenoPresence>;
-    dispatchedGuildIds: Set<bigint>;
-    dispatchedChannelIds: Set<bigint>;
-    activeGuildIds: Set<bigint>;
+  guilds: AkumaKodoCollection<bigint, DiscordenoGuild>;
+  users: AkumaKodoCollection<bigint, DiscordenoUser>;
+  members: AkumaKodoCollection<bigint, DiscordenoMember>;
+  channels: AkumaKodoCollection<bigint, DiscordenoChannel>;
+  messages: AkumaKodoCollection<bigint, DiscordenoMessage>;
+  presences: AkumaKodoCollection<bigint, DiscordenoPresence>;
+  dispatchedGuildIds: Set<bigint>;
+  dispatchedChannelIds: Set<bigint>;
+  activeGuildIds: Set<bigint>;
 }
 
 export function addCacheCollections<B extends Bot>(bot: B): BotWithCache<B> {
-    const cacheBot = bot as BotWithCache<B>;
-    cacheBot.guilds = new Collection();
-    cacheBot.users = new Collection();
-    cacheBot.members = new Collection();
-    cacheBot.channels = new Collection();
-    cacheBot.messages = new Collection();
-    cacheBot.presences = new Collection();
-    cacheBot.dispatchedGuildIds = new Set();
-    cacheBot.dispatchedChannelIds = new Set();
-    cacheBot.activeGuildIds = new Set();
+  const cacheBot = bot as BotWithCache<B>;
+  cacheBot.guilds = new AkumaKodoCollection();
+  cacheBot.users = new AkumaKodoCollection();
+  cacheBot.members = new AkumaKodoCollection();
+  cacheBot.channels = new AkumaKodoCollection();
+  cacheBot.messages = new AkumaKodoCollection();
+  cacheBot.presences = new AkumaKodoCollection();
+  cacheBot.dispatchedGuildIds = new Set();
+  cacheBot.dispatchedChannelIds = new Set();
+  cacheBot.activeGuildIds = new Set();
 
-    return bot as BotWithCache<B>;
+  return bot as BotWithCache<B>;
 }
