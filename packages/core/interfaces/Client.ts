@@ -1,5 +1,13 @@
-import { BotWithCache, BotWithHelpersPlugin, CreateBotOptions, createGatewayManager } from "../../../deps.ts";
+import {
+  BotWithCache,
+  BotWithHelpersPlugin,
+  CreateBotOptions,
+  createGatewayManager,
+  DiscordenoMessage,
+} from "../../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
+import { InteractionCommand, MessageCommand } from "./Command.ts";
+import { _runningTaskInterface, Task } from "./Task.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -25,4 +33,14 @@ export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin
   container: AkumaCreateBotOptions;
   prefixCollection: AkumaKodoCollection<bigint, string>;
   languageCollection: AkumaKodoCollection<bigint, string>;
+  inhibitor: AkumaKodoCollection<
+    string,
+    (
+      message: DiscordenoMessage,
+      // deno-lint-ignore no-explicit-any
+      command: MessageCommand<any> | InteractionCommand,
+    ) => Promise<boolean> | boolean
+  >;
+  task: AkumaKodoCollection<string, Task>;
+  runningTasks: _runningTaskInterface;
 }

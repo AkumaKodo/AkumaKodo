@@ -12,6 +12,7 @@ import {
 } from "../../../deps.ts";
 import { validateCreateBotOptions } from "./AkumaKodoUtils.ts";
 import { AkumaCreateBotOptions, AkumaKomoBotInterface } from "../interfaces/Client.ts";
+import { AkumaKodoCollection } from "./utils/Collection.ts";
 
 /**
  * Creates a bot client and starts it.
@@ -26,12 +27,14 @@ export async function createAkumaKomoBot(
   options?: AkumaCreateBotOptions,
 ): Promise<AkumaKomoBotInterface & CacheProps> {
   validateCreateBotOptions(options);
+
   // Creates the bot client with the cache plugin
   const internal_client = enableCachePlugin(createBot(
     <AkumaCreateBotOptions> {
       ...options,
     },
   )) as CacheProps & AkumaKomoBotInterface;
+
   // Enables the cache plugins
   enableHelpersPlugin(bot);
   enableCachePlugin(bot);
@@ -44,6 +47,10 @@ export async function createAkumaKomoBot(
   AkumaKomoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
   AkumaKomoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
   AkumaKomoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
+  AkumaKomoBot.inhibitor = new AkumaKodoCollection();
+  AkumaKomoBot.task = new AkumaKodoCollection();
+  AkumaKomoBot.languageCollection = new AkumaKodoCollection();
+  AkumaKomoBot.prefixCollection = new AkumaKodoCollection();
 
   await startBot(internal_client);
   return internal_client;

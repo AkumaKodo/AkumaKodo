@@ -6,3 +6,8 @@ export interface Task {
   /** The main code that will be run when this monitor is triggered. */
   execute: () => unknown | Promise<unknown>;
 }
+
+export interface _runningTaskInterface {
+  intervals: number[];
+  initialTimeouts: number[];
+}
