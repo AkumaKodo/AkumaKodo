@@ -15,7 +15,7 @@ import {
 } from "../../../deps.ts";
 
 /** Extends default options for the bot client */
-interface create_bot_options extends CreateBotOptions {
+interface AkumaCreateBotOptions extends CreateBotOptions {
   /** The ID's of the bot owners */
   bot_owners_ids?: bigint[];
   /** The ID's of the bot supporters */
@@ -28,7 +28,7 @@ interface create_bot_options extends CreateBotOptions {
  * Interface for all our custom bot options.
  * All options are invoked on the main bot object for easy access.
  */
-interface extended_bot_client extends BotWithCache<BotWithHelpersPlugin> {
+interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin> {
   /** Allows access to the gateway manager */
   ws: ReturnType<typeof createGatewayManager>;
   /** Prefix for the bot to use on message commands */
@@ -45,14 +45,14 @@ interface extended_bot_client extends BotWithCache<BotWithHelpersPlugin> {
  */
 export async function createAkumaKomoBot(
   bot: Bot,
-  options?: create_bot_options,
-): Promise<extended_bot_client & CacheProps> {
+  options?: AkumaCreateBotOptions,
+): Promise<AkumaKomoBotInterface & CacheProps> {
   // Creates the bot client with the cache plugin
   const internal_client = enableCachePlugin(createBot(
-    <create_bot_options> {
+    <AkumaCreateBotOptions> {
       ...options,
     },
-  )) as CacheProps & extended_bot_client;
+  )) as CacheProps & AkumaKomoBotInterface;
   // Enables the cache plugins
   enableHelpersPlugin(bot);
   enableCachePlugin(bot);
@@ -65,4 +65,6 @@ export async function createAkumaKomoBot(
 /**
  * The main bot client. You can access everything from here.
  */
-export const AkumaKomoBot = createAkumaKomoBot as extended_bot_client;
+const AkumaKomoBot = createAkumaKomoBot as AkumaKomoBotInterface;
+
+export { AkumaCreateBotOptions, AkumaKomoBot, AkumaKomoBotInterface };
