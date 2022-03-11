@@ -14,7 +14,7 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 
 - [ ] Cache
 - [ ] Rest API
-- [ ] il8n
+- [ ] [il8n](https://deno.land/x/i18next@v21.6.14)
 - [ ] Providers
 
 ## Development Timeline
