@@ -1,6 +1,15 @@
 /** Options for the bot client */
-import { Bot, CacheProps, createBot, enableHelpersPlugin, enablePermissionsPlugin, startBot } from "../../../deps.ts";
-import { BotWithCache, enableCachePlugin, enableCacheSweepers } from "../../internal/cache/mod.ts";
+import {
+  Bot,
+  BotWithCache,
+  CacheProps,
+  createBot,
+  enableCachePlugin,
+  enableCacheSweepers,
+  enableHelpersPlugin,
+  enablePermissionsPlugin,
+  startBot,
+} from "../../../deps.ts";
 import { validateCreateBotOptions } from "./AkumaKodoUtils.ts";
 import { AkumaCreateBotOptions, AkumaKomoBotInterface } from "../interfaces/Client.ts";
 
