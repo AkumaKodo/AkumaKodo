@@ -1,5 +1,5 @@
 import { AkumaKomoBot } from "../AkumaKodo.ts";
-import {stringToMilliseconds} from "../utils/Helpers.ts";
+import { stringToMilliseconds } from "../utils/Helpers.ts";
 
 AkumaKomoBot.argumentsCollection.set("boolean", {
   name: "boolean",
@@ -33,12 +33,12 @@ AkumaKomoBot.argumentsCollection.set("snowflake", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set('duration', {
-    name: "duration",
-    execute: function (_argument, parameters) {
-        const [time] = parameters;
-        if (!time) return;
+AkumaKomoBot.argumentsCollection.set("duration", {
+  name: "duration",
+  execute: function (_argument, parameters) {
+    const [time] = parameters;
+    if (!time) return;
 
-        return stringToMilliseconds(time);
-    },
-})
+    return stringToMilliseconds(time);
+  },
+});
