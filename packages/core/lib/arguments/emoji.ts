@@ -3,7 +3,7 @@ import { defaultEmojis, emojiUnicode } from "../utils/internal_emojis.ts";
 
 AkumaKomoBot.argumentsCollection.set("emoji", {
   name: "emoji",
-  execute: function (_argument, params, message) {
+  execute: (_argument, params, message)  =>{
     if (!params.length) return;
 
     const emojis = params.map((e) =>
@@ -35,7 +35,7 @@ AkumaKomoBot.argumentsCollection.set("emoji", {
 
 AkumaKomoBot.argumentsCollection.set("...emojis", {
   name: "...emojis",
-  execute: function (_argument, params, message) {
+  execute: (_argument, params, message) =>{
     let [id] = params;
     if (!id) return;
 

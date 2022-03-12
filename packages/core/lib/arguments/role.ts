@@ -3,7 +3,7 @@ import { snowflakeToBigint } from "../utils/Helpers.ts";
 
 AkumaKomoBot.argumentsCollection.set("...roles", {
   name: "...roles",
-  execute: function (_argument, params, message) {
+  execute: (_argument, params, message)=> {
     if (!params.length) return;
 
     const guild = AkumaKomoBot.guilds.get(message.id);
@@ -22,7 +22,7 @@ AkumaKomoBot.argumentsCollection.set("...roles", {
 
 AkumaKomoBot.argumentsCollection.set("role", {
   name: "role",
-  execute: function (_argument, params, message) {
+  execute: (_argument, params, message)=> {
     const [id] = params;
     if (!id) return;
 
