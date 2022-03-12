@@ -5,8 +5,8 @@
 //   },
 // })
 
-import { AkumaKomoBot } from "../AkumaKodo.ts";
-import { stringToMilliseconds } from "../utils/Helpers.ts";
+import {AkumaKomoBot} from "../AkumaKodo.ts";
+import {fetchMember, snowflakeToBigint, stringToMilliseconds} from "../utils/Helpers.ts";
 
 const SNOWFLAKE_REGEX = /[0-9]{17,19}/;
 
@@ -87,5 +87,34 @@ AkumaKomoBot.argumentsCollection.set('number', {
     if (!argument.allowDecimals) return Math.floor(valid);
 
     if (valid) return valid;
+  },
+})
+
+AkumaKomoBot.argumentsCollection.set('member', {
+  name: "member",
+  execute: (_argument, params, message) => {
+    const [id] = params;
+    if (!id) return;
+
+    const guild = AkumaKomoBot.guilds.get(message.id);
+    if (!guild) return;
+
+    const userId = id.startsWith("<@") ? id.substring(id.startsWith("<@!") ? 3 : 2, id.length - 1) : id;
+
+    if (/^[\d+]{17,}$/.test(userId)) {
+      const cachedMember = AkumaKomoBot.members.get(snowflakeToBigint(userId));
+      if (cachedMember?.guilds.has(message.id)) return cachedMember;
+    }
+
+    const cached = AkumaKomoBot.members.find(
+        (member) => member.guilds.has(message.id) && member.tag.toLowerCase().startsWith(userId.toLowerCase())
+    );
+    if (cached) return cached;
+
+    if (!/^[\d+]{17,}$/.test(userId)) return;
+
+    log.debug("Fetching a member with Id from gateway", userId);
+
+    return await fetchMember(guild.id, userId);
   },
 })

@@ -1,6 +1,6 @@
-import { DiscordenoUser, editMessage, sendMessage } from "../../../../deps.ts";
-import { AkumaKodoEmbed } from "./Embed.ts";
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import {DiscordenoUser, editMessage, fetchMembers, getMember, sendMessage} from "../../../../deps.ts";
+import {AkumaKodoEmbed} from "./Embed.ts";
+import {AkumaKomoBot} from "../AkumaKodo.ts";
 
 export enum Milliseconds {
   Year = 1000 * 60 * 60 * 24 * 30 * 12,
@@ -220,4 +220,39 @@ export function snowflakeToBigint(snowflake: string) {
 
 export function bigintToSnowflake(snowflake: bigint) {
   return snowflake === 0n ? "" : snowflake.toString();
+}
+
+export async function fetchMember(guildId: bigint, id: bigint | string) {
+  const userId =
+      typeof id === "string"
+          ? id.startsWith("<@")
+              ? BigInt(id.substring(id.startsWith("<@!") ? 3 : 2, id.length - 1))
+              : BigInt(id)
+          : id;
+
+  const guild = AkumaKomoBot.guilds.get(guildId);
+  if (!guild) return;
+
+  const cachedMember = AkumaKomoBot.members.get(userId);
+  if (cachedMember) return cachedMember;
+
+  const shardId = calculateShardId(guildId);
+
+  const shard = AkumaKomoBot.ws.shards.get(shardId);
+  // When gateway is dying
+  if (shard?.queueCounter && shard.queueCounter > 110) {
+    return getMember(AkumaKomoBot, guildId, userId).catch(() => undefined);
+  }
+
+  // Fetch from gateway as it is much better than wasting limited HTTP calls.
+  return await fetchMembers(AkumaKomoBot, guildId, shardId, {
+    userIds: [userId],
+    limit: 1,
+  }).catch(() => undefined);
+}
+
+export function calculateShardId(guildId: bigint) {
+  if (AkumaKomoBot.ws.maxShards === 1) return 0;
+
+  return Number((guildId >> 22n) % BigInt(AkumaKomoBot.ws.maxShards - 1));
 }

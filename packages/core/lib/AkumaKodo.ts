@@ -52,6 +52,8 @@ export async function createAkumaKomoBot(
   AkumaKomoBot.languageCollection = new AkumaKodoCollection();
   AkumaKomoBot.prefixCollection = new AkumaKodoCollection();
   AkumaKomoBot.argumentsCollection = new AkumaKodoCollection();
+  AkumaKomoBot.messageCommand = new AkumaKodoCollection();
+  AkumaKomoBot.slashCommand = new AkumaKodoCollection();
 
   // Start the bot
   await startBot(internal_client);

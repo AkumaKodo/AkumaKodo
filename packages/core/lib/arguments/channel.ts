@@ -30,7 +30,7 @@ AkumaKomoBot.argumentsCollection.set('voicechannel', {
         const [id] = params;
         if (!id) return;
 
-        const guild = cache.guilds.get(message.id);
+        const guild = AkumaKomoBot.guilds.get(message.id);
         if (!guild) return;
 
         const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
@@ -53,7 +53,7 @@ AkumaKomoBot.argumentsCollection.set('newschannel', {
         const [id] = params;
         if (!id) return;
 
-        const guild = cache.guilds.get(message.id);
+        const guild = AkumaKomoBot.guilds.get(message.id);
         if (!guild) return;
 
         const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
@@ -65,5 +65,26 @@ AkumaKomoBot.argumentsCollection.set('newschannel', {
         if (channel?.type !== ChannelTypes.GuildNews) return;
 
         return channel;
+    },
+})
+
+AkumaKomoBot.argumentsCollection.set('categorychannel', {
+    name: "categorychannel",
+    execute: (_argument, params, message) => {
+        const [id] = params;
+        if (!id) return;
+
+        const guild = AkumaKomoBot.guilds.get(message.id);
+        if (!guild) return;
+
+        const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
+
+        const channel = /^[\d+]{17,}$/.test(channelIdOrName)
+            ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
+            : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+
+        if (channel?.type !== ChannelTypes.GuildCategory) return;
+
+        return channel
     },
 })

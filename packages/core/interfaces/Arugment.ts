@@ -13,6 +13,7 @@ export interface Argument {
     arg: CommandArgument,
     parameter: string[],
     message: DiscordenoMessage,
+    command: MessageCommand<T>,
   ): unknown;
 }
 
