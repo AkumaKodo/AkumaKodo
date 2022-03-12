@@ -1,6 +1,6 @@
-import {DiscordenoUser, editMessage, fetchMembers, getMember, sendMessage} from "../../../../deps.ts";
-import {AkumaKodoEmbed} from "./Embed.ts";
-import {AkumaKomoBot} from "../AkumaKodo.ts";
+import { DiscordenoUser, editMessage, fetchMembers, getMember, sendMessage } from "../../../../deps.ts";
+import { AkumaKodoEmbed } from "./Embed.ts";
+import { AkumaKomoBot } from "../AkumaKodo.ts";
 
 export enum Milliseconds {
   Year = 1000 * 60 * 60 * 24 * 30 * 12,
@@ -223,12 +223,9 @@ export function bigintToSnowflake(snowflake: bigint) {
 }
 
 export async function fetchMember(guildId: bigint, id: bigint | string) {
-  const userId =
-      typeof id === "string"
-          ? id.startsWith("<@")
-              ? BigInt(id.substring(id.startsWith("<@!") ? 3 : 2, id.length - 1))
-              : BigInt(id)
-          : id;
+  const userId = typeof id === "string"
+    ? id.startsWith("<@") ? BigInt(id.substring(id.startsWith("<@!") ? 3 : 2, id.length - 1)) : BigInt(id)
+    : id;
 
   const guild = AkumaKomoBot.guilds.get(guildId);
   if (!guild) return;

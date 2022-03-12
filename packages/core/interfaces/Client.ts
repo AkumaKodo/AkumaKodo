@@ -6,7 +6,7 @@ import {
   DiscordenoMessage,
 } from "../../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { InteractionCommand, MessageCommand } from "./Command.ts";
+import { cooldownInterface, InteractionCommand, MessageCommand, ParentCommand } from "./Command.ts";
 import { _runningTaskInterface, Task } from "./Task.ts";
 import { Argument } from "./Arugment.ts";
 
@@ -21,6 +21,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   bot_default_prefix?: string;
   /** The development server for your bot */
   bot_development_server_id?: bigint;
+  bot_cooldown_bypass?: bigint[];
 }
 
 /**
@@ -37,14 +38,17 @@ export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin
   argumentsCollection: AkumaKodoCollection<string, Argument>;
   inhibitorCollection: AkumaKodoCollection<
     string,
-    (
+    <T extends ParentCommand = ParentCommand>(
       message: DiscordenoMessage,
-      // deno-lint-ignore no-explicit-any
-      command: MessageCommand<any> | InteractionCommand,
-    ) => boolean
+      command: T,
+      options: { memberId?: bigint; channelId: bigint; guildId?: bigint },
+    ) => any
   >;
   taskCollection: AkumaKodoCollection<string, Task>;
   runningTasks: _runningTaskInterface;
   messageCommand: AkumaKodoCollection<string, MessageCommand<any>>;
   slashCommand: AkumaKodoCollection<string, InteractionCommand>;
+  defaultCooldown: cooldownInterface;
+  /** ID of users who bypass the cooldown */
+  ignoreCooldown: bigint[];
 }
