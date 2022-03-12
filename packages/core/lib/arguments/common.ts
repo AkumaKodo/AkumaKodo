@@ -44,8 +44,8 @@ AkumaKomoBot.argumentsCollection.set("duration", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set('...snowflakes', {
-  name: '...snowflakes',
+AkumaKomoBot.argumentsCollection.set("...snowflakes", {
+  name: "...snowflakes",
   execute: function (_, params) {
     const cleaned = params.map((p) => {
       // If its just a normal id number
@@ -64,5 +64,5 @@ AkumaKomoBot.argumentsCollection.set('...snowflakes', {
     });
 
     return cleaned.filter((text) => SNOWFLAKE_REGEX.test(text));
-  }
+  },
 });
