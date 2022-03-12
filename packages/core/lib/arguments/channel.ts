@@ -1,90 +1,89 @@
-import {AkumaKomoBot} from "../AkumaKodo.ts";
-import {snowflakeToBigint} from "../utils/Helpers.ts";
-import {ChannelTypes} from "../../../../deps.ts";
+import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { snowflakeToBigint } from "../utils/Helpers.ts";
+import { ChannelTypes } from "../../../../deps.ts";
 
+AkumaKomoBot.argumentsCollection.set("textchannel", {
+  name: "textchannel",
+  execute: (_argument, params, message) => {
+    const [id] = params;
+    if (!id) return;
 
-AkumaKomoBot.argumentsCollection.set('textchannel', {
-    name: "textchannel",
-    execute: (_argument, params, message) => {
-        const [id] = params;
-        if (!id) return;
+    const guild = AkumaKomoBot.guilds.get(message.id);
+    if (!guild) return;
 
-        const guild = AkumaKomoBot.guilds.get(message.id);
-        if (!guild) return;
+    const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
-        const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
+    const channel = /^[\d+]{17,}$/.test(channelIdOrName)
+      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
-        const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-            ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-            : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+    if (channel?.type !== ChannelTypes.GuildText) return;
 
-        if (channel?.type !== ChannelTypes.GuildText) return;
+    return channel;
+  },
+});
 
-        return channel;
-    },
-})
+AkumaKomoBot.argumentsCollection.set("voicechannel", {
+  name: "voicechannel",
+  execute: (_argument, params, message) => {
+    const [id] = params;
+    if (!id) return;
 
-AkumaKomoBot.argumentsCollection.set('voicechannel', {
-    name: "voicechannel",
-    execute: (_argument, params, message) => {
-        const [id] = params;
-        if (!id) return;
+    const guild = AkumaKomoBot.guilds.get(message.id);
+    if (!guild) return;
 
-        const guild = AkumaKomoBot.guilds.get(message.id);
-        if (!guild) return;
+    const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
-        const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
+    const channel = /^[\d+]{17,}$/.test(channelIdOrName)
+      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
-        const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-            ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-            : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+    if (channel?.type !== ChannelTypes.GuildVoice && channel?.type !== ChannelTypes.GuildStageVoice) {
+      return;
+    }
 
-        if (channel?.type !== ChannelTypes.GuildVoice && channel?.type !== ChannelTypes.GuildStageVoice) {
-            return;
-        }
+    return channel;
+  },
+});
 
-        return channel;
-    },
-})
+AkumaKomoBot.argumentsCollection.set("newschannel", {
+  name: "newschannel",
+  execute: (_argument, params, message) => {
+    const [id] = params;
+    if (!id) return;
 
-AkumaKomoBot.argumentsCollection.set('newschannel', {
-    name: "newschannel",
-    execute: (_argument, params, message) => {
-        const [id] = params;
-        if (!id) return;
+    const guild = AkumaKomoBot.guilds.get(message.id);
+    if (!guild) return;
 
-        const guild = AkumaKomoBot.guilds.get(message.id);
-        if (!guild) return;
+    const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
-        const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
+    const channel = /^[\d+]{17,}$/.test(channelIdOrName)
+      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
-        const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-            ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-            : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+    if (channel?.type !== ChannelTypes.GuildNews) return;
 
-        if (channel?.type !== ChannelTypes.GuildNews) return;
+    return channel;
+  },
+});
 
-        return channel;
-    },
-})
+AkumaKomoBot.argumentsCollection.set("categorychannel", {
+  name: "categorychannel",
+  execute: (_argument, params, message) => {
+    const [id] = params;
+    if (!id) return;
 
-AkumaKomoBot.argumentsCollection.set('categorychannel', {
-    name: "categorychannel",
-    execute: (_argument, params, message) => {
-        const [id] = params;
-        if (!id) return;
+    const guild = AkumaKomoBot.guilds.get(message.id);
+    if (!guild) return;
 
-        const guild = AkumaKomoBot.guilds.get(message.id);
-        if (!guild) return;
+    const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
-        const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
+    const channel = /^[\d+]{17,}$/.test(channelIdOrName)
+      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
-        const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-            ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-            : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+    if (channel?.type !== ChannelTypes.GuildCategory) return;
 
-        if (channel?.type !== ChannelTypes.GuildCategory) return;
-
-        return channel
-    },
-})
+    return channel;
+  },
+});

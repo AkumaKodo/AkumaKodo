@@ -5,8 +5,8 @@
 //   },
 // })
 
-import {AkumaKomoBot} from "../AkumaKodo.ts";
-import {fetchMember, snowflakeToBigint, stringToMilliseconds} from "../utils/Helpers.ts";
+import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { fetchMember, snowflakeToBigint, stringToMilliseconds } from "../utils/Helpers.ts";
 
 const SNOWFLAKE_REGEX = /[0-9]{17,19}/;
 
@@ -43,7 +43,7 @@ AkumaKomoBot.argumentsCollection.set("snowflake", {
 
 AkumaKomoBot.argumentsCollection.set("duration", {
   name: "duration",
-  execute: (_argument, parameters)=> {
+  execute: (_argument, parameters) => {
     const [time] = parameters;
     if (!time) return;
 
@@ -53,7 +53,7 @@ AkumaKomoBot.argumentsCollection.set("duration", {
 
 AkumaKomoBot.argumentsCollection.set("...snowflakes", {
   name: "...snowflakes",
-  execute: (_, params) =>{
+  execute: (_, params) => {
     const cleaned = params.map((p) => {
       // If its just a normal id number
       if (!p.startsWith("<")) return p;
@@ -74,7 +74,7 @@ AkumaKomoBot.argumentsCollection.set("...snowflakes", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set('number', {
+AkumaKomoBot.argumentsCollection.set("number", {
   name: "number",
   execute: (argument, params) => {
     const [number] = params;
@@ -88,9 +88,9 @@ AkumaKomoBot.argumentsCollection.set('number', {
 
     if (valid) return valid;
   },
-})
+});
 
-AkumaKomoBot.argumentsCollection.set('member', {
+AkumaKomoBot.argumentsCollection.set("member", {
   name: "member",
   execute: (_argument, params, message) => {
     const [id] = params;
@@ -107,7 +107,7 @@ AkumaKomoBot.argumentsCollection.set('member', {
     }
 
     const cached = AkumaKomoBot.members.find(
-        (member) => member.guilds.has(message.id) && member.tag.toLowerCase().startsWith(userId.toLowerCase())
+      (member) => member.guilds.has(message.id) && member.tag.toLowerCase().startsWith(userId.toLowerCase()),
     );
     if (cached) return cached;
 
@@ -117,4 +117,4 @@ AkumaKomoBot.argumentsCollection.set('member', {
 
     return await fetchMember(guild.id, userId);
   },
-})
+});
