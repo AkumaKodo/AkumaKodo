@@ -21,7 +21,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   bot_default_prefix?: string;
   /** The development server for your bot */
   bot_development_server_id?: bigint;
-  bot_cooldown_bypass?: bigint[];
+  bot_cooldown_bypass_ids?: bigint[];
 }
 
 /**

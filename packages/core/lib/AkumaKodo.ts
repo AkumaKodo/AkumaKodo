@@ -55,10 +55,14 @@ export async function createAkumaKomoBot(
   AkumaKomoBot.argumentsCollection = new AkumaKodoCollection();
   AkumaKomoBot.messageCommand = new AkumaKodoCollection();
   AkumaKomoBot.slashCommand = new AkumaKodoCollection();
-  AkumaKomoBot.ignoreCooldown = options?.bot_cooldown_bypass ?? [];
+  AkumaKomoBot.ignoreCooldown = options?.bot_cooldown_bypass_ids ?? [];
   AkumaKomoBot.defaultCooldown = {
     seconds: Milliseconds.Second * 10,
     allowedUses: 1,
+  };
+  AkumaKomoBot.runningTasks = {
+    intervals: [],
+    initialTimeouts: [],
   };
 
   // Start the bot
