@@ -4,6 +4,6 @@
     "./": "./",
     "@deps": "./deps.ts",
     "@mongodb": "https://deno.land/x/mongo@v0.29.0/mod.ts",
-    "@core": "./packages/core/lib/mod.ts"
+    "@core": "./core/lib/AkumaKodo.ts"
   }
 }

@@ -6,7 +6,7 @@ import {
   DiscordenoMessage,
   DiscordenoPresence,
 } from "../../deps.ts";
-import {InteractionCommand, MessageCommand} from "../../core/interfaces/Command.ts";
+import { InteractionCommand, MessageCommand } from "../../core/interfaces/Command.ts";
 
 /**
  * CacheController
@@ -60,7 +60,7 @@ export class InternalCacheController {
    * Gets a message command by ID
    * @param id The ID of the message command
    */
-  public getMessageCommand(id: string):  MessageCommand<any> | undefined {
+  public getMessageCommand(id: string): MessageCommand<any> | undefined {
     return this.messageCommands.get(id);
   }
 
