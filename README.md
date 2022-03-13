@@ -11,14 +11,13 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 ## Core features
 
 - [ ] Slash commands
-- [ ] Event handlers
-- [ ] Inhibitors
+- [x] Event handlers
+- [x] Inhibitors
 - [ ] Scheduled task
 - [ ] Monitors
 
 ## Core plugins
 
-- [ ] Cache
 - [ ] Rest API
 - [ ] [il8n](https://deno.land/x/i18next@v21.6.14)
 - [ ] Providers
@@ -26,8 +25,12 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 ## Development Timeline
 
 - [ ] Command handler
+- [x] Arguments handler
+- [x] Event handler
+- [x] Inhibitor handler
+- [ ] Scheduled task handler
 - [ ] Base Permission handler
-- [ ] Cache controller
+- [x] Cache controller
 - [ ] ...
 
 ---
