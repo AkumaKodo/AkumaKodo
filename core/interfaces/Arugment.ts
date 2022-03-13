@@ -1,10 +1,4 @@
-import {
-  DiscordenoChannel,
-  DiscordenoGuild,
-  DiscordenoMember,
-  DiscordenoMessage,
-  DiscordenoRole,
-} from "../../deps.ts";
+import { DiscordenoChannel, DiscordenoGuild, DiscordenoMember, DiscordenoMessage, DiscordenoRole } from "../../deps.ts";
 import { MessageCommand } from "./Command.ts";
 
 export interface Argument {

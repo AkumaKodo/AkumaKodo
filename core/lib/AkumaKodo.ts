@@ -14,6 +14,7 @@ import { validateCreateBotOptions } from "./AkumaKodoUtils.ts";
 import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../interfaces/Client.ts";
 import { AkumaKodoCollection } from "./utils/Collection.ts";
 import { Milliseconds } from "./utils/Helpers.ts";
+import { InternalCacheController } from "../../internal/controllers/cache.ts";
 
 /**
  * Creates a bot client and starts it.
@@ -49,6 +50,7 @@ export async function createAkumaKodoBot(
   AkumaKodoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
   AkumaKodoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
   AkumaKodoBot.container.bot_internal_logs = options?.bot_internal_logs ?? false;
+  AkumaKodoBot.internalCacheController = new InternalCacheController();
   AkumaKodoBot.inhibitorCollection = new AkumaKodoCollection();
   AkumaKodoBot.taskCollection = new AkumaKodoCollection();
   AkumaKodoBot.languageCollection = new AkumaKodoCollection();

@@ -9,6 +9,7 @@ import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { cooldownInterface, InteractionCommand, MessageCommand, ParentCommand } from "./Command.ts";
 import { _runningTaskInterface, Task } from "./Task.ts";
 import { Argument } from "./Arugment.ts";
+import { InternalCacheController } from "../../internal/controllers/cache.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -54,4 +55,5 @@ export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin
   defaultCooldown: cooldownInterface;
   /** ID of users who bypass the cooldown */
   ignoreCooldown: bigint[];
+  internalCacheController: InternalCacheController;
 }
