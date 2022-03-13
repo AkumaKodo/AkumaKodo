@@ -1,5 +1,5 @@
 // Core lib exports
-import { AkumaKodoLogger } from "./packages/internal/logger.ts";
+// import { AkumaKodoLogger } from "./packages/internal/logger.ts";
 
 export * from "./packages/core/lib/AkumaKodo.ts";
 
