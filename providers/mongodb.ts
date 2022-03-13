@@ -12,7 +12,7 @@ interface mongodbSchema extends BaseProviderModel {
   _id: Bson.ObjectId;
   guildId: bigint;
   // deno-lint-ignore no-explicit-any
-  data?: Record<any, any> | null;
+  data: any;
 }
 
 export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
@@ -66,7 +66,10 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
     return this.client;
   }
 
-  /** Starts the provider. */
+  /**
+   * Starts the provider.
+   * @returns Promise<void>
+   */
   public async initialize() {
     // give the bot process time to start up
     await delay(Milliseconds.Second * 2);
@@ -78,5 +81,23 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       this.cache.set(settings.guildId, settings);
     }
     AkumaKodoLogger("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
+  }
+
+  /**
+   * Get a value from the cache.
+   * @param guildId The guild id to get the value from.
+   * @param key The key to get the value from.
+   * @param defaultValue The default value to return if the key is not found.
+   */
+  public get(guildId: bigint, key: string, defaultValue: any) {
+    if (this.cache.has(guildId)) {
+      const settings = this.cache.get(guildId);
+      if (settings) {
+        const data = settings.data[key];
+        return data == null ? defaultValue : data;
+      }
+    } else {
+      return defaultValue;
+    }
   }
 }
