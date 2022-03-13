@@ -7,7 +7,7 @@ import {
   Permission,
 } from "../../../deps.ts";
 import { ArgumentDefinition, ConvertArgumentDefinitionsToArgs } from "./Arugment.ts";
-import { AkumaKomoBotInterface } from "./Client.ts";
+import { AkumaKodoBotInterface } from "./Client.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 
 /** Base command interface. All commands have these options */
@@ -51,7 +51,7 @@ export interface MessageCommand<T extends readonly ArgumentDefinition[]> extends
   /**A collection of subcommands*/
   subcommands?: AkumaKodoCollection<string, Omit<MessageCommand<T>, "category">>;
   execute: (
-    bot: AkumaKomoBotInterface,
+    bot: AkumaKodoBotInterface,
     message: DiscordenoMessage,
     args: ConvertArgumentDefinitionsToArgs<T>,
   ) => unknown | Promise<unknown>;
@@ -69,7 +69,7 @@ export interface InteractionCommand extends ParentCommand {
   options?: ApplicationCommandOption[];
   /**A collection of */
   subcommands?: AkumaKodoCollection<string, SlashSubcommandGroup | SlashSubcommand>;
-  execute?: (bot: AkumaKomoBotInterface, data: DiscordenoInteraction) => unknown | Promise<unknown>;
+  execute?: (bot: AkumaKodoBotInterface, data: DiscordenoInteraction) => unknown | Promise<unknown>;
 }
 
 export interface cooldownInterface {
@@ -85,7 +85,7 @@ export interface SlashSubcommand extends ParentCommand {
   options?: ApplicationCommandOption[];
   /**The subcommand type*/
   SubcommandType?: "subcommand";
-  execute?: (bot: AkumaKomoBotInterface, data: DiscordenoInteraction) => unknown | Promise<unknown>;
+  execute?: (bot: AkumaKodoBotInterface, data: DiscordenoInteraction) => unknown | Promise<unknown>;
 }
 
 /**The interface for slash subcommands groups*/

@@ -1,5 +1,5 @@
 import { bold, cyan, gray, italic, red, yellow } from "../../deps.ts";
-import {AkumaKodoBot} from "../core/lib/AkumaKodo.ts";
+import { AkumaKodoBot } from "../core/lib/AkumaKodo.ts";
 
 export enum Loglevels {
   Debug,
@@ -112,7 +112,7 @@ export const log = logger;
  */
 export function AkumaKodoLogger(level: "debug" | "info" | "warn" | "error" | "fatal", event: string, message: string) {
   // Check if the user enabled internal logging.
-  if(!AkumaKodoBot.container) return;
+  if (!AkumaKodoBot.container) return;
   try {
     if (AkumaKodoBot.container.bot_internal_logs) {
       switch (level) {

@@ -11,7 +11,7 @@ import {
   startBot,
 } from "../../../deps.ts";
 import { validateCreateBotOptions } from "./AkumaKodoUtils.ts";
-import { AkumaCreateBotOptions, AkumaKomoBotInterface } from "../interfaces/Client.ts";
+import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../interfaces/Client.ts";
 import { AkumaKodoCollection } from "./utils/Collection.ts";
 import { Milliseconds } from "./utils/Helpers.ts";
 
@@ -23,10 +23,10 @@ import { Milliseconds } from "./utils/Helpers.ts";
  * @param options The options for the bot client
  * @returns The Bot
  */
-export async function createAkumaKomoBot(
+export async function createAkumaKodoBot(
   bot: Bot,
   options?: AkumaCreateBotOptions,
-): Promise<AkumaKomoBotInterface & CacheProps> {
+): Promise<AkumaKodoBotInterface & CacheProps> {
   validateCreateBotOptions(options);
 
   // Creates the bot client with the cache plugin
@@ -34,7 +34,7 @@ export async function createAkumaKomoBot(
     <AkumaCreateBotOptions> {
       ...options,
     },
-  )) as CacheProps & AkumaKomoBotInterface;
+  )) as CacheProps & AkumaKodoBotInterface;
 
   // Enables the cache plugins
   enableHelpersPlugin(bot);
@@ -43,25 +43,25 @@ export async function createAkumaKomoBot(
   enablePermissionsPlugin(bot as BotWithCache);
 
   // Initializes the bot values
-  AkumaKomoBot.container.bot_owners_ids = options?.bot_owners_ids ?? [];
-  AkumaKomoBot.container.bot_supporters_ids = options?.bot_supporters_ids ?? [];
-  AkumaKomoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
-  AkumaKomoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
-  AkumaKomoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
-  AkumaKomoBot.container.bot_internal_logs = options?.bot_internal_logs ?? false;
-  AkumaKomoBot.inhibitorCollection = new AkumaKodoCollection();
-  AkumaKomoBot.taskCollection = new AkumaKodoCollection();
-  AkumaKomoBot.languageCollection = new AkumaKodoCollection();
-  AkumaKomoBot.prefixCollection = new AkumaKodoCollection();
-  AkumaKomoBot.argumentsCollection = new AkumaKodoCollection();
-  AkumaKomoBot.messageCommand = new AkumaKodoCollection();
-  AkumaKomoBot.slashCommand = new AkumaKodoCollection();
-  AkumaKomoBot.ignoreCooldown = options?.bot_cooldown_bypass_ids ?? [];
-  AkumaKomoBot.defaultCooldown = {
+  AkumaKodoBot.container.bot_owners_ids = options?.bot_owners_ids ?? [];
+  AkumaKodoBot.container.bot_supporters_ids = options?.bot_supporters_ids ?? [];
+  AkumaKodoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
+  AkumaKodoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
+  AkumaKodoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
+  AkumaKodoBot.container.bot_internal_logs = options?.bot_internal_logs ?? false;
+  AkumaKodoBot.inhibitorCollection = new AkumaKodoCollection();
+  AkumaKodoBot.taskCollection = new AkumaKodoCollection();
+  AkumaKodoBot.languageCollection = new AkumaKodoCollection();
+  AkumaKodoBot.prefixCollection = new AkumaKodoCollection();
+  AkumaKodoBot.argumentsCollection = new AkumaKodoCollection();
+  AkumaKodoBot.messageCommand = new AkumaKodoCollection();
+  AkumaKodoBot.slashCommand = new AkumaKodoCollection();
+  AkumaKodoBot.ignoreCooldown = options?.bot_cooldown_bypass_ids ?? [];
+  AkumaKodoBot.defaultCooldown = {
     seconds: Milliseconds.Second * 10,
     allowedUses: 1,
   };
-  AkumaKomoBot.runningTasks = {
+  AkumaKodoBot.runningTasks = {
     intervals: [],
     initialTimeouts: [],
   };
@@ -74,7 +74,7 @@ export async function createAkumaKomoBot(
 /**
  * The main bot client. You can access everything from here.
  */
-export const AkumaKomoBot = createAkumaKomoBot as unknown as AkumaKomoBotInterface;
+export const AkumaKodoBot = createAkumaKodoBot as unknown as AkumaKodoBotInterface;
 
 /**
  * Exports

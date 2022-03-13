@@ -1,14 +1,14 @@
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 
-AkumaKomoBot.inhibitorCollection.set("hasRole", (message, command, options) => {
+AkumaKodoBot.inhibitorCollection.set("hasRole", (message, command, options) => {
   if (command.dmOnly || !command.hasRoles?.length || !options?.guildId) {
     return true;
   }
   if (!options?.memberId) {
     return { type: "missing required roles", value: command.hasRoles };
   }
-  const member = AkumaKomoBot.members.get(
-    AkumaKomoBot.transformers.snowflake(`${options.memberId}${options.guildId}`),
+  const member = AkumaKodoBot.members.get(
+    AkumaKodoBot.transformers.snowflake(`${options.memberId}${options.guildId}`),
   );
   if (command.hasRoles?.some((e) => !member?.roles.includes(e))) {
     return {

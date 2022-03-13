@@ -1,6 +1,6 @@
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 
-AkumaKomoBot.argumentsCollection.set("string", {
+AkumaKodoBot.argumentsCollection.set("string", {
   name: "string",
   execute: (args, params) => {
     const [text] = params;
@@ -15,7 +15,7 @@ AkumaKomoBot.argumentsCollection.set("string", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("...string", {
+AkumaKodoBot.argumentsCollection.set("...string", {
   name: "",
   execute: (args, params) => {
     if (!params.length) return;

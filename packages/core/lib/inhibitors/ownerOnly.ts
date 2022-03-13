@@ -1,9 +1,9 @@
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 
-AkumaKomoBot.inhibitorCollection.set("ownerOnly", (message, command, options) => {
+AkumaKodoBot.inhibitorCollection.set("ownerOnly", (message, command, options) => {
   if (
     command.ownerOnly &&
-    (!options?.memberId || !AkumaKomoBot.container.bot_owners_ids?.includes(options.memberId))
+    (!options?.memberId || !AkumaKodoBot.container.bot_owners_ids?.includes(options.memberId))
   ) {
     return { type: "ownerOnly" };
   }

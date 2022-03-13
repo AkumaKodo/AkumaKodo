@@ -1,8 +1,8 @@
-import { AkumaKomoBot, createAkumaKomoBot } from "../packages/core/lib/AkumaKodo.ts";
-import { AkumaKomoBotInterface } from "../packages/core/interfaces/Client.ts";
+import { AkumaKodoBot, createAkumaKodoBot } from "../packages/core/lib/AkumaKodo.ts";
+import { AkumaKodoBotInterface } from "../packages/core/interfaces/Client.ts";
 
 // testing bot function
-await createAkumaKomoBot(AkumaKomoBot, {
+await createAkumaKodoBot(AkumaKodoBot, {
   botId: 1n,
   token: "",
   intents: [],
@@ -11,10 +11,10 @@ await createAkumaKomoBot(AkumaKomoBot, {
 
 // testing custom bot function extension
 
-interface newBotExtension extends AkumaKomoBotInterface {
+interface newBotExtension extends AkumaKodoBotInterface {
   custom_something: string;
 }
 
-const newBot = AkumaKomoBot as newBotExtension;
+const newBot = AkumaKodoBot as newBotExtension;
 
 newBot.custom_something = "test";

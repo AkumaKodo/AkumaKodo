@@ -1,5 +1,7 @@
 // Core lib exports
+import { AkumaKodoLogger } from "./packages/internal/logger.ts";
+
 export * from "./packages/core/lib/AkumaKodo.ts";
 
-console.log(`'AkumaKodo' compiled with no errors!`);
+AkumaKodoLogger("debug", "compile", "AkumaKodo has compiled successfully.");
 Deno.exit(0);

@@ -1,21 +1,21 @@
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 import { snowflakeToBigint } from "../utils/Helpers.ts";
 import { ChannelTypes } from "../../../../deps.ts";
 
-AkumaKomoBot.argumentsCollection.set("textchannel", {
+AkumaKodoBot.argumentsCollection.set("textchannel", {
   name: "textchannel",
   execute: (_argument, params, message) => {
     const [id] = params;
     if (!id) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildText) return;
 
@@ -23,20 +23,20 @@ AkumaKomoBot.argumentsCollection.set("textchannel", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("voicechannel", {
+AkumaKodoBot.argumentsCollection.set("voicechannel", {
   name: "voicechannel",
   execute: (_argument, params, message) => {
     const [id] = params;
     if (!id) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildVoice && channel?.type !== ChannelTypes.GuildStageVoice) {
       return;
@@ -46,20 +46,20 @@ AkumaKomoBot.argumentsCollection.set("voicechannel", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("newschannel", {
+AkumaKodoBot.argumentsCollection.set("newschannel", {
   name: "newschannel",
   execute: (_argument, params, message) => {
     const [id] = params;
     if (!id) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildNews) return;
 
@@ -67,20 +67,20 @@ AkumaKomoBot.argumentsCollection.set("newschannel", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("categorychannel", {
+AkumaKodoBot.argumentsCollection.set("categorychannel", {
   name: "categorychannel",
   execute: (_argument, params, message) => {
     const [id] = params;
     if (!id) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKomoBot.channels.get(snowflakeToBigint(channelIdOrName))
-      : AkumaKomoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
+      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildCategory) return;
 

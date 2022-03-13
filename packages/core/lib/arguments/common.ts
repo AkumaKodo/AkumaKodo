@@ -5,12 +5,12 @@
 //   },
 // })
 
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 import { fetchMember, snowflakeToBigint, stringToMilliseconds } from "../utils/Helpers.ts";
 
 const SNOWFLAKE_REGEX = /[0-9]{17,19}/;
 
-AkumaKomoBot.argumentsCollection.set("boolean", {
+AkumaKodoBot.argumentsCollection.set("boolean", {
   name: "boolean",
   execute: (_, params) => {
     const [boolean] = params;
@@ -21,7 +21,7 @@ AkumaKomoBot.argumentsCollection.set("boolean", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("snowflake", {
+AkumaKodoBot.argumentsCollection.set("snowflake", {
   name: "snowflake",
   execute: (_, params) => {
     let [text] = params;
@@ -41,7 +41,7 @@ AkumaKomoBot.argumentsCollection.set("snowflake", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("duration", {
+AkumaKodoBot.argumentsCollection.set("duration", {
   name: "duration",
   execute: (_argument, parameters) => {
     const [time] = parameters;
@@ -51,13 +51,13 @@ AkumaKomoBot.argumentsCollection.set("duration", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("...snowflakes", {
+AkumaKodoBot.argumentsCollection.set("...snowflakes", {
   name: "...snowflakes",
   execute: (_, params) => {
     const cleaned = params.map((p) => {
-      // If its just a normal id number
+      // If it's just a normal id number
       if (!p.startsWith("<")) return p;
-      // If its a nickname mention or role mention
+      // If it's a nickname mention or role mention
       if (p.startsWith("<@!") || p.startsWith("<@&")) {
         return p.substring(3, p.length - 1);
       }
@@ -74,7 +74,7 @@ AkumaKomoBot.argumentsCollection.set("...snowflakes", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("number", {
+AkumaKodoBot.argumentsCollection.set("number", {
   name: "number",
   execute: (argument, params) => {
     const [number] = params;
@@ -90,23 +90,23 @@ AkumaKomoBot.argumentsCollection.set("number", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("member", {
+AkumaKodoBot.argumentsCollection.set("member", {
   name: "member",
   execute: (_argument, params, message) => {
     const [id] = params;
     if (!id) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     const userId = id.startsWith("<@") ? id.substring(id.startsWith("<@!") ? 3 : 2, id.length - 1) : id;
 
     if (/^[\d+]{17,}$/.test(userId)) {
-      const cachedMember = AkumaKomoBot.members.get(snowflakeToBigint(userId));
+      const cachedMember = AkumaKodoBot.members.get(snowflakeToBigint(userId));
       if (cachedMember?.guilds.has(message.id)) return cachedMember;
     }
 
-    const cached = AkumaKomoBot.members.find(
+    const cached = AkumaKodoBot.members.find(
       (member) => member.guilds.has(message.id) && member.tag.toLowerCase().startsWith(userId.toLowerCase()),
     );
     if (cached) return cached;

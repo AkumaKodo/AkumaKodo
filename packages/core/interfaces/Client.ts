@@ -31,7 +31,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
  * Interface for all our custom bot options.
  * All options are invoked on the main bot object for easy access.
  */
-export interface AkumaKomoBotInterface extends BotWithCache<BotWithHelpersPlugin> {
+export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin> {
   /** Allows access to the gateway manager */
   ws: ReturnType<typeof createGatewayManager>;
   /** Container for bot config options */

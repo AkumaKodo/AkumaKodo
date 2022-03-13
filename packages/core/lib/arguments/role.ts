@@ -1,12 +1,12 @@
 import { AkumaKomoBot } from "../AkumaKodo.ts";
 import { snowflakeToBigint } from "../utils/Helpers.ts";
 
-AkumaKomoBot.argumentsCollection.set("...roles", {
+AkumaKodoBot.argumentsCollection.set("...roles", {
   name: "...roles",
   execute: (_argument, params, message) => {
     if (!params.length) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     return params.map((word) => {
@@ -20,13 +20,13 @@ AkumaKomoBot.argumentsCollection.set("...roles", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("role", {
+AkumaKodoBot.argumentsCollection.set("role", {
   name: "role",
   execute: (_argument, params, message) => {
     const [id] = params;
     if (!id) return;
 
-    const guild = AkumaKomoBot.guilds.get(message.id);
+    const guild = AkumaKodoBot.guilds.get(message.id);
     if (!guild) return;
 
     const roleIdOrName = id.startsWith("<@&") ? id.substring(3, id.length - 1) : id.toLowerCase();

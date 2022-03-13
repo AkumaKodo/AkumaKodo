@@ -1,4 +1,4 @@
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 import { Milliseconds } from "../utils/Helpers.ts";
 
 const membersInCooldown = new Map<string, Cooldown>();
@@ -8,12 +8,12 @@ export interface Cooldown {
   timestamp: number;
 }
 
-AkumaKomoBot.inhibitorCollection.set("cooldown", (message, command, options) => {
-  const commandCooldown = command.cooldown || AkumaKomoBot.defaultCooldown;
+AkumaKodoBot.inhibitorCollection.set("cooldown", (message, command, options) => {
+  const commandCooldown = command.cooldown || AkumaKodoBot.defaultCooldown;
   if (
     !commandCooldown ||
     (options?.memberId &&
-      (AkumaKomoBot.ignoreCooldown?.includes(options?.memberId) ||
+      (AkumaKodoBot.ignoreCooldown?.includes(options?.memberId) ||
         command.ignoreCooldown?.includes(options.memberId)))
   ) {
     return true;

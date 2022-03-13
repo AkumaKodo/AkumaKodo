@@ -1,7 +1,7 @@
-import { AkumaKomoBot } from "../AkumaKodo.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 import { defaultEmojis, emojiUnicode } from "../utils/internal_emojis.ts";
 
-AkumaKomoBot.argumentsCollection.set("emoji", {
+AkumaKodoBot.argumentsCollection.set("emoji", {
   name: "emoji",
   execute: (_argument, params, message) => {
     if (!params.length) return;
@@ -14,9 +14,9 @@ AkumaKomoBot.argumentsCollection.set("emoji", {
       .map((emoji) => {
         if (defaultEmojis.has(String(emoji))) return emoji;
 
-        let guildEmoji = AkumaKomoBot.guilds.get(message.id)?.emojis.find((e) => e.id === emoji) as any;
+        let guildEmoji = AkumaKodoBot.guilds.get(message.id)?.emojis.find((e) => e.id === emoji) as any;
         if (!guildEmoji) {
-          for (const guild of AkumaKomoBot.guilds.values()) {
+          for (const guild of AkumaKodoBot.guilds.values()) {
             const global_emoji = guild.emojis.find((e) => e.id === emoji);
             if (!global_emoji?.id) continue;
 
@@ -33,7 +33,7 @@ AkumaKomoBot.argumentsCollection.set("emoji", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("...emojis", {
+AkumaKodoBot.argumentsCollection.set("...emojis", {
   name: "...emojis",
   execute: (_argument, params, message) => {
     let [id] = params;
@@ -45,9 +45,9 @@ AkumaKomoBot.argumentsCollection.set("...emojis", {
       id = id.substring(id.lastIndexOf(":") + 1, id.length - 1);
     }
 
-    let emoji = AkumaKomoBot.guilds.get(message.id)?.emojis.find((e) => e.id === BigInt(id)) as any;
+    let emoji = AkumaKodoBot.guilds.get(message.id)?.emojis.find((e) => e.id === BigInt(id)) as any;
     if (!emoji) {
-      for (const guild of AkumaKomoBot.guilds.values()) {
+      for (const guild of AkumaKodoBot.guilds.values()) {
         const global_emoji = guild.emojis.find((e) => e.id === BigInt(id));
         if (!global_emoji) continue;
 
