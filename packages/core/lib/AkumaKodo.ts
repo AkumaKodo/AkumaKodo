@@ -48,6 +48,7 @@ export async function createAkumaKomoBot(
   AkumaKomoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
   AkumaKomoBot.container.bot_default_prefix = options?.bot_default_prefix ?? undefined;
   AkumaKomoBot.container.bot_development_server_id = options?.bot_development_server_id ?? undefined;
+  AkumaKomoBot.container.bot_internal_logs = options?.bot_internal_logs ?? false;
   AkumaKomoBot.inhibitorCollection = new AkumaKodoCollection();
   AkumaKomoBot.taskCollection = new AkumaKodoCollection();
   AkumaKomoBot.languageCollection = new AkumaKodoCollection();

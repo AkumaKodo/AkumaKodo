@@ -21,7 +21,10 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   bot_default_prefix?: string;
   /** The development server for your bot */
   bot_development_server_id?: bigint;
+  /** Users who can bypass the bots cool-downs for commands*/
   bot_cooldown_bypass_ids?: bigint[];
+  /** The framework logs things to the console for internal testing. You can enable this if you wish. */
+  bot_internal_logs: boolean
 }
 
 /**
