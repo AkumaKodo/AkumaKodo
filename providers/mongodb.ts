@@ -21,7 +21,8 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
   private __db: Database;
   protected db: Collection<mongodbSchema>;
   private database_name: string;
-
+  private options: ProviderOptions;
+  private connectedStatus: boolean;
   /**
    * Constructor for the mongodb provider.
    * @param options The options for the provider.
@@ -30,6 +31,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    */
   public constructor(options: ProviderOptions, model: mongodbSchema, name?: string) {
     super(options, model);
+    this.options = options;
     if (!name) name = "AkumaKodo";
     this.database_name = name;
     // Required resources
@@ -39,15 +41,25 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
     this.__db = this.client.database(name);
     // Giving easier access to the collection.
     this.db = this.__db.collection("settings");
+    this.connectedStatus = false;
   }
 
   /**
    * Connect to the database
-   * @param url Mongodb connection string
    * @protected
    */
-  protected async connect(url: string) {
-    await this.client.connect(url);
+  protected async connect() {
+    while (!this.connectedStatus) {
+      try {
+        await delay(Milliseconds.Second * 2);
+        const cs = this.options.mongodb_connection_url ?? "mongodb://localhost:27017";
+        await this.client.connect(cs);
+        this.connectedStatus = true;
+        AkumaKodoLogger(`info`, "Mongodb Provider", `Connected to mongodb at ${cs}`);
+      } catch (e) {
+        AkumaKodoLogger("error", "Mongodb Provider", `Failed to connect to the database.`);
+      }
+    }
   }
 
   /**
@@ -71,16 +83,20 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    * @returns Promise<void>
    */
   public async initialize() {
-    // give the bot process time to start up
-    await delay(Milliseconds.Second * 2);
-    // find all the settings in the collection and save them to the cache
-    const fillCollections = await this.db.find({ username: { $ne: null } }).toArray();
-    // Save all settings to the cache based on their guild id
-    for (const i in fillCollections) {
-      const settings = fillCollections[i];
-      this.cache.set(settings.guildId, settings);
+    if (this.connectedStatus) {
+      // give the bot process time to start up
+      await delay(Milliseconds.Second * 2);
+      // find all the settings in the collection and save them to the cache
+      const fillCollections = await this.db.find({ username: { $ne: null } }).toArray();
+      // Save all settings to the cache based on their guild id
+      for (const i in fillCollections) {
+        const settings = fillCollections[i];
+        this.cache.set(settings.guildId, settings);
+      }
+      AkumaKodoLogger("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
+    } else {
+      AkumaKodoLogger("error", "Mongodb Provider", `Failed to initialize the database. Please check your connection.`);
     }
-    AkumaKodoLogger("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
   }
 
   /**
@@ -94,6 +110,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       const settings = this.cache.get(guildId);
       if (settings) {
         const data = settings.data[key];
+        AkumaKodoLogger("info", "Mongodb Provider", `Getting value for ${key} from cache.\n${JSON.stringify(data)}`);
         return data == null ? defaultValue : data;
       }
     } else {

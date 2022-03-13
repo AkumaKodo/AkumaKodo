@@ -8,6 +8,9 @@ export abstract class AkumaKodoProvider {
   protected model: BaseProviderModel;
   protected constructor(options: ProviderOptions, model: BaseProviderModel) {
     if (options.provider === "mongodb") {
+      if (!options.mongodb_connection_url) {
+        throw new Error("MongoDB connection URL is required.");
+      }
       this.model = model;
       AkumaKodoLogger("info", "Provider", "MongoDB provider loaded!");
     } else if (options.provider === "postgres") {
@@ -26,6 +29,7 @@ export interface ProviderOptions {
   provider: "mongodb" | "postgres" | "mysql";
   // deno-lint-ignore no-explicit-any
   model: any;
+  mongodb_connection_url?: string;
 }
 
 export interface BaseProviderModel {
