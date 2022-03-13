@@ -26,8 +26,8 @@ const colorFunctions = new Map<Loglevels, (str: string) => string>([
 ]);
 
 interface ll {
-    logLevel?: Loglevels;
-    name?: string;
+  logLevel?: Loglevels;
+  name?: string;
 }
 
 export function logger({

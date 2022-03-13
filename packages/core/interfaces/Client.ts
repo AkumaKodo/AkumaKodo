@@ -24,7 +24,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   /** Users who can bypass the bots cool-downs for commands*/
   bot_cooldown_bypass_ids?: bigint[];
   /** The framework logs things to the console for internal testing. You can enable this if you wish. */
-  bot_internal_logs: boolean
+  bot_internal_logs?: boolean;
 }
 
 /**
