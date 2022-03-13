@@ -15,10 +15,10 @@ AkumaKodoBot.argumentsCollection.set("subcommand", {
   },
 });
 
-AkumaKomoBot.argumentsCollection.set("nestedcommand", {
+AkumaKodoBot.argumentsCollection.set("nestedcommand", {
   name: "nestedcommand",
   execute: (_argument, params) => {
-    let command = AkumaKomoBot.messageCommand.get(params.join("\n").toLowerCase());
+    let command = AkumaKodoBot.messageCommand.get(params.join("\n").toLowerCase());
     if (command) return command;
 
     for (const word of params) {

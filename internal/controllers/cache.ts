@@ -6,6 +6,7 @@ import {
   DiscordenoMessage,
   DiscordenoPresence,
 } from "../../deps.ts";
+import {InteractionCommand, MessageCommand} from "../../core/interfaces/Command.ts";
 
 /**
  * CacheController
@@ -20,6 +21,8 @@ export class InternalCacheController {
   public dispatchedGuildIds = AkumaKodoBot.dispatchedGuildIds;
   public dispatchedChannelIds = AkumaKodoBot.dispatchedChannelIds;
   public activeGuildIds = AkumaKodoBot.activeGuildIds;
+  public messageCommands = AkumaKodoBot.messageCommand;
+  public slashCommands = AkumaKodoBot.slashCommand;
 
   /**
    * Get a channel by ID
@@ -51,6 +54,22 @@ export class InternalCacheController {
    */
   public getMessage(id: bigint): DiscordenoMessage | undefined {
     return this.messages.get(id);
+  }
+
+  /**
+   * Gets a message command by ID
+   * @param id The ID of the message command
+   */
+  public getMessageCommand(id: string):  MessageCommand<any> | undefined {
+    return this.messageCommands.get(id);
+  }
+
+  /**
+   * Gets a slash command by ID
+   * @param id The ID of the slash command
+   */
+  public getSlashCommand(id: string): InteractionCommand | undefined {
+    return this.slashCommands.get(id);
   }
 
   /**

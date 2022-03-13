@@ -14,7 +14,7 @@ AkumaKodoBot.argumentsCollection.set("textchannel", {
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      ? AkumaKodoBot.internalCacheController.getChannel(snowflakeToBigint(channelIdOrName))
       : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildText) return;
@@ -35,7 +35,7 @@ AkumaKodoBot.argumentsCollection.set("voicechannel", {
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      ? AkumaKodoBot.internalCacheController.getChannel(snowflakeToBigint(channelIdOrName))
       : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildVoice && channel?.type !== ChannelTypes.GuildStageVoice) {
@@ -58,7 +58,7 @@ AkumaKodoBot.argumentsCollection.set("newschannel", {
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      ? AkumaKodoBot.internalCacheController.getChannel(snowflakeToBigint(channelIdOrName))
       : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildNews) return;
@@ -79,7 +79,7 @@ AkumaKodoBot.argumentsCollection.set("categorychannel", {
     const channelIdOrName = id.startsWith("<#") ? id.substring(2, id.length - 1) : id.toLowerCase();
 
     const channel = /^[\d+]{17,}$/.test(channelIdOrName)
-      ? AkumaKodoBot.channels.get(snowflakeToBigint(channelIdOrName))
+      ? AkumaKodoBot.internalCacheController.getChannel(snowflakeToBigint(channelIdOrName))
       : AkumaKodoBot.channels.find((channel) => channel.name === channelIdOrName && channel.guildId === guild.id);
 
     if (channel?.type !== ChannelTypes.GuildCategory) return;
