@@ -1,4 +1,4 @@
-import { DiscordenoMessage, PermissionStrings } from "../../../deps.ts";
+import { DiscordenoMessage, PermissionStrings } from "../../deps.ts";
 
 export interface Monitor {
   /** The name of the monitor */

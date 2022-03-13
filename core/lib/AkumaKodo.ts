@@ -9,7 +9,7 @@ import {
   enableHelpersPlugin,
   enablePermissionsPlugin,
   startBot,
-} from "../../../deps.ts";
+} from "../../deps.ts";
 import { validateCreateBotOptions } from "./AkumaKodoUtils.ts";
 import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../interfaces/Client.ts";
 import { AkumaKodoCollection } from "./utils/Collection.ts";

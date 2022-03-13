@@ -1,4 +1,4 @@
-import { ActionRow, ButtonStyles } from "../../../../deps.ts";
+import { ActionRow, ButtonStyles } from "../../../deps.ts";
 
 const snowflakeRegex = /[0-9]{17,19}/;
 

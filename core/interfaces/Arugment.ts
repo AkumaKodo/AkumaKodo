@@ -4,7 +4,7 @@ import {
   DiscordenoMember,
   DiscordenoMessage,
   DiscordenoRole,
-} from "../../../deps.ts";
+} from "../../deps.ts";
 import { MessageCommand } from "./Command.ts";
 
 export interface Argument {

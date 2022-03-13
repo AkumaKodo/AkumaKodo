@@ -1,4 +1,4 @@
-import { EmbedAuthor, EmbedField, EmbedFooter, EmbedImage } from "../../../../deps.ts";
+import { EmbedAuthor, EmbedField, EmbedFooter, EmbedImage } from "../../../deps.ts";
 
 const embedLimits = {
   title: 256,

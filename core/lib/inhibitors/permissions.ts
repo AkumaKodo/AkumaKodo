@@ -1,5 +1,5 @@
 import { AkumaKodoBot } from "../AkumaKodo.ts";
-import { getMissingChannelPermissions, getMissingGuildPermissions } from "../../../../deps.ts";
+import { getMissingChannelPermissions, getMissingGuildPermissions } from "../../../deps.ts";
 
 AkumaKodoBot.inhibitorCollection.set("userPermissions", (_message, command, options) => {
   if (command.dmOnly) return true;

@@ -1,4 +1,4 @@
-import { DiscordenoUser, editMessage, fetchMembers, getMember, sendMessage } from "../../../../deps.ts";
+import { DiscordenoUser, editMessage, fetchMembers, getMember, sendMessage } from "../../../deps.ts";
 import { AkumaKodoEmbed } from "./Embed.ts";
 import { AkumaKodoBot } from "../AkumaKodo.ts";
 

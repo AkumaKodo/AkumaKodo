@@ -1,4 +1,4 @@
-import { bold, cyan, gray, italic, red, yellow } from "../../deps.ts";
+import { bold, cyan, gray, italic, red, yellow } from "../deps.ts";
 import { AkumaKodoBot } from "../core/lib/AkumaKodo.ts";
 
 export enum Loglevels {

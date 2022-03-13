@@ -1,6 +1,6 @@
 import { AkumaKodoBot } from "../AkumaKodo.ts";
 import { snowflakeToBigint } from "../utils/Helpers.ts";
-import { ChannelTypes } from "../../../../deps.ts";
+import { ChannelTypes } from "../../../deps.ts";
 
 AkumaKodoBot.argumentsCollection.set("textchannel", {
   name: "textchannel",

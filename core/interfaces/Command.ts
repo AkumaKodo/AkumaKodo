@@ -5,7 +5,7 @@ import {
   DiscordenoInteraction,
   DiscordenoMessage,
   Permission,
-} from "../../../deps.ts";
+} from "../../deps.ts";
 import { ArgumentDefinition, ConvertArgumentDefinitionsToArgs } from "./Arugment.ts";
 import { AkumaKodoBotInterface } from "./Client.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";

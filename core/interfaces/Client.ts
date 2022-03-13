@@ -4,7 +4,7 @@ import {
   CreateBotOptions,
   createGatewayManager,
   DiscordenoMessage,
-} from "../../../deps.ts";
+} from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { cooldownInterface, InteractionCommand, MessageCommand, ParentCommand } from "./Command.ts";
 import { _runningTaskInterface, Task } from "./Task.ts";

@@ -1,5 +1,5 @@
-import { AkumaKodoBot, createAkumaKodoBot } from "../packages/core/lib/AkumaKodo.ts";
-import { AkumaKodoBotInterface } from "../packages/core/interfaces/Client.ts";
+import { AkumaKodoBot, createAkumaKodoBot } from "../core/lib/AkumaKodo.ts";
+import { AkumaKodoBotInterface } from "../core/interfaces/Client.ts";
 
 // testing bot function
 await createAkumaKodoBot(AkumaKodoBot, {
