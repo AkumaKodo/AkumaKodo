@@ -14,3 +14,8 @@ export {
 
 // utils
 export * from "https://deno.land/std@0.117.0/fmt/colors.ts";
+
+// providers
+
+export { Collection } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
+export { Bson, MongoClient } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
