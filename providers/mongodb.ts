@@ -1,19 +1,25 @@
 import { AkumaKodoProvider, BaseProviderModel, ProviderOptions } from "./mod.ts";
-import { Bson, MongoClient } from "../deps.ts";
+import { Bson, Collection, Database, MongoClient } from "../deps.ts";
 import { AkumaKodoCollection } from "../core/lib/utils/Collection.ts";
+import { delay } from "../internal/utils.ts";
+import { Milliseconds } from "../core/lib/utils/Helpers.ts";
+import { AkumaKodoLogger } from "../internal/logger.ts";
 
 /**
  * Base mongodb schema for our provider.
  */
 interface mongodbSchema extends BaseProviderModel {
   _id: Bson.ObjectId;
+  guildId: bigint;
   // deno-lint-ignore no-explicit-any
   data?: Record<any, any> | null;
 }
 
 export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
-  protected cache!: AkumaKodoCollection<string, mongodbSchema>;
-  protected client!: MongoClient;
+  protected cache: AkumaKodoCollection<bigint, mongodbSchema>;
+  protected client: MongoClient;
+  private __db: Database;
+  protected db: Collection<mongodbSchema>;
   private database_name: string;
 
   /**
@@ -24,7 +30,15 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    */
   public constructor(options: ProviderOptions, model: mongodbSchema, name?: string) {
     super(options, model);
-    this.database_name = name || "akumakodo-mongodb-settings";
+    if (!name) name = "AkumaKodo";
+    this.database_name = name;
+    // Required resources
+    this.cache = new AkumaKodoCollection();
+    this.client = new MongoClient();
+    // We need to configure the database before the collection.
+    this.__db = this.client.database(name);
+    // Giving easier access to the collection.
+    this.db = this.__db.collection("settings");
   }
 
   /**
@@ -50,5 +64,19 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    */
   protected get getMongoClient() {
     return this.client;
+  }
+
+  /** Starts the provider. */
+  public async initialize() {
+    // give the bot process time to start up
+    await delay(Milliseconds.Second * 2);
+    // find all the settings in the collection and save them to the cache
+    const fillCollections = await this.db.find({ username: { $ne: null } }).toArray();
+    // Save all settings to the cache based on their guild id
+    for (const i in fillCollections) {
+      const settings = fillCollections[i];
+      this.cache.set(settings.guildId, settings);
+    }
+    AkumaKodoLogger("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
   }
 }
