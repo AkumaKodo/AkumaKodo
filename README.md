@@ -16,6 +16,8 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 - [ ] Scheduled task
 - [ ] Monitors
 
+**and so much more!**
+
 ## Core plugins
 
 - [ ] Rest API
