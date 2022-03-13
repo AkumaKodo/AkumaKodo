@@ -6,3 +6,6 @@ configs.ts
 # npm stuff
 .npmignore
 npm/
+
+# docs
+book

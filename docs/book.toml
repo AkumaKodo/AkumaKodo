@@ -1,0 +1,6 @@
+[book]
+authors = ["ThatGuyJamal"]
+language = "en"
+multilingual = false
+src = "src"
+title = "AkumaKodo"
