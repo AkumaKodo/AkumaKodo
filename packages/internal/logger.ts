@@ -100,4 +100,3 @@ export function logger({
 }
 
 export const log = logger();
-export { log };
