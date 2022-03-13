@@ -1,4 +1,5 @@
 import { bold, cyan, gray, italic, red, yellow } from "../../deps.ts";
+import {AkumaKodoBot} from "../core/lib/AkumaKodo.ts";
 
 export enum Loglevels {
   Debug,
@@ -99,4 +100,64 @@ export function logger({
   };
 }
 
-export const log = logger();
+export const log = logger;
+
+/**
+ * The internal logger for AkumaKomoBot
+ * It can be enabled by the user in the bot config
+ * @param level The log level to use
+ * @param event The event to log
+ * @param message The message to log
+ * @constructor
+ */
+export function AkumaKodoLogger(level: "debug" | "info" | "warn" | "error" | "fatal", event: string, message: string) {
+  // Check if the user enabled internal logging.
+  if(!AkumaKodoBot.container) return;
+  try {
+    if (AkumaKodoBot.container.bot_internal_logs) {
+      switch (level) {
+        case "debug":
+          log({
+            logLevel: Loglevels.Debug,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).debug(message);
+          break;
+        case "info":
+          log({
+            logLevel: Loglevels.Info,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).info(message);
+          break;
+        case "warn":
+          log({
+            logLevel: Loglevels.Warn,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).warn(message);
+          break;
+        case "error":
+          log({
+            logLevel: Loglevels.Error,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).error(message);
+          break;
+        case "fatal":
+          log({
+            logLevel: Loglevels.Fatal,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).fatal(message);
+          break;
+        default:
+          log({
+            logLevel: Loglevels.Info,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).info(message);
+          break;
+      }
+    }
+  } catch (e) {
+    log({
+      logLevel: Loglevels.Error,
+      name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+    }).error(e);
+  }
+}
