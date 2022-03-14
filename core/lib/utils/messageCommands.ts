@@ -1,7 +1,7 @@
-import { MessageCommand } from "../interfaces/Command.ts";
-import { ArgumentDefinition } from "../interfaces/Arugment.ts";
-import { AkumaKodoBot, AkumaKodoCollection, Milliseconds } from "./AkumaKodo.ts";
-import { AkumaKodoLogger } from "../../internal/logger.ts";
+import { MessageCommand } from "../../interfaces/Command.ts";
+import { ArgumentDefinition } from "../../interfaces/Arugment.ts";
+import { AkumaKodoBot, AkumaKodoCollection, Milliseconds } from "../AkumaKodo.ts";
+import { AkumaKodoLogger } from "../../../internal/logger.ts";
 import { DiscordenoMessage } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/message.ts";
 
 /**

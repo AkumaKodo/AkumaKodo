@@ -1,8 +1,8 @@
 /*Creates a slash command*/
-import { AkumaKodoCollection } from "./utils/Collection.ts";
-import { AkumaKodoBot } from "./AkumaKodo.ts";
-import { SlashSubcommand, SlashSubcommandGroup } from "../interfaces/Command.ts";
-import { delay } from "../../internal/utils.ts";
+import { AkumaKodoCollection } from "./Collection.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
+import { SlashSubcommand, SlashSubcommandGroup } from "../../interfaces/Command.ts";
+import { delay } from "../../../internal/utils.ts";
 
 export function createSlashCommand(command: SlashSubcommand) {
   // @ts-ignore -

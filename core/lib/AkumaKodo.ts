@@ -18,8 +18,8 @@ import { InternalCacheController } from "../../internal/controllers/cache.ts";
 import { logger } from "../../internal/logger.ts";
 import { createAkumaKodoEmebd } from "./utils/Embed.ts";
 import { createInhibitor, destroyInhibitor } from "./inhibitors/mod.ts";
-import { createMessageCommand, createMessageSubcommand } from "./messageCommands.ts";
-import { createSlashCommand, createSlashSubcommand, createSlashSubcommandGroup } from "./slashCommands.ts";
+import { createMessageCommand, createMessageSubcommand } from "./utils/messageCommands.ts";
+import { createSlashCommand, createSlashSubcommand, createSlashSubcommandGroup } from "./utils/slashCommands.ts";
 import {createAkumaKodoTask, destroyTasks} from "./task/mod.ts";
 
 /**
@@ -30,8 +30,8 @@ import {createAkumaKodoTask, destroyTasks} from "./task/mod.ts";
  * @param options The options for the bot client
  * @returns The Bot
  */
-export async function createAkumaKodoBot(
-  bot: Bot,
+export async function createAkumaKodoBot<Akuma extends AkumaKodoBotInterface = AkumaKodoBotInterface>(
+  bot: Akuma,
   options?: AkumaCreateBotOptions,
 ): Promise<AkumaKodoBotInterface & CacheProps> {
   validateCreateBotOptions(options);
@@ -112,7 +112,6 @@ export async function createAkumaKodoBot(
       destroyTasks()
     },
   };
-
   // Start the bot
   await startBot(internal_client);
   return internal_client;
@@ -132,5 +131,5 @@ export * from "./utils/Embed.ts";
 export * from "./utils/Component.ts";
 export * from "./utils/Helpers.ts";
 export * from "./task/mod.ts";
-export * from "./messageCommands.ts";
-export * from "./slashCommands.ts";
+export * from "./utils/messageCommands.ts";
+export * from "./utils/slashCommands.ts";
