@@ -4,6 +4,8 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 
 **Status: Alpha**
 
+Documentation can be found at https://thatguyjamal.github.io/AkumaKodo/
+
 ## Example
 
 ```typescript

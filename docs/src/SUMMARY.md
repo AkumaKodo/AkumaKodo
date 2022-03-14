@@ -8,7 +8,6 @@
   - [Discord Developers](framework/chapter_1/page_2.md)
   - [AkumaKodo beginners](framework/chapter_1/page_3.md)
 
-
 # API
 
 - [information](api/chapter_1.md)

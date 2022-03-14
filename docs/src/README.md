@@ -19,11 +19,12 @@ _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/
 
 ## Installation
 
-*Coming soon...*
+_Coming soon..._
 
 ## Example bot
 
-*Example does not work yet...*
+_Example does not work yet..._
+
 ```typescript
 import { AkumaKodoBot, createAkumaKodoBot } from "./deps.ts";
 

@@ -10,7 +10,7 @@ Learn about [typescript](https://www.typescriptlang.org/docs/handbook/typescript
 If you are new to programming with the discord api I also recommend read the [discord api documentation](https://discord.com/developers/docs/intro).
 You can find a lot of helpful information there.
 
-You can also learn more about discord bot development on YouTube, in discord servers, and reddit. 
+You can also learn more about discord bot development on YouTube, in discord servers, and reddit.
 
 ## Creating a bot application
 
@@ -24,7 +24,7 @@ Next click on the bot tab and create a new bot application.
 
 ![Bots tab](../../images/framework/inner_application.png)
 
-Your bot should be created. 
+Your bot should be created.
 
 ![Bot created](../../images/framework/new_bot.png)
 
