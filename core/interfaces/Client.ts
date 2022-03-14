@@ -114,24 +114,24 @@ export interface AkumaKodoEvents extends EventHandlers {
  */
 export interface AkumaKodoUtilities {
   createMessageCommand<T extends readonly ArgumentDefinition[]>(
-      bot: AkumaKodoBotInterface,
+    bot: AkumaKodoBotInterface,
     command: MessageCommand<T>,
   ): void;
   createMessageSubcommand<T extends readonly ArgumentDefinition[]>(
-      bot: AkumaKodoBotInterface,
+    bot: AkumaKodoBotInterface,
     command: string,
     subcommand: Omit<MessageCommand<T>, "category">,
     retries?: number,
   ): void;
   createSlashCommand(bot: AkumaKodoBotInterface, command: InteractionCommand): void;
   createSlashSubcommandGroup(
-      bot: AkumaKodoBotInterface,
+    bot: AkumaKodoBotInterface,
     command: string,
     subcommandGroup: SlashSubcommandGroup,
     retries?: number,
   ): void;
   createSlashSubcommand(
-      bot: AkumaKodoBotInterface,
+    bot: AkumaKodoBotInterface,
     command: string,
     subcommandGroup: SlashSubcommand,
     options?: { split?: boolean; retries?: number },

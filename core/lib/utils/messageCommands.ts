@@ -11,7 +11,7 @@ import { AkumaKodoBotInterface } from "../../interfaces/Client.ts";
  * @param command
  */
 export function createMessageCommand<T extends readonly ArgumentDefinition[]>(
-    bot: AkumaKodoBotInterface,
+  bot: AkumaKodoBotInterface,
   // deno-lint-ignore no-explicit-any
   command: MessageCommand<any>,
 ) {

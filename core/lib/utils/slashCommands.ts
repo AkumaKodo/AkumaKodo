@@ -1,9 +1,10 @@
 /*Creates a slash command*/
 import { AkumaKodoCollection } from "./Collection.ts";
 import { AkumaKodoBot } from "../AkumaKodo.ts";
-import { SlashSubcommand, SlashSubcommandGroup } from "../../interfaces/Command.ts";
+import { InteractionCommand, SlashSubcommand, SlashSubcommandGroup } from "../../interfaces/Command.ts";
 import { delay } from "../../../internal/utils.ts";
-import {AkumaKodoBotInterface} from "../../interfaces/Client.ts";
+import { AkumaKodoBotInterface } from "../../interfaces/Client.ts";
+import { DiscordenoInteraction } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/interaction.ts";
 
 export function createSlashCommand(bot: AkumaKodoBotInterface, command: SlashSubcommand) {
   // @ts-ignore -
@@ -23,7 +24,7 @@ export async function createSlashSubcommandGroup(
     } else {
       await delay(500);
       return createSlashSubcommandGroup(
-          bot,
+        bot,
         command,
         subcommand,
         retries ? retries + 1 : 1,
@@ -111,5 +112,111 @@ export async function createSlashSubcommand(
         ],
       ]),
     });
+  }
+}
+
+interface commandFetch {
+  type: "command" | "subcommand" | "subcommandGroup";
+  command: InteractionCommand | SlashSubcommand;
+}
+
+function fetchCommand(
+  data: DiscordenoInteraction,
+  command: InteractionCommand,
+): commandFetch | undefined {
+  if (!command.subcommands?.size) return { type: "command", command };
+  const subGroup: SlashSubcommandGroup | undefined = command.subcommands.find(
+    (e) =>
+      data.data!.options![0].type == 2 &&
+      e.name == data.data!.options![0].name &&
+      e.SubcommandType == "subcommandGroup",
+  ) as SlashSubcommandGroup | undefined;
+  if (subGroup) {
+    return {
+      type: "subcommandGroup",
+      command: subGroup.subcommands?.get(
+        data.data!.options![0].options![0].name,
+      )!,
+    };
+  }
+
+  const sub = command.subcommands.get(data.data!.options![0].name) as
+    | SlashSubcommand
+    | undefined;
+  if (sub) return { type: "subcommand", command: sub };
+}
+
+export async function handleSlash(
+  bot: AkumaKodoBotInterface,
+  data: DiscordenoInteraction,
+) {
+  if (
+    data.type !== 2 ||
+    !data.data?.name ||
+    !bot.slashCommands.has(data.data.name)
+  ) {
+    return;
+  }
+  if (data.guildId && !bot.guilds.has(data.guildId)) {
+    bot.guilds.set(
+      data.guildId,
+      await bot.helpers.getGuild(data.guildId, { counts: true }),
+    );
+  }
+  if (data.guildId && data.member && !bot.members.has(data.user.id)) {
+    bot.members.set(
+      bot.transformers.snowflake(`${data.user.id}${data.guildId}`),
+      await bot.helpers.getMember(data.guildId, data.user.id),
+    );
+  }
+  if (data.channelId && !bot.channels.has(data.channelId)) {
+    bot.channels.set(
+      data.channelId,
+      await bot.helpers.getChannel(data.channelId),
+    );
+  }
+  const cmd = bot.slashCommands.get(data.data.name)!;
+  const command = fetchCommand(data, cmd)!;
+  if (
+    bot.inhibitorCollection.some(
+      (e) =>
+        e(bot, command?.command as InteractionCommand, {
+          guildId: data.guildId,
+          channelId: data.channelId!,
+          memberId: data.user.id,
+        }) !== true,
+    )
+  ) {
+    return bot.events.commands.error?.({
+      data,
+      error: bot.inhibitorCollection
+        .map((e) =>
+          e(bot, command?.command as InteractionCommand, {
+            guildId: data.guildId,
+            channelId: data.channelId!,
+            memberId: data.user.id,
+          })
+        )
+        .find((e) => typeof e !== "boolean")! as Error,
+    });
+  }
+  try {
+    bot.events.commands.create?.(command!.command! as InteractionCommand, data);
+    command?.command.execute?.(
+      bot,
+      command.type === "command"
+        ? data
+        : command.type === "subcommand"
+        ? { ...data, data: data.data.options?.[0] }
+        : { ...data, data: data.data.options?.[0].options?.[0] },
+    );
+    bot.events.commands.destroy(command!.command! as InteractionCommand, data);
+  } catch (e) {
+    if (bot.events.commands.error) {
+      bot.events.commands.error({
+        error: "Slash Handler Error",
+        data,
+      });
+    } else throw e;
   }
 }
