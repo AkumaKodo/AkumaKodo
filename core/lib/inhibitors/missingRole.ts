@@ -1,6 +1,6 @@
 import { AkumaKodoBot } from "../AkumaKodo.ts";
 
-AkumaKodoBot.inhibitorCollection.set("hasRole", (message, command, options) => {
+AkumaKodoBot.inhibitorCollection.set("hasRole", (command, options) => {
   if (command.dmOnly || !command.hasRoles?.length || !options?.guildId) {
     return true;
   }

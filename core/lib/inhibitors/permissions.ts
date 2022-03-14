@@ -1,7 +1,10 @@
 import { AkumaKodoBot } from "../AkumaKodo.ts";
-import { getMissingChannelPermissions, getMissingGuildPermissions } from "../../../deps.ts";
+import {
+  getMissingChannelPermissions,
+  getMissingGuildPermissions
+} from "https://deno.land/x/discordeno_permissions_plugin@0.0.15/src/permissions.ts";
 
-AkumaKodoBot.inhibitorCollection.set("userPermissions", (_message, command, options) => {
+AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {
   if (command.dmOnly) return true;
   if (
     command.userGuildPermissions?.length &&
@@ -48,7 +51,7 @@ AkumaKodoBot.inhibitorCollection.set("userPermissions", (_message, command, opti
   return true;
 });
 
-AkumaKodoBot.inhibitorCollection.set("botPermissions", (_message, command, options) => {
+AkumaKodoBot.inhibitorCollection.set("botPermissions", (command, options) => {
   if (command.dmOnly) return true;
   if (
     command.botGuildPermissions?.length &&
@@ -95,7 +98,7 @@ AkumaKodoBot.inhibitorCollection.set("botPermissions", (_message, command, optio
   return true;
 });
 
-AkumaKodoBot.inhibitorCollection.set("guildOrDmOnly", (_message, command, options) => {
+AkumaKodoBot.inhibitorCollection.set("guildOrDmOnly", (command, options) => {
   if (
     (!options?.guildId && command.guildOnly) ||
     (options?.guildId && command.dmOnly) ||

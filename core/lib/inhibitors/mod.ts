@@ -10,18 +10,17 @@ import { DiscordenoMessage } from "https://deno.land/x/discordeno@13.0.0-rc18/sr
 export function createInhibitor(
   name: string,
   inhibitor: <T extends ParentCommand = ParentCommand>(
-    message: DiscordenoMessage,
-    command: T,
+      command: T,
     options?: { memberId?: bigint; guildId?: bigint; channelId: bigint },
   ) => true | Error,
 ) {
-  AkumaKodoBot.inhibitorCollection.set(name, inhibitor);
+    AkumaKodoBot.inhibitorCollection.set(name, inhibitor);
 }
 
 /**
  * Deletes an inhibitor from the inhibitor collection
  * @param name inhibitor name to delete
  */
-export function deleteInhibitor(name: string) {
+export function destroyInhibitor(name: string): void {
   AkumaKodoBot.inhibitorCollection.delete(name);
 }
