@@ -70,6 +70,7 @@ export async function createAkumaKodoBot(
     initialTimeouts: [],
   };
   AkumaKodoBot.logger = logger;
+  AkumaKodoBot.fullyReady = false;
 
   // Start the bot
   await startBot(internal_client);
@@ -89,3 +90,4 @@ export * from "./utils/Collection.ts";
 export * from "./utils/Embed.ts";
 export * from "./utils/Component.ts";
 export * from "./utils/Helpers.ts";
+export * from "./task/mod.ts"

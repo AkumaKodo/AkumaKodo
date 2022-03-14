@@ -8,7 +8,7 @@ import {
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { cooldownInterface, InteractionCommand, MessageCommand, ParentCommand } from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
-import {AkumaKodoArgument} from "./Arugment.ts";
+import { AkumaKodoArgument } from "./Arugment.ts";
 import { InternalCacheController } from "../../internal/controllers/cache.ts";
 import { logger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
@@ -53,11 +53,16 @@ export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin
   taskCollection: AkumaKodoCollection<string, AkumaKodoTask>;
   monitorCollection: AkumaKodoCollection<string, AkumaKodoMonitor>;
   runningTasks: _runningTaskInterface;
+  /** Access message command data */
   messageCommand: AkumaKodoCollection<string, MessageCommand<any>>;
+  /** Access slash commands data */
   slashCommand: AkumaKodoCollection<string, InteractionCommand>;
   defaultCooldown: cooldownInterface;
   /** ID of users who bypass the cooldown */
   ignoreCooldown: bigint[];
+  /** Controls cache functions in the framework */
   internalCacheController: InternalCacheController;
+  /** Access to the client logger */
   logger: typeof logger;
+  fullyReady: boolean;
 }
