@@ -90,4 +90,4 @@ export * from "./utils/Collection.ts";
 export * from "./utils/Embed.ts";
 export * from "./utils/Component.ts";
 export * from "./utils/Helpers.ts";
-export * from "./task/mod.ts"
+export * from "./task/mod.ts";

@@ -3,15 +3,16 @@ import { AkumaKodoTask } from "../../interfaces/Task.ts";
 import { AkumaKodoLogger } from "../../../internal/logger.ts";
 import { Milliseconds } from "../utils/Helpers.ts";
 import { AkumaKodoCollection } from "../utils/Collection.ts";
+import { AkumaKodoBot } from "../AkumaKodo.ts";
 
 /**
  * Allows you to create a new task for the bot.
  * @param bot The bot to create the task for.
  * @param task The task to be created.
- * @param callback Optional callback to run when the task is executed.
+ * @param callback Optional callback ran after the task is created. You can use this to do something after the task is created.
  */
-export function createAkumaKodoTask(bot: AkumaKodoBotInterface, task: AkumaKodoTask, callback?: Function) {
-  bot.taskCollection.set(task.name, task);
+export function createAkumaKodoTask(task: AkumaKodoTask, callback?: () => any) {
+  AkumaKodoBot.taskCollection.set(task.name, task);
   if (callback) {
     callback();
   }
@@ -21,9 +22,9 @@ export function createAkumaKodoTask(bot: AkumaKodoBotInterface, task: AkumaKodoT
  * Starts all registered tasks.
  * @param bot The bot to start the tasks for.
  */
-export function initializeTask(bot: AkumaKodoBotInterface) {
-  for (const task of bot.taskCollection.values()) {
-    bot.runningTasks.initialTimeouts.push(
+export function initializeTask() {
+  for (const task of AkumaKodoBot.taskCollection.values()) {
+    AkumaKodoBot.runningTasks.initialTimeouts.push(
       setTimeout(async () => {
         try {
           await task.execute();
@@ -32,9 +33,9 @@ export function initializeTask(bot: AkumaKodoBotInterface) {
           AkumaKodoLogger("error", "initializeTask", `Task ${task.name} failed to execute.\n ${error}`);
         }
 
-        bot.runningTasks.initialTimeouts.push(
+        AkumaKodoBot.runningTasks.initialTimeouts.push(
           setInterval(async () => {
-            if (!bot.fullyReady) return;
+            if (!AkumaKodoBot.fullyReady) return;
             try {
               await task.execute();
               AkumaKodoLogger("info", "initializeTask", `Task ${task.name} executed`);
@@ -50,14 +51,18 @@ export function initializeTask(bot: AkumaKodoBotInterface) {
 
 /**
  * Destroys all task intervals in the bot.
- * @param bot The bot to destroy the intervals for.
+ * @param callback Optional callback ran after the intervals are destroyed. You can use this to do something after the intervals are destroyed.
  */
-export function destroyTasks(bot: AkumaKodoBotInterface) {
-  for (const task of bot.runningTasks.initialTimeouts) {
+export function destroyTasks(callback?: () => any) {
+  for (const task of AkumaKodoBot.runningTasks.initialTimeouts) {
     clearTimeout(task);
   }
-  for (const task of bot.runningTasks.intervals) clearInterval(task);
+  for (const task of AkumaKodoBot.runningTasks.intervals) clearInterval(task);
 
-  bot.taskCollection = new AkumaKodoCollection<string, AkumaKodoTask>();
-  bot.runningTasks = { initialTimeouts: [], intervals: [] };
+  AkumaKodoBot.taskCollection = new AkumaKodoCollection<string, AkumaKodoTask>();
+  AkumaKodoBot.runningTasks = { initialTimeouts: [], intervals: [] };
+
+  if (callback) {
+    callback();
+  }
 }
