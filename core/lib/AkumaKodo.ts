@@ -15,7 +15,7 @@ import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../interfaces/Clie
 import { AkumaKodoCollection } from "./utils/Collection.ts";
 import { Milliseconds } from "./utils/Helpers.ts";
 import { InternalCacheController } from "../../internal/controllers/cache.ts";
-import { logger} from "../../internal/logger.ts";
+import { logger } from "../../internal/logger.ts";
 
 /**
  * Creates a bot client and starts it.
@@ -68,7 +68,7 @@ export async function createAkumaKodoBot(
     intervals: [],
     initialTimeouts: [],
   };
-  AkumaKodoBot.logger = logger
+  AkumaKodoBot.logger = logger;
 
   // Start the bot
   await startBot(internal_client);

@@ -156,25 +156,25 @@ maintaining a high level of performance and function programming workflow.</p>
 <pre><code class="language-typescript">import { AkumaKodoBot, createAkumaKodoBot } from &quot;./deps.ts&quot;;
 
 await createAkumaKodoBot(AkumaKodoBot, {
-    botId: 1n,
-    token: &quot;token&quot;,
-    intents: [&quot;GUILDS&quot;, &quot;GUILD_MEMBERS&quot;, &quot;GUILD_MESSAGES&quot;],
-    events: {},
+  botId: 1n,
+  token: &quot;token&quot;,
+  intents: [&quot;GUILDS&quot;, &quot;GUILD_MEMBERS&quot;, &quot;GUILD_MESSAGES&quot;],
+  events: {},
 });
 
 AkumaKodoBot.createMessageCommand({
-    name: 'ping',
-    description: 'Ping!',
-    execute: (ctx) =&gt; {
-        ctx.reply({
-            content: 'Pong!',
-        });
-    }
-})
+  name: &quot;ping&quot;,
+  description: &quot;Ping!&quot;,
+  execute: (ctx) =&gt; {
+    ctx.reply({
+      content: &quot;Pong!&quot;,
+    });
+  },
+});
 
 AkumaKodoBot.events.ready = (_, payload) =&gt; {
-    AkumaKodoBot.logger().info(`[READY] Bot is online and ready in ${AkumaKodoBot.guilds.size} guilds!`);
-}
+  AkumaKodoBot.logger().info(`[READY] Bot is online and ready in ${AkumaKodoBot.guilds.size} guilds!`);
+};
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
 <p>coming soon...</p>

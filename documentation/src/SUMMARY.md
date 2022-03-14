@@ -2,7 +2,7 @@
 
 [Introduction](README.md)
 
-# Framework 
+# Framework
 
 - [Getting started](framework/chapter_1.md)
 - [Discord Developers](framework/chapter_2.md)
@@ -11,6 +11,6 @@
 
 - [index](api/chapter_1.md)
 
------------
+---
 
 [Contributors](misc/contributors.md)

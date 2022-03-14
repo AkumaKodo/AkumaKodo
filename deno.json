@@ -13,7 +13,6 @@
       "indentWidth": 2,
       "singleQuote": false,
       "proseWrap": "preserve"
-    },
-    "exclude": ["./documentation/book/**"]
+    }
   }
 }
