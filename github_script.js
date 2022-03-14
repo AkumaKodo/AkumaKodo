@@ -1,9 +1,9 @@
-const ghpages = require('gh-pages');
+const ghpages = require("gh-pages");
 
 ghpages.publish("./docs/book/html", {
   branch: "documentation",
   repo: "https://github.com/ThatGuyJamal/AkumaKodo.git",
-}, function(err) {
+}, function (err) {
   if (err) {
     console.log(err);
   } else {

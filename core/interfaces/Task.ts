@@ -1,4 +1,4 @@
-export interface Task {
+export interface AkumaKodoTask {
   /** The name of the monitor */
   name: string;
   /** The amount of milliseconds to wait before running this again. */

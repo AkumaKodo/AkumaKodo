@@ -1,6 +1,6 @@
 import { DiscordenoMessage, PermissionStrings } from "../../deps.ts";
 
-export interface Monitor {
+export interface AkumaKodoMonitor {
   /** The name of the monitor */
   name: string;
   /** Whether this monitor should ignore messages that are sent by bots. By default, this is true. */

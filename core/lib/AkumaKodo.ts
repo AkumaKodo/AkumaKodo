@@ -54,6 +54,7 @@ export async function createAkumaKodoBot(
   AkumaKodoBot.internalCacheController = new InternalCacheController();
   AkumaKodoBot.inhibitorCollection = new AkumaKodoCollection();
   AkumaKodoBot.taskCollection = new AkumaKodoCollection();
+  AkumaKodoBot.monitorCollection = new AkumaKodoCollection();
   AkumaKodoBot.languageCollection = new AkumaKodoCollection();
   AkumaKodoBot.prefixCollection = new AkumaKodoCollection();
   AkumaKodoBot.argumentsCollection = new AkumaKodoCollection();
