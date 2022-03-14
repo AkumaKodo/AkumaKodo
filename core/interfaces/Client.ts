@@ -7,10 +7,11 @@ import {
 } from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { cooldownInterface, InteractionCommand, MessageCommand, ParentCommand } from "./Command.ts";
-import { _runningTaskInterface, Task } from "./Task.ts";
-import { Argument } from "./Arugment.ts";
+import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
+import {AkumaKodoArgument} from "./Arugment.ts";
 import { InternalCacheController } from "../../internal/controllers/cache.ts";
 import { logger } from "../../internal/logger.ts";
+import { AkumaKodoMonitor } from "./Monitor.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -40,7 +41,7 @@ export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin
   container: AkumaCreateBotOptions;
   prefixCollection: AkumaKodoCollection<bigint, string>;
   languageCollection: AkumaKodoCollection<bigint, string>;
-  argumentsCollection: AkumaKodoCollection<string, Argument>;
+  argumentsCollection: AkumaKodoCollection<string, AkumaKodoArgument>;
   inhibitorCollection: AkumaKodoCollection<
     string,
     <T extends ParentCommand = ParentCommand>(
@@ -49,7 +50,8 @@ export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin
       options: { memberId?: bigint; channelId: bigint; guildId?: bigint },
     ) => any
   >;
-  taskCollection: AkumaKodoCollection<string, Task>;
+  taskCollection: AkumaKodoCollection<string, AkumaKodoTask>;
+  monitorCollection: AkumaKodoCollection<string, AkumaKodoMonitor>;
   runningTasks: _runningTaskInterface;
   messageCommand: AkumaKodoCollection<string, MessageCommand<any>>;
   slashCommand: AkumaKodoCollection<string, InteractionCommand>;
