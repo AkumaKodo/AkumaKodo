@@ -21,9 +21,9 @@ git-repository-url = "https://github.com/ThatGuyJamal/AkumaKodo"
 edit-url-template = "https://github.com/ThatGuyJamal/AkumaKodo/docs/{path}"
 default-theme = "Ayu"
 
-# Playground configuration
-[output.html.playground]
-editable = true
+## Playground configuration
+#[output.html.playground]
+#editable = true
 
 # Book search configuration (Disabled)
 # [output.html.search]

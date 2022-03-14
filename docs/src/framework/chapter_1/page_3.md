@@ -1,0 +1,3 @@
+# AkumaKodo - Chapter 1: The Basics
+
+Coming soon...
