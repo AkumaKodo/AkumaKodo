@@ -1,12 +1,20 @@
+# Book configuration
 [book]
 title = "AkumaKodo Documentation"
 description = "A blazing fast discord bot framework built on top of discordeno and typescript!"
 authors = ["ThatGuyJamal"]
 language = "en"
-
-multilingual = false
 src = "src"
 
+multilingual = false
+
+# Build configuration
+[build]
+build-dir = "book"
+create-missing = false
+use-default-preprocessors = true
+
+#  HTML configuration
 [output.html]
 git-repository-url = "https://github.com/ThatGuyJamal/AkumaKodo"
 edit-url-template = "https://github.com/ThatGuyJamal/AkumaKodo/docs/{path}"
