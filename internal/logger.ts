@@ -114,6 +114,7 @@ export function AkumaKodoLogger(level: "debug" | "info" | "warn" | "error" | "fa
   // Check if the user enabled internal logging.
   if (!AkumaKodoBot.container) return;
   try {
+    // check if internal logging is enabled, if not return
     if (AkumaKodoBot.container.bot_internal_logs) {
       switch (level) {
         case "debug":

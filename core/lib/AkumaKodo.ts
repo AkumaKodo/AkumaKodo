@@ -58,13 +58,15 @@ export async function createAkumaKodoBot(
   AkumaKodoBot.languageCollection = new AkumaKodoCollection();
   AkumaKodoBot.prefixCollection = new AkumaKodoCollection();
   AkumaKodoBot.argumentsCollection = new AkumaKodoCollection();
-  AkumaKodoBot.messageCommand = new AkumaKodoCollection();
-  AkumaKodoBot.slashCommand = new AkumaKodoCollection();
+  AkumaKodoBot.messageCommands = new AkumaKodoCollection();
+  AkumaKodoBot.slashCommands = new AkumaKodoCollection();
   AkumaKodoBot.ignoreCooldown = options?.bot_cooldown_bypass_ids ?? [];
   AkumaKodoBot.defaultCooldown = {
     seconds: Milliseconds.Second * 10,
     allowedUses: 1,
   };
+  AkumaKodoBot.prefix = options?.bot_default_prefix ?? undefined;
+  AkumaKodoBot.mentionWithPrefix = options?.bot_mention_with_prefix ?? false;
   AkumaKodoBot.runningTasks = {
     intervals: [],
     initialTimeouts: [],
@@ -91,3 +93,5 @@ export * from "./utils/Embed.ts";
 export * from "./utils/Component.ts";
 export * from "./utils/Helpers.ts";
 export * from "./task/mod.ts";
+export * from "./messageCommands.ts"
+export * from "./slashCommands.ts"
