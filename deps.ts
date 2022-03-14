@@ -14,6 +14,7 @@ export {
 
 // utils
 export * from "https://deno.land/std@0.117.0/fmt/colors.ts";
+export { EventEmitter } from "https://deno.land/std@0.129.0/node/events.ts";
 
 // providers
 

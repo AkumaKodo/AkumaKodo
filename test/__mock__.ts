@@ -1,20 +1,14 @@
-import { AkumaKodoBot, createAkumaKodoBot } from "../core/lib/AkumaKodo.ts";
-import { AkumaKodoBotInterface } from "../core/interfaces/Client.ts";
+import {AkumaKodoBotCore} from "../core/lib/AkumaKodo.ts";
 
-// testing bot function
-await createAkumaKodoBot(AkumaKodoBot, {
-  botId: 1n,
-  token: "",
-  intents: [],
+const Bot = new AkumaKodoBotCore({
+  botId: 946398697254703174n,
+  dir: "",
   events: {},
+  intents: ["Guilds"],
+  optional: {
+    bot_internal_logs: true,
+  },
+  token: "OTQ2Mzk4Njk3MjU0NzAzMTc0.YheIeA.tWtFnFKkSKcxUeTi1-f588Khch0",
 });
 
-// testing custom bot function extension
-
-interface newBotExtension extends AkumaKodoBotInterface {
-  custom_something: string;
-}
-
-const newBot = AkumaKodoBot as newBotExtension;
-
-newBot.custom_something = "test";
+await Bot.createBot();

@@ -3,7 +3,7 @@
 AkumaKodo (Pronounced: Ah-Ku-Ma Code Oh) is a discord deno bot framework written
 in `TypeScript and deno`. It is designed to be a `modular and extensible` framework that
 extends the functionality of the deno runtime. It is designed to be easy to use while
-maintaining a high level of `performance` and `functional programming` workflow.
+maintaining a high level of `performance`.
 
 _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/discordeno@13.0.0-rc18)_
 
@@ -11,7 +11,6 @@ _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/
 
 - Slash Command and Message Command support.
 - Build in providers for custom configuration settings in multiple servers.
-- Follows functional programming workflow.
 - Built in caching by default for quick data retrieval.
 - Built in logging system with multiple log levels and terminal colors.
 - Build in inhibitor system for permission handling.

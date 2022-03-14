@@ -51,7 +51,7 @@ export function logger({
 
     switch (level) {
       case Loglevels.Debug:
-        return console.table({ ...log });
+        return console.debug(...log);
       case Loglevels.Info:
         return console.info(...log);
       case Loglevels.Warn:
@@ -112,48 +112,46 @@ export const log = logger;
  */
 export function AkumaKodoLogger(level: "debug" | "info" | "warn" | "error" | "fatal", event: string, message: string) {
   // Check if the user enabled internal logging.
-  if (!AkumaKodoBot.container) return;
+  if (!AkumaKodoBot) return;
   try {
     // check if internal logging is enabled, if not return
-    if (AkumaKodoBot.container.bot_internal_logs) {
-      switch (level) {
-        case "debug":
-          log({
-            logLevel: Loglevels.Debug,
-            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
-          }).debug(message);
-          break;
-        case "info":
-          log({
-            logLevel: Loglevels.Info,
-            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
-          }).info(message);
-          break;
-        case "warn":
-          log({
-            logLevel: Loglevels.Warn,
-            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
-          }).warn(message);
-          break;
-        case "error":
-          log({
-            logLevel: Loglevels.Error,
-            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
-          }).error(message);
-          break;
-        case "fatal":
-          log({
-            logLevel: Loglevels.Fatal,
-            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
-          }).fatal(message);
-          break;
-        default:
-          log({
-            logLevel: Loglevels.Info,
-            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
-          }).info(message);
-          break;
-      }
+    switch (level) {
+      case "debug":
+        log({
+          logLevel: Loglevels.Debug,
+          name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+        }).debug(message);
+        break;
+      case "info":
+        log({
+          logLevel: Loglevels.Info,
+          name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+        }).info(message);
+        break;
+      case "warn":
+        log({
+          logLevel: Loglevels.Warn,
+          name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+        }).warn(message);
+        break;
+      case "error":
+        log({
+          logLevel: Loglevels.Error,
+          name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+        }).error(message);
+        break;
+      case "fatal":
+        log({
+          logLevel: Loglevels.Fatal,
+          name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+        }).fatal(message);
+        break;
+      default:
+        log({
+          logLevel: Loglevels.Info,
+          name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+        }).info(message);
+        break;
     }
   } catch (e) {
     log({

@@ -170,7 +170,7 @@ export interface EmbedFile {
  * @param options
  * @param limits
  */
-export function createAkumaKodoEmebd(options: AkumaKodoEmbedInterface): AkumaKodoEmbed {
+export function createAkumaKodoEmbed(options: AkumaKodoEmbedInterface): AkumaKodoEmbed {
   return new AkumaKodoEmbed({ ...options });
 }
 

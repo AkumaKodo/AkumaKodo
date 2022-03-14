@@ -160,20 +160,6 @@ export function snowflakeToTimestamp(id: bigint) {
   return Number(id / 4194304n + 1420070400000n);
 }
 
-/** Use this function to send an embed with ease. */
-export function sendEmbed(channelId: bigint, embed: AkumaKodoEmbed) {
-  return sendMessage(AkumaKodoBot, channelId, {
-    embeds: [embed],
-  });
-}
-
-/** Use this function to edit an embed with ease. */
-export function editEmbed(channelId: bigint, messageId: bigint, embed: AkumaKodoEmbed) {
-  return editMessage(AkumaKodoBot, channelId, messageId, {
-    embeds: [embed],
-  });
-}
-
 export const DISCORD_TIME_FORMATS = {
   "Short Time": "t",
   "Long Time": "T",
@@ -220,36 +206,4 @@ export function snowflakeToBigint(snowflake: string) {
 
 export function bigintToSnowflake(snowflake: bigint) {
   return snowflake === 0n ? "" : snowflake.toString();
-}
-
-export async function fetchMember(guildId: bigint, id: bigint | string) {
-  const userId = typeof id === "string"
-    ? id.startsWith("<@") ? BigInt(id.substring(id.startsWith("<@!") ? 3 : 2, id.length - 1)) : BigInt(id)
-    : id;
-
-  const guild = AkumaKodoBot.guilds.get(guildId);
-  if (!guild) return;
-
-  const cachedMember = AkumaKodoBot.members.get(userId);
-  if (cachedMember) return cachedMember;
-
-  const shardId = calculateShardId(guildId);
-
-  const shard = AkumaKodoBot.ws.shards.get(shardId);
-  // When gateway is dying
-  if (shard?.queueCounter && shard.queueCounter > 110) {
-    return getMember(AkumaKodoBot, guildId, userId).catch(() => undefined);
-  }
-
-  // Fetch from gateway as it is much better than wasting limited HTTP calls.
-  return await fetchMembers(AkumaKodoBot, guildId, shardId, {
-    userIds: [userId],
-    limit: 1,
-  }).catch(() => undefined);
-}
-
-export function calculateShardId(guildId: bigint) {
-  if (AkumaKodoBot.ws.maxShards === 1) return 0;
-
-  return Number((guildId >> 22n) % BigInt(AkumaKodoBot.ws.maxShards - 1));
 }
