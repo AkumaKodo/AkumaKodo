@@ -7,5 +7,6 @@ configs.ts
 .npmignore
 npm/
 
-# documentation
-#book
+# docs
+book/
+morsels_output/
