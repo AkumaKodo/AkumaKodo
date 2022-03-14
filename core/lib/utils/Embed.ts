@@ -1,4 +1,12 @@
-import { EmbedAuthor, EmbedField, EmbedFooter, EmbedImage } from "../../../deps.ts";
+import {
+  EmbedAuthor,
+  EmbedField,
+  EmbedFooter,
+  EmbedImage,
+  EmbedProvider,
+  EmbedThumbnail, EmbedTypes,
+  EmbedVideo
+} from "../../../deps.ts";
 
 const embedLimits = {
   title: 256,
@@ -31,9 +39,22 @@ export class AkumaKodoEmbed {
   thumbnail?: EmbedImage;
   url?: string;
 
-  constructor(enforceLimits = true) {
+  constructor(options?: AkumaKodoEmbedInterface, enforceLimits = true) {
     // By default, we will always want to enforce discord limits but this option allows us to bypass for whatever reason.
     if (!enforceLimits) this.enforceLimits = false;
+
+    if (options) {
+      if (options.color) this.color = options.color;
+      if (options.fields) this.fields = options.fields;
+      if (options.author) this.author = options.author;
+      if (options.description) this.description = options.description;
+      if (options.footer) this.footer = options.footer;
+      if (options.image) this.image = options.image;
+      if (options.timestamp) this.timestamp = options.timestamp;
+      if (options.title) this.title = options.title;
+      if (options.thumbnail) this.thumbnail = options.thumbnail;
+      if (options.url) this.url = options.url;
+    }
 
     return this;
   }
@@ -141,4 +162,43 @@ export class AkumaKodoEmbed {
 export interface EmbedFile {
   blob: Blob;
   name: string;
+}
+
+/**
+ * Create an embed functionally and not using the class object.
+ * @param options
+ * @param limits
+ */
+export function createEmebd(options: AkumaKodoEmbedInterface): AkumaKodoEmbed {
+  return new AkumaKodoEmbed({ ...options });
+}
+
+/** https://discord.com/developers/docs/resources/channel#embed-object */
+export interface AkumaKodoEmbedInterface {
+  /** Title of embed */
+  title?: string;
+  /** Type of embed (always "rich" for webhook embeds) */
+  type?: EmbedTypes;
+  /** Description of embed */
+  description?: string;
+  /** Url of embed */
+  url?: string;
+  /** Timestamp of embed content */
+  timestamp?: string;
+  /** Color code of the embed */
+  color?: number;
+  /** Footer information */
+  footer?: EmbedFooter;
+  /** Image information */
+  image?: EmbedImage;
+  /** Thumbnail information */
+  thumbnail?: EmbedThumbnail;
+  /** Video information */
+  video?: EmbedVideo;
+  /** Provider information */
+  provider?: EmbedProvider;
+  /** Author information */
+  author?: EmbedAuthor;
+  /** Fields information */
+  fields?: EmbedField[];
 }

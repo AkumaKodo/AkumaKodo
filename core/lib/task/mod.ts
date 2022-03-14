@@ -7,7 +7,6 @@ import { AkumaKodoBot } from "../AkumaKodo.ts";
 
 /**
  * Allows you to create a new task for the bot.
- * @param bot The bot to create the task for.
  * @param task The task to be created.
  * @param callback Optional callback ran after the task is created. You can use this to do something after the task is created.
  */
@@ -20,7 +19,6 @@ export function createAkumaKodoTask(task: AkumaKodoTask, callback?: () => any) {
 
 /**
  * Starts all registered tasks.
- * @param bot The bot to start the tasks for.
  */
 export function initializeTask() {
   for (const task of AkumaKodoBot.taskCollection.values()) {

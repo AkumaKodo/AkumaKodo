@@ -8,12 +8,20 @@ import {
   EventHandlers,
 } from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { cooldownInterface, InteractionCommand, MessageCommand, ParentCommand } from "./Command.ts";
+import {
+  cooldownInterface,
+  InteractionCommand,
+  MessageCommand,
+  ParentCommand,
+  SlashSubcommand,
+  SlashSubcommandGroup
+} from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
-import { AkumaKodoArgument } from "./Arugment.ts";
+import {AkumaKodoArgument, ArgumentDefinition} from "./Arugment.ts";
 import { InternalCacheController } from "../../internal/controllers/cache.ts";
 import { logger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
+import {AkumaKodoEmbed, AkumaKodoEmbedInterface} from "../lib/utils/Embed.ts";
 
 /** Extends default options for the bot client */
 export interface AkumaCreateBotOptions extends CreateBotOptions {
@@ -39,6 +47,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
  */
 export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin> {
   events: AkumaKodoEvents;
+  utilities: AkumaKodoUtilities;
   /** Allows access to the gateway manager */
   ws: ReturnType<typeof createGatewayManager>;
   /** Container for bot config options */
@@ -95,6 +104,42 @@ export interface AkumaKodoEvents extends EventHandlers {
       dataOrMessage: DiscordenoInteraction | DiscordenoMessage,
     ): unknown;
   };
+}
+
+/**
+ * typings for bot utils
+ */
+export interface AkumaKodoUtilities {
+  createMessageCommand<T extends readonly ArgumentDefinition[]>(
+      command: MessageCommand<T>
+  ): void;
+  createMessageSubcommand<T extends readonly ArgumentDefinition[]>(
+      command: string,
+      subcommand: Omit<MessageCommand<T>, "category">,
+      retries?: number
+  ): void;
+  createSlashCommand(command: InteractionCommand): void;
+  createSlashSubcommandGroup(
+      command: string,
+      subcommandGroup: SlashSubcommandGroup,
+      retries?: number
+  ): void;
+  createSlashSubcommand(
+      command: string,
+      subcommandGroup: SlashSubcommand,
+      options?: { split?: boolean; retries?: number }
+  ): void;
+  createTask(task: AkumaKodoTask): void;
+  destroyTasks(): void;
+  createInhibitor<T extends ParentCommand = ParentCommand>(
+      name: string,
+      inhibitor: (
+          command: T,
+          options?: { memberId?: bigint; guildId?: bigint; channelId: bigint }
+      ) => true | Error
+  ): void;
+  deleteInhibitor(name: string): void;
+  createEmbed(options: AkumaKodoEmbedInterface): AkumaKodoEmbed
 }
 
 export type Async<T> = PromiseLike<T> | T;
