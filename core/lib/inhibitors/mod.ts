@@ -10,11 +10,11 @@ import { DiscordenoMessage } from "https://deno.land/x/discordeno@13.0.0-rc18/sr
 export function createInhibitor(
   name: string,
   inhibitor: <T extends ParentCommand = ParentCommand>(
-      command: T,
+    command: T,
     options?: { memberId?: bigint; guildId?: bigint; channelId: bigint },
   ) => true | Error,
 ) {
-    AkumaKodoBot.inhibitorCollection.set(name, inhibitor);
+  AkumaKodoBot.inhibitorCollection.set(name, inhibitor);
 }
 
 /**

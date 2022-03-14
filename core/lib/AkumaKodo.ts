@@ -16,6 +16,11 @@ import { AkumaKodoCollection } from "./utils/Collection.ts";
 import { Milliseconds } from "./utils/Helpers.ts";
 import { InternalCacheController } from "../../internal/controllers/cache.ts";
 import { logger } from "../../internal/logger.ts";
+import { createAkumaKodoEmebd } from "./utils/Embed.ts";
+import { createInhibitor, destroyInhibitor } from "./inhibitors/mod.ts";
+import { createMessageCommand, createMessageSubcommand } from "./messageCommands.ts";
+import { createSlashCommand, createSlashSubcommand, createSlashSubcommandGroup } from "./slashCommands.ts";
+import {createAkumaKodoTask, destroyTasks} from "./task/mod.ts";
 
 /**
  * Creates a bot client and starts it.
@@ -45,6 +50,7 @@ export async function createAkumaKodoBot(
   enablePermissionsPlugin(bot as BotWithCache);
 
   // Initializes the bot values
+  AkumaKodoBot.fullyReady = false;
   AkumaKodoBot.container.bot_owners_ids = options?.bot_owners_ids ?? [];
   AkumaKodoBot.container.bot_supporters_ids = options?.bot_supporters_ids ?? [];
   AkumaKodoBot.container.bot_staff_ids = options?.bot_staff_ids ?? [];
@@ -72,7 +78,40 @@ export async function createAkumaKodoBot(
     initialTimeouts: [],
   };
   AkumaKodoBot.logger = logger;
-  AkumaKodoBot.fullyReady = false;
+  AkumaKodoBot.utilities = {
+    ...AkumaKodoBot.utilities,
+    createEmbed(options) {
+      createAkumaKodoEmebd(options);
+    },
+    createInhibitor(name, inhibitor) {
+      // @ts-ignore - Ignore type error
+      createInhibitor(name, inhibitor);
+    },
+    destroyInhibitor(name) {
+      destroyInhibitor(name);
+    },
+    createMessageCommand(command) {
+      createMessageCommand(command);
+    },
+    createMessageSubcommand(command, subcommand, retries) {
+      createMessageSubcommand(command, subcommand, retries);
+    },
+    createSlashCommand(command) {
+      createSlashCommand(command);
+    },
+    createSlashSubcommand(command, subcommandGroup, options) {
+      createSlashSubcommand(command, subcommandGroup, options);
+    },
+    createSlashSubcommandGroup(command, subcommandGroup, retries) {
+      createSlashSubcommandGroup(command, subcommandGroup, retries);
+    },
+    createTask(task) {
+      createAkumaKodoTask(task);
+    },
+    destroyTasks() {
+      destroyTasks()
+    },
+  };
 
   // Start the bot
   await startBot(internal_client);
@@ -93,5 +132,5 @@ export * from "./utils/Embed.ts";
 export * from "./utils/Component.ts";
 export * from "./utils/Helpers.ts";
 export * from "./task/mod.ts";
-export * from "./messageCommands.ts"
-export * from "./slashCommands.ts"
+export * from "./messageCommands.ts";
+export * from "./slashCommands.ts";

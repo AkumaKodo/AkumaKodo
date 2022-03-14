@@ -1,7 +1,7 @@
 import { AkumaKodoBot } from "../AkumaKodo.ts";
 import {
   getMissingChannelPermissions,
-  getMissingGuildPermissions
+  getMissingGuildPermissions,
 } from "https://deno.land/x/discordeno_permissions_plugin@0.0.15/src/permissions.ts";
 
 AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {

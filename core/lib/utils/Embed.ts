@@ -4,8 +4,9 @@ import {
   EmbedFooter,
   EmbedImage,
   EmbedProvider,
-  EmbedThumbnail, EmbedTypes,
-  EmbedVideo
+  EmbedThumbnail,
+  EmbedTypes,
+  EmbedVideo,
 } from "../../../deps.ts";
 
 const embedLimits = {
@@ -169,7 +170,7 @@ export interface EmbedFile {
  * @param options
  * @param limits
  */
-export function createEmebd(options: AkumaKodoEmbedInterface): AkumaKodoEmbed {
+export function createAkumaKodoEmebd(options: AkumaKodoEmbedInterface): AkumaKodoEmbed {
   return new AkumaKodoEmbed({ ...options });
 }
 

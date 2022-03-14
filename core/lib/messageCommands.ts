@@ -219,11 +219,10 @@ async function parseArguments(
     : args;
 }
 
- interface MissingRequiredArguments {
-  type: string
+interface MissingRequiredArguments {
+  type: string;
   value: string;
 }
-
 
 export async function handleMessageCommands(
   message: DiscordenoMessage,
