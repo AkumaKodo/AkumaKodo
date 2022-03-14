@@ -61,6 +61,8 @@ export interface MessageCommand<T extends readonly ArgumentDefinition[]> extends
 export interface InteractionCommand extends ParentCommand {
   /** The scope of the command. */
   scope: "Guild" | "Global" | "Development";
+  /**A list of guild ids that will have the command*/
+  guildIds?: bigint[];
   /**Whether the command is enabled by default when the app is added to a guild*/
   defaultPermission?: boolean;
   /**The application command type (context menus/input command)*/
