@@ -1,6 +1,5 @@
 /** Options for the bot client */
 import {
-  Bot,
   BotWithCache,
   CacheProps,
   createBot,
@@ -20,7 +19,7 @@ import { createAkumaKodoEmebd } from "./utils/Embed.ts";
 import { createInhibitor, destroyInhibitor } from "./inhibitors/mod.ts";
 import { createMessageCommand, createMessageSubcommand } from "./utils/messageCommands.ts";
 import { createSlashCommand, createSlashSubcommand, createSlashSubcommandGroup } from "./utils/slashCommands.ts";
-import {createAkumaKodoTask, destroyTasks} from "./task/mod.ts";
+import { createAkumaKodoTask, destroyTasks } from "./task/mod.ts";
 
 /**
  * Creates a bot client and starts it.
@@ -71,7 +70,7 @@ export async function createAkumaKodoBot<Akuma extends AkumaKodoBotInterface = A
     seconds: Milliseconds.Second * 10,
     allowedUses: 1,
   };
-  AkumaKodoBot.prefix = options?.bot_default_prefix ?? undefined;
+  AkumaKodoBot.prefix = options?.bot_default_prefix ?? "";
   AkumaKodoBot.mentionWithPrefix = options?.bot_mention_with_prefix ?? false;
   AkumaKodoBot.runningTasks = {
     intervals: [],
@@ -90,26 +89,26 @@ export async function createAkumaKodoBot<Akuma extends AkumaKodoBotInterface = A
     destroyInhibitor(name) {
       destroyInhibitor(name);
     },
-    createMessageCommand(command) {
-      createMessageCommand(command);
+    createMessageCommand(bot, command) {
+      createMessageCommand(bot, command);
     },
     createMessageSubcommand(command, subcommand, retries) {
       createMessageSubcommand(command, subcommand, retries);
     },
-    createSlashCommand(command) {
-      createSlashCommand(command);
+    createSlashCommand(bot, command) {
+      createSlashCommand(bot, command);
     },
-    createSlashSubcommand(command, subcommandGroup, options) {
-      createSlashSubcommand(command, subcommandGroup, options);
+    createSlashSubcommand(bot, command, subcommandGroup, options) {
+      createSlashSubcommand(bot, command, subcommandGroup, options);
     },
-    createSlashSubcommandGroup(command, subcommandGroup, retries) {
-      createSlashSubcommandGroup(command, subcommandGroup, retries);
+    createSlashSubcommandGroup(bot, command, subcommandGroup, retries) {
+      createSlashSubcommandGroup(bot, command, subcommandGroup, retries);
     },
-    createTask(task) {
-      createAkumaKodoTask(task);
+    createTask(bot, task) {
+      createAkumaKodoTask(bot, task);
     },
-    destroyTasks() {
-      destroyTasks()
+    destroyTasks(bot) {
+      destroyTasks(bot);
     },
   };
   // Start the bot

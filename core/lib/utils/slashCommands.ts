@@ -3,31 +3,34 @@ import { AkumaKodoCollection } from "./Collection.ts";
 import { AkumaKodoBot } from "../AkumaKodo.ts";
 import { SlashSubcommand, SlashSubcommandGroup } from "../../interfaces/Command.ts";
 import { delay } from "../../../internal/utils.ts";
+import {AkumaKodoBotInterface} from "../../interfaces/Client.ts";
 
-export function createSlashCommand(command: SlashSubcommand) {
+export function createSlashCommand(bot: AkumaKodoBotInterface, command: SlashSubcommand) {
   // @ts-ignore -
-  AkumaKodoBot.slashCommands.set(command.name, command);
+  bot.slashCommands.set(command.name, command);
 }
 /*Creates a subcommand group for a slash command*/
 export async function createSlashSubcommandGroup(
+  bot: AkumaKodoBotInterface,
   command: string,
   subcommand: SlashSubcommandGroup,
   retries?: number,
 ): Promise<void> {
-  const cmd = AkumaKodoBot.slashCommands.get(command);
+  const cmd = bot.slashCommands.get(command);
   if (!cmd) {
     if (retries == 20) {
       throw `The command with name "${command}" does not exist!`;
     } else {
       await delay(500);
       return createSlashSubcommandGroup(
+          bot,
         command,
         subcommand,
         retries ? retries + 1 : 1,
       );
     }
   }
-  cmd?.subcommands ? cmd.subcommands.set(subcommand.name, subcommand) : AkumaKodoBot.slashCommands.set(command, {
+  cmd?.subcommands ? cmd.subcommands.set(subcommand.name, subcommand) : bot.slashCommands.set(command, {
     ...cmd!,
     subcommands: new AkumaKodoCollection([
       [
@@ -40,6 +43,7 @@ export async function createSlashSubcommandGroup(
 
 /*Creates a subcommand for a slash command or slash subcommand group*/
 export async function createSlashSubcommand(
+  bot: AkumaKodoBotInterface,
   command: string,
   subcommand: SlashSubcommand,
   options?: { split?: boolean; retries?: number },
@@ -47,13 +51,13 @@ export async function createSlashSubcommand(
   options = options ?? {};
   options.split = options.split ?? true;
   const commandNames = command.split("-", 2);
-  const cmd = AkumaKodoBot.slashCommands.get(options.split ? commandNames[0] : command);
+  const cmd = bot.slashCommands.get(options.split ? commandNames[0] : command);
   if (!cmd) {
     if (options.retries == 20) {
       throw `The command with name "${command}" does not exist!`;
     } else {
       await delay(500);
-      return createSlashSubcommand(command, subcommand, {
+      return createSlashSubcommand(bot, command, subcommand, {
         ...options,
         retries: options.retries ? options.retries + 1 : 1,
       });
@@ -83,7 +87,7 @@ export async function createSlashSubcommand(
           { ...subcommand, SubcommandType: "subcommand" } as SlashSubcommand,
         ],
       ]));
-    AkumaKodoBot.slashCommands.set(commandNames[0], {
+    bot.slashCommands.set(commandNames[0], {
       ...cmd,
       subcommands: new AkumaKodoCollection([
         ...(cmd.subcommands?.entries() ?? []),
@@ -96,7 +100,7 @@ export async function createSlashSubcommand(
       ]),
     });
   } else {
-    cmd.subcommands ? cmd.subcommands.set(subcommand.name, subcommand) : AkumaKodoBot.slashCommands.set(command, {
+    cmd.subcommands ? cmd.subcommands.set(subcommand.name, subcommand) : bot.slashCommands.set(command, {
       ...cmd,
       subcommands: new AkumaKodoCollection([
         [

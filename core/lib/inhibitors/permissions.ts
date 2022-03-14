@@ -4,7 +4,7 @@ import {
   getMissingGuildPermissions,
 } from "https://deno.land/x/discordeno_permissions_plugin@0.0.15/src/permissions.ts";
 
-AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {
+AkumaKodoBot.inhibitorCollection.set("userPermissions", (bot, command, options) => {
   if (command.dmOnly) return true;
   if (
     command.userGuildPermissions?.length &&
@@ -20,7 +20,7 @@ AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {
     return {
       channel: false,
       value: getMissingGuildPermissions(
-        AkumaKodoBot,
+        bot,
         options!.guildId!,
         options!.memberId!,
         command.userGuildPermissions,
@@ -32,7 +32,7 @@ AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {
     (!options?.memberId ||
       !options?.channelId ||
       getMissingChannelPermissions(
-        AkumaKodoBot,
+        bot,
         options.channelId,
         options.memberId,
         command.userChannelPermissions,
@@ -41,7 +41,7 @@ AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {
     return {
       channel: true,
       value: getMissingGuildPermissions(
-        AkumaKodoBot,
+        bot,
         options!.guildId!,
         options!.memberId!,
         command.userChannelPermissions,
@@ -51,15 +51,15 @@ AkumaKodoBot.inhibitorCollection.set("userPermissions", (command, options) => {
   return true;
 });
 
-AkumaKodoBot.inhibitorCollection.set("botPermissions", (command, options) => {
+AkumaKodoBot.inhibitorCollection.set("botPermissions", (bot, command, options) => {
   if (command.dmOnly) return true;
   if (
     command.botGuildPermissions?.length &&
     (!options?.guildId ||
       getMissingGuildPermissions(
-        AkumaKodoBot,
+        bot,
         options.guildId,
-        AkumaKodoBot.id,
+        bot.id,
         command.botGuildPermissions,
       ).length)
   ) {
@@ -67,9 +67,9 @@ AkumaKodoBot.inhibitorCollection.set("botPermissions", (command, options) => {
       type: "BOT_MISSING_PERMISSIONS",
       channel: false,
       value: getMissingGuildPermissions(
-        AkumaKodoBot,
+        bot,
         options!.guildId!,
-        AkumaKodoBot.id,
+        bot.id,
         command.botGuildPermissions,
       ),
     };
@@ -78,9 +78,9 @@ AkumaKodoBot.inhibitorCollection.set("botPermissions", (command, options) => {
     command.botChannelPermissions?.length &&
     (!options?.channelId ||
       getMissingChannelPermissions(
-        AkumaKodoBot,
+        bot,
         options.channelId,
-        AkumaKodoBot.id,
+        bot.id,
         command.botChannelPermissions,
       ).length)
   ) {
@@ -88,9 +88,9 @@ AkumaKodoBot.inhibitorCollection.set("botPermissions", (command, options) => {
       type: "BOT_MISSING_PERMISSIONS",
       channel: true,
       value: getMissingChannelPermissions(
-        AkumaKodoBot,
+        bot,
         options!.channelId!,
-        AkumaKodoBot.id,
+        bot.id,
         command.botChannelPermissions,
       ),
     };
@@ -98,7 +98,7 @@ AkumaKodoBot.inhibitorCollection.set("botPermissions", (command, options) => {
   return true;
 });
 
-AkumaKodoBot.inhibitorCollection.set("guildOrDmOnly", (command, options) => {
+AkumaKodoBot.inhibitorCollection.set("guildOrDmOnly", (bot, command, options) => {
   if (
     (!options?.guildId && command.guildOnly) ||
     (options?.guildId && command.dmOnly) ||

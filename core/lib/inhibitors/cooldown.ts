@@ -8,12 +8,12 @@ export interface Cooldown {
   timestamp: number;
 }
 
-AkumaKodoBot.inhibitorCollection.set("cooldown", (command, options) => {
+AkumaKodoBot.inhibitorCollection.set("cooldown", (bot, command, options) => {
   const commandCooldown = command.cooldown || AkumaKodoBot.defaultCooldown;
   if (
     !commandCooldown ||
     (options?.memberId &&
-      (AkumaKodoBot.ignoreCooldown?.includes(options?.memberId) ||
+      (bot.ignoreCooldown?.includes(options?.memberId) ||
         command.ignoreCooldown?.includes(options.memberId)))
   ) {
     return true;

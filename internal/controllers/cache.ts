@@ -21,8 +21,8 @@ export class InternalCacheController {
   public dispatchedGuildIds = AkumaKodoBot.dispatchedGuildIds;
   public dispatchedChannelIds = AkumaKodoBot.dispatchedChannelIds;
   public activeGuildIds = AkumaKodoBot.activeGuildIds;
-  public messageCommands = AkumaKodoBot.messageCommand;
-  public slashCommands = AkumaKodoBot.slashCommand;
+  public messageCommands = AkumaKodoBot.messageCommands;
+  public slashCommands = AkumaKodoBot.slashCommands;
 
   /**
    * Get a channel by ID

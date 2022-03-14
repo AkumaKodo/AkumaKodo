@@ -1,6 +1,6 @@
 import { AkumaKodoBot } from "../AkumaKodo.ts";
 
-AkumaKodoBot.inhibitorCollection.set("nsfw", (command, options) => {
+AkumaKodoBot.inhibitorCollection.set("nsfw", (bot, command, options) => {
   // Returns false so the command can be executed if the command is not NSFW
   if (!command.nsfw) return false;
 
@@ -8,7 +8,7 @@ AkumaKodoBot.inhibitorCollection.set("nsfw", (command, options) => {
   if (!options.guildId) return true;
 
   // check if channel is NSFW
-  const channel = AkumaKodoBot.channels.get(options.channelId);
+  const channel = bot.channels.get(options.channelId);
 
   if (channel) {
     return channel.nsfw;

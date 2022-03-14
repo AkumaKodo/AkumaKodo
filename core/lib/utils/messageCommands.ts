@@ -3,16 +3,19 @@ import { ArgumentDefinition } from "../../interfaces/Arugment.ts";
 import { AkumaKodoBot, AkumaKodoCollection, Milliseconds } from "../AkumaKodo.ts";
 import { AkumaKodoLogger } from "../../../internal/logger.ts";
 import { DiscordenoMessage } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/message.ts";
+import { AkumaKodoBotInterface } from "../../interfaces/Client.ts";
 
 /**
  * Message Command creator for the AkumaKodo Bot
+ * @param bot
  * @param command
  */
 export function createMessageCommand<T extends readonly ArgumentDefinition[]>(
+    bot: AkumaKodoBotInterface,
   // deno-lint-ignore no-explicit-any
   command: MessageCommand<any>,
 ) {
-  AkumaKodoBot.messageCommands.set(command.name, command as MessageCommand<any>);
+  bot.messageCommands.set(command.name, command as MessageCommand<any>);
   AkumaKodoLogger("info", "createMessageCommand", `Created message command ${command.name}`);
 }
 
@@ -20,23 +23,24 @@ export function createMessageCommand<T extends readonly ArgumentDefinition[]>(
 export function createMessageSubcommand<
   T extends readonly ArgumentDefinition[],
 >(
+  bot: AkumaKodoBotInterface,
   commandName: string,
   subcommand: Omit<MessageCommand<T>, "category">,
   retries = 0,
 ) {
   const names = commandName.split("-");
-  let command: MessageCommand<T> | typeof subcommand = AkumaKodoBot.messageCommands.get(
+  let command: MessageCommand<T> | typeof subcommand = bot.messageCommands.get(
     commandName,
   )! as MessageCommand<T>;
 
   if (names.length > 1) {
     for (const name of names) {
-      const validCommand = command ? command.subcommands?.get(name) : AkumaKodoBot.messageCommands.get(name);
+      const validCommand = command ? command.subcommands?.get(name) : bot.messageCommands.get(name);
 
       if (!validCommand) {
         if (retries === 20) break;
         setTimeout(
-          () => createMessageSubcommand(commandName, subcommand, retries++),
+          () => createMessageSubcommand(bot, commandName, subcommand, retries++),
           Milliseconds.Second * 10,
         );
         return;
@@ -54,7 +58,7 @@ export function createMessageSubcommand<
 
     // Try again in 10 seconds in case this command file just has not been loaded yet.
     setTimeout(
-      () => createMessageSubcommand(commandName, subcommand, retries++),
+      () => createMessageSubcommand(bot, commandName, subcommand, retries++),
       Milliseconds.Second * 10,
     );
     return;
@@ -69,14 +73,15 @@ export function createMessageSubcommand<
 }
 
 async function executeCommand(
+  bot: AkumaKodoBotInterface,
   message: DiscordenoMessage,
   // deno-lint-ignore no-explicit-any
   command: MessageCommand<any>,
   args: string[],
 ) {
-  const Args = await parseArguments(message, command, args);
+  const Args = await parseArguments(bot, message, command, args);
   if (Args.value) {
-    return AkumaKodoBot.events.commands.error?.({
+    return bot.events.commands.error?.({
       message,
       error: Args as unknown as Error,
     });
@@ -84,7 +89,7 @@ async function executeCommand(
   const [argument] =
     // deno-lint-ignore no-explicit-any
     command.arguments?.filter((e: any) => e.type == "subcommand") || [];
-  console.log(argument);
+  // console.log(argument);
   const subcommand = argument
     ? ((Args as { [key: string]: unknown })[
       argument.name
@@ -96,33 +101,33 @@ async function executeCommand(
       if (
         AkumaKodoBot.inhibitorCollection.some(
           (e) =>
-            e(message, command, {
+            e(bot, command, {
               channelId: message.channelId,
               guildId: message.guildId,
               memberId: message.authorId,
             }) !== true,
         )
       ) {
-        return AkumaKodoBot.events.commands.error?.({
+        return bot.events.commands.error?.({
           message,
           error: "Inhibitor failed",
         });
       }
       // @ts-ignore -
-      command.execute?.(AkumaKodoBot, message, Args);
+      command.execute?.(bot, message, Args);
     } else if (
       ![subcommand?.name, ...(subcommand?.aliases || [])].includes(args[0])
     ) {
-      await executeCommand(message, subcommand!, args);
+      await executeCommand(bot, message, subcommand!, args);
       AkumaKodoLogger("info", "executeCommand", `Executed Message Command ${subcommand?.name}`);
     } else {
       const subArgs = args.slice(1);
-      await executeCommand(message, subcommand!, subArgs);
+      await executeCommand(bot, message, subcommand!, subArgs);
       AkumaKodoLogger("info", "executeCommand", `Executed Message Subcommand Command ${subcommand?.name}`);
     }
   } catch (e) {
-    if (AkumaKodoBot.events.commands.error) {
-      AkumaKodoBot.events.commands.error({
+    if (bot.events.commands.error) {
+      bot.events.commands.error({
         message,
         error: "Error running command!",
       });
@@ -131,6 +136,7 @@ async function executeCommand(
 }
 
 async function parseArguments(
+  bot: AkumaKodoBotInterface,
   message: DiscordenoMessage,
   // deno-lint-ignore no-explicit-any
   command: MessageCommand<any>,
@@ -148,7 +154,7 @@ async function parseArguments(
 
   // Loop over each argument and validate
   for (const argument of command.arguments) {
-    const resolver = AkumaKodoBot.argumentsCollection?.get(argument.type || "string");
+    const resolver = bot.argumentsCollection?.get(argument.type || "string");
     if (!resolver) continue;
 
     const result = await resolver.execute(
@@ -199,18 +205,18 @@ async function parseArguments(
     } else if (argument.required !== false) {
       if (argument.missing) {
         missingRequiredArg = true;
-        argument.missing?.(AkumaKodoBot, message);
+        argument.missing?.(bot, message);
         break;
       }
 
       missedRequiredArgs.push(argument.name);
       missingRequiredArg = true;
-      argument.missing?.(AkumaKodoBot, message);
+      argument.missing?.(bot, message);
       break;
     }
   }
 
-  // If an arg was missing then return false so we can error out as an object {} will always be truthy
+  // If an arg was missing then return false, so we can error out as an object {} will always be truthy
   return missingRequiredArg
     ? ({
       type: "MISSING_REQUIRED_ARGUMENTS",
@@ -225,51 +231,53 @@ interface MissingRequiredArguments {
 }
 
 export async function handleMessageCommands(
+  bot: AkumaKodoBotInterface,
   message: DiscordenoMessage,
 ) {
   const messageContentParsePrefix = typeof AkumaKodoBot.prefix == "function"
-    ? await AkumaKodoBot.prefix(message)
-    : AkumaKodoBot.prefix;
+    // @ts-ignore - Type error ignore
+    ? await bot.prefix(message)
+    : bot.prefix;
   let prefix = typeof messageContentParsePrefix == "string"
     ? messageContentParsePrefix
-    : messageContentParsePrefix?.find((p) => message.content.startsWith(p));
+    : messageContentParsePrefix?.find((p: string) => message.content.startsWith(p));
 
   // Allows the bot to reply to command with a mention if enabled
-  if (!prefix && AkumaKodoBot.mentionWithPrefix) prefix = `<@${AkumaKodoBot.id}>`;
+  if (!prefix && bot.mentionWithPrefix) prefix = `<@${bot.id}>`;
 
   if (
     !prefix ||
-    (typeof AkumaKodoBot.prefix == "string" && !message.content.startsWith(prefix))
+    (typeof bot.prefix == "string" && !message.content.startsWith(prefix))
   ) {
     return;
   }
 
   const args = message.content.split(" ").filter((e) => Boolean(e.length));
   const commandName = args.shift()?.slice(prefix.length);
-  const command = AkumaKodoBot.messageCommands.find((cmd) =>
+  const command = bot.messageCommands.find((cmd) =>
     Boolean(cmd.name == commandName || cmd.aliases?.includes(commandName!))
   );
   if (!command) return;
-  if (message.guildId && !AkumaKodoBot.members.has(message.authorId)) {
-    AkumaKodoBot.members.set(
-      AkumaKodoBot.transformers.snowflake(`${message.guildId}${message.guildId}`),
+  if (message.guildId && !bot.members.has(message.authorId)) {
+    bot.members.set(
+      bot.transformers.snowflake(`${message.guildId}${message.guildId}`),
       message.member ??
-        (await AkumaKodoBot.helpers.getMember(message.guildId, message.authorId)),
+        (await bot.helpers.getMember(message.guildId, message.authorId)),
     );
   }
-  if (message.guildId && !AkumaKodoBot.guilds.has(message.guildId)) {
-    AkumaKodoBot.guilds.set(
+  if (message.guildId && !bot.guilds.has(message.guildId)) {
+    bot.guilds.set(
       message.guildId,
-      await AkumaKodoBot.helpers.getGuild(message.guildId, { counts: true }),
+      await bot.helpers.getGuild(message.guildId, { counts: true }),
     );
   }
-  if (!AkumaKodoBot.channels.has(message.channelId)) {
-    AkumaKodoBot.channels.set(
+  if (!bot.channels.has(message.channelId)) {
+    bot.channels.set(
       message.channelId,
-      await AkumaKodoBot.helpers.getChannel(message.channelId),
+      await bot.helpers.getChannel(message.channelId),
     );
   }
-  AkumaKodoBot.events.commands.create?.(command, message);
-  executeCommand(message, command, args);
-  AkumaKodoBot.events.commands.destroy?.(command, message);
+  bot.events.commands.create?.(command, message);
+  await executeCommand(bot, message, command, args);
+  bot.events.commands.destroy?.(command, message);
 }

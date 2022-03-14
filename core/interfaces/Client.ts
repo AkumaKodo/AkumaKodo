@@ -61,6 +61,7 @@ export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin
   inhibitorCollection: AkumaKodoCollection<
     string,
     <T extends ParentCommand = ParentCommand>(
+      bot: AkumaKodoBotInterface,
       command: T,
       options: { memberId?: bigint; channelId: bigint; guildId?: bigint },
     ) => any
@@ -81,7 +82,7 @@ export interface AkumaKodoBotInterface extends BotWithCache<BotWithHelpersPlugin
   logger: typeof logger;
   fullyReady: boolean;
   /** The bot prefix */
-  prefix: AkumaKodoPrefix | undefined;
+  prefix: AkumaKodoPrefix;
   mentionWithPrefix: boolean;
 }
 
@@ -113,29 +114,34 @@ export interface AkumaKodoEvents extends EventHandlers {
  */
 export interface AkumaKodoUtilities {
   createMessageCommand<T extends readonly ArgumentDefinition[]>(
+      bot: AkumaKodoBotInterface,
     command: MessageCommand<T>,
   ): void;
   createMessageSubcommand<T extends readonly ArgumentDefinition[]>(
+      bot: AkumaKodoBotInterface,
     command: string,
     subcommand: Omit<MessageCommand<T>, "category">,
     retries?: number,
   ): void;
-  createSlashCommand(command: InteractionCommand): void;
+  createSlashCommand(bot: AkumaKodoBotInterface, command: InteractionCommand): void;
   createSlashSubcommandGroup(
+      bot: AkumaKodoBotInterface,
     command: string,
     subcommandGroup: SlashSubcommandGroup,
     retries?: number,
   ): void;
   createSlashSubcommand(
+      bot: AkumaKodoBotInterface,
     command: string,
     subcommandGroup: SlashSubcommand,
     options?: { split?: boolean; retries?: number },
   ): void;
-  createTask(task: AkumaKodoTask): void;
-  destroyTasks(): void;
+  createTask(bot: AkumaKodoBotInterface, task: AkumaKodoTask): void;
+  destroyTasks(bot: AkumaKodoBotInterface): void;
   createInhibitor<T extends ParentCommand = ParentCommand>(
     name: string,
     inhibitor: (
+      bot: AkumaKodoBotInterface,
       command: T,
       options?: { memberId?: bigint; guildId?: bigint; channelId: bigint },
     ) => true | Error,

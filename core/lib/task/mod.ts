@@ -7,11 +7,12 @@ import { AkumaKodoBot } from "../AkumaKodo.ts";
 
 /**
  * Allows you to create a new task for the bot.
+ * @param bot The bot to create the task for.
  * @param task The task to be created.
  * @param callback Optional callback ran after the task is created. You can use this to do something after the task is created.
  */
-export function createAkumaKodoTask(task: AkumaKodoTask, callback?: () => any) {
-  AkumaKodoBot.taskCollection.set(task.name, task);
+export function createAkumaKodoTask(bot: AkumaKodoBotInterface, task: AkumaKodoTask, callback?: () => any) {
+  bot.taskCollection.set(task.name, task);
   if (callback) {
     callback();
   }
@@ -20,9 +21,9 @@ export function createAkumaKodoTask(task: AkumaKodoTask, callback?: () => any) {
 /**
  * Starts all registered tasks.
  */
-export function initializeTask() {
+export function initializeTask(bot: AkumaKodoBotInterface) {
   for (const task of AkumaKodoBot.taskCollection.values()) {
-    AkumaKodoBot.runningTasks.initialTimeouts.push(
+    bot.runningTasks.initialTimeouts.push(
       setTimeout(async () => {
         try {
           await task.execute();
@@ -31,7 +32,7 @@ export function initializeTask() {
           AkumaKodoLogger("error", "initializeTask", `Task ${task.name} failed to execute.\n ${error}`);
         }
 
-        AkumaKodoBot.runningTasks.initialTimeouts.push(
+        bot.runningTasks.initialTimeouts.push(
           setInterval(async () => {
             if (!AkumaKodoBot.fullyReady) return;
             try {
@@ -49,16 +50,17 @@ export function initializeTask() {
 
 /**
  * Destroys all task intervals in the bot.
+ * @param bot   The bot to destroy the intervals for.
  * @param callback Optional callback ran after the intervals are destroyed. You can use this to do something after the intervals are destroyed.
  */
-export function destroyTasks(callback?: () => any) {
-  for (const task of AkumaKodoBot.runningTasks.initialTimeouts) {
+export function destroyTasks(bot: AkumaKodoBotInterface, callback?: () => any) {
+  for (const task of bot.runningTasks.initialTimeouts) {
     clearTimeout(task);
   }
-  for (const task of AkumaKodoBot.runningTasks.intervals) clearInterval(task);
+  for (const task of bot.runningTasks.intervals) clearInterval(task);
 
-  AkumaKodoBot.taskCollection = new AkumaKodoCollection<string, AkumaKodoTask>();
-  AkumaKodoBot.runningTasks = { initialTimeouts: [], intervals: [] };
+  bot.taskCollection = new AkumaKodoCollection<string, AkumaKodoTask>();
+  bot.runningTasks = { initialTimeouts: [], intervals: [] };
 
   if (callback) {
     callback();
