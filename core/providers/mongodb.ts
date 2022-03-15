@@ -1,10 +1,9 @@
 import { AkumaKodoProvider, BaseProviderModel, ProviderOptions } from "./mod.ts";
-import { Bson, Collection, Database, MongoClient } from "../deps.ts";
-import { AkumaKodoCollection } from "../core/lib/utils/Collection.ts";
-import { delay } from "../internal/utils.ts";
-import { AkumaKodoLogger } from "../internal/logger.ts";
-import { Milliseconds } from "../core/lib/utils/helpers.ts";
-import { AkumaCreateBotOptions } from "../core/interfaces/Client.ts";
+import { Bson, Collection, Database, MongoClient } from "../../deps.ts";
+import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
+import { delay } from "../../internal/utils.ts";
+import { Milliseconds } from "../lib/utils/helpers.ts";
+import { AkumaCreateBotOptions } from "../interfaces/Client.ts";
 
 /**
  * Base mongodb schema for our provider.
