@@ -2,7 +2,7 @@ const ghpages = require("gh-pages");
 
 ghpages.publish("./docs/book/html", {
   branch: "documentation",
-  repo: "https://github.com/ThatGuyJamal/AkumaKodo.git",
+  repo: "https://github.com/AkumaKodo/AkumaKodo.git",
 }, function (err) {
   if (err) {
     console.log(err);
