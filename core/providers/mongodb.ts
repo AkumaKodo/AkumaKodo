@@ -49,7 +49,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    * Connect to the database
    * @protected
    */
-  protected async connect() {
+  public async connect() {
     while (!this.connectedStatus) {
       try {
         await delay(Milliseconds.Second * 2);
@@ -58,7 +58,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         this.connectedStatus = true;
         this.logger.create(`info`, "Mongodb Provider", `Connected to mongodb at ${cs}`);
       } catch (e) {
-        this.logger.create("error", "Mongodb Provider", `Failed to connect to the database.`);
+        this.logger.create("error", "Mongodb Provider", `Failed to connect to the database.\n ${e}`);
       }
     }
   }
@@ -67,7 +67,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    * Disconnect from the database
    * @protected
    */
-  protected async disconnect() {
+  public async disconnect() {
     await this.client.close();
   }
 
