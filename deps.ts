@@ -21,3 +21,4 @@ export { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts
 
 export { Collection } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
 export { Bson, type Database, MongoClient } from "https://deno.land/x/mongo@v0.29.0/mod.ts";
+export * from "https://deno.land/x/deno_mongo_schema@v0.8.3/mod.ts";

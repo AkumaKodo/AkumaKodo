@@ -24,8 +24,6 @@ export abstract class AkumaKodoProvider {
 
 export interface ProviderOptions {
   provider: "mongodb" | "postgres" | "mysql";
-  // deno-lint-ignore no-explicit-any
-  model: any;
   mongodb_connection_url?: string;
 }
 
