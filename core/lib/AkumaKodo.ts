@@ -69,7 +69,7 @@ export class AkumaKodoBotCore {
       fullyReady: false,
       logger: new AkumaKodoLogger(this.configuration),
       mentionWithPrefix: true,
-      utilities: {
+      utils: {
         createEmbed(options) {
           createAkumaKodoEmbed(options);
         },
@@ -95,15 +95,12 @@ export class AkumaKodoBotCore {
       task: new AkumaKodoTaskModule(this.client, this.container),
     };
 
-    this.container.logger.create("table", "AkumaKodo Bot Core", `Configuration passed to client: \n${config}`);
-
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
   }
 
   public async createBot() {
     await startBot(this.client);
     this.client.events.ready = async (bot, payload) => {
-      await delay(1000);
       const Bot = bot as BotWithCache;
       if (payload.shardId + 1 === Bot.gateway.maxShards) {
         // Start task indexer on startup

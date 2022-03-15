@@ -17,9 +17,9 @@ export class AkumaKodoTaskModule {
         setTimeout(async () => {
           try {
             await task.execute();
-            this.container.logger.create("info", "initializeTask", `Task ${task.name} executed`);
+            this.container.logger.create("info", "initialize Task", `Task ${task.name} executed`);
           } catch (error) {
-            this.container.logger.create("error", "initializeTask", `Task ${task.name} failed to execute.\n ${error}`);
+            this.container.logger.create("error", "initialize Task", `Task ${task.name} failed to execute.\n ${error}`);
           }
 
           this.container.runningTasks.initialTimeouts.push(
@@ -27,7 +27,7 @@ export class AkumaKodoTaskModule {
               if (!this.container.fullyReady) return;
               try {
                 await task.execute();
-                this.container.logger.create("info", "initializeTask", `Task ${task.name} executed`);
+                this.container.logger.create("info", "initialize Task", `Task ${task.name} executed`);
               } catch (error) {
                 this.container.logger.create(
                   "error",
@@ -40,27 +40,25 @@ export class AkumaKodoTaskModule {
         }, task.interval - (Date.now() % task.interval) ?? undefined),
       );
     }
-    this.container.logger.create("info", "initializeTask", `Task module initialized`);
+    this.container.logger.create("info", "initialize Task", `Task module initialized`);
   }
 
   /**
    * Creates a new task for the bot.
    * @param task The task to be executed.
    * @param callback The callback to be executed when the task is executed.
-   * @protected
    */
   public createAkumaKodoTask(task: AkumaKodoTask, callback?: () => any) {
     this.container.taskCollection.set(task.name, task);
     if (callback) {
       callback();
     }
-    this.container.logger.create("info", "createAkumaKodoTask", `Task ${task.name} created`);
+    this.container.logger.create("info", "create AkumaKodo Task", `Task ${task.name} created`);
   }
 
   /**
    * Deletes all active tasks.
    * @param callback The callback to be executed when the tasks are deleted.
-   * @protected
    */
   public destroyTask(callback?: () => any) {
     for (const task of this.container.runningTasks.initialTimeouts) {
@@ -71,7 +69,7 @@ export class AkumaKodoTaskModule {
     this.container.taskCollection = new AkumaKodoCollection<string, AkumaKodoTask>();
     this.container.runningTasks = { initialTimeouts: [], intervals: [] };
 
-    this.container.logger.create("info", "destroyTask", "All tasks destroyed!");
+    this.container.logger.create("info", "destroy Task", "All tasks destroyed!");
 
     if (callback) {
       callback();

@@ -41,7 +41,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
  * All options are invoked on the main bot object for easy access.
  */
 export interface AkumaKodoBotInterface {
-  utilities?: AkumaKodoUtilities;
+  utils: AkumaKodoUtilities;
   languageCollection: AkumaKodoCollection<bigint, string>;
   taskCollection: AkumaKodoCollection<string, AkumaKodoTask>;
   monitorCollection: AkumaKodoCollection<string, AkumaKodoMonitor>;
