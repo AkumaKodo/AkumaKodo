@@ -74,7 +74,7 @@ export interface InteractionCommand extends ParentCommand {
   execute?: (bot: AkumaKodoBotInterface, data: DiscordenoInteraction) => unknown | Promise<unknown>;
 }
 
-export interface cooldownInterface {
+interface cooldownInterface {
   /** How long the user needs to wait after the first execution until he can use the command again */
   seconds: number;
   /** How often the user is allowed to use the command until he is in cooldown */
