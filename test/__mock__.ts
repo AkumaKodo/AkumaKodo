@@ -23,11 +23,3 @@ Bot.client.events.messageCreate = (_, payload) => {
 Bot.client.events.ready = (_, payload) => {
   Bot.container.logger.create("info", "ready", "Online and ready to work!");
 };
-
-Bot.container.utils.createTask(Bot, {
-  name: "reminder",
-  interval: 10 * 1000,
-  execute: () => {
-    Bot.container.logger.create("info", "createTask", "This will be executed every 10 seconds!");
-  },
-})
