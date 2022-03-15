@@ -2,8 +2,9 @@ import { AkumaKodoProvider, BaseProviderModel, ProviderOptions } from "./mod.ts"
 import { Bson, Collection, Database, MongoClient } from "../deps.ts";
 import { AkumaKodoCollection } from "../core/lib/utils/Collection.ts";
 import { delay } from "../internal/utils.ts";
-import { Milliseconds } from "../core/lib/utils/Helpers.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
+import {Milliseconds} from "../core/lib/utils/helpers.ts";
+import {AkumaCreateBotOptions} from "../core/interfaces/Client.ts";
 
 /**
  * Base mongodb schema for our provider.
@@ -27,10 +28,11 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    * Constructor for the mongodb provider.
    * @param options The options for the provider.
    * @param model The model for the provider.
+   * @param config The config for the provider.
    * @param name The name of the database mongodb will use.
    */
-  public constructor(options: ProviderOptions, model: mongodbSchema, name?: string) {
-    super(options, model);
+  public constructor(options: ProviderOptions, model: mongodbSchema, config: AkumaCreateBotOptions,  name?: string) {
+    super(options, model, config);
     this.options = options;
     if (!name) name = "AkumaKodo";
     this.database_name = name;
@@ -55,11 +57,11 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         const cs = this.options.mongodb_connection_url ?? "mongodb://localhost:27017";
         await this.client.connect(cs);
         this.connectedStatus = true;
-        AkumaKodoLogger(`info`, "Mongodb Provider", `Connected to mongodb at ${cs}`);
+        this.logger.create(`info`, "Mongodb Provider", `Connected to mongodb at ${cs}`);
       } catch (e) {
-        AkumaKodoLogger("error", "Mongodb Provider", `Failed to connect to the database.`);
-      }
+        this.logger.create("error", "Mongodb Provider", `Failed to connect to the database.`);
     }
+  }
   }
 
   /**
@@ -93,9 +95,9 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         const settings = fillCollections[i];
         this.cache.set(settings.guildId, settings);
       }
-      AkumaKodoLogger("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
+      this.logger.create("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
     } else {
-      AkumaKodoLogger("error", "Mongodb Provider", `Failed to initialize the database. Please check your connection.`);
+      this.logger.create("error", "Mongodb Provider", `Failed to initialize the database. Please check your connection.`);
     }
   }
 
@@ -110,7 +112,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       const settings = this.cache.get(guildId);
       if (settings) {
         const data = settings.data[key];
-        AkumaKodoLogger("info", "Mongodb Provider", `Getting value for ${key} from cache.\n${JSON.stringify(data)}`);
+        this.logger.create("info", "Mongodb Provider", `Getting value for ${key} from cache.\n${JSON.stringify(data)}`);
         return data == null ? defaultValue : data;
       }
     } else {
