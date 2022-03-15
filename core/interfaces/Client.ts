@@ -6,6 +6,7 @@ import { AkumaKodoLogger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
 import { AkumaKodoEmbed, AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
 import { AkumaKodoBotCore } from "../AkumaKodo.ts";
+import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
 export interface AkumaCreateBotOptions extends CreateBotOptions {
   /** Optional options for client */
@@ -30,17 +31,39 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   /** Optional providers for the bot client */
   providers?: {
     /** The type of provider client */
-    type: "mongodb" | "postgres" | "mysql";
-    /** Enables the provider */
-    enabled: boolean;
+    type: "mongodb" | "postgres" | "mysql" | "disabled";
+    mongodb_connection_url?: string;
   };
 }
+
+export const defaultConfigOptions = {
+  events: {},
+  intents: [],
+  botId: 0n,
+  token: "",
+  optional: {
+    bot_owners_ids: [],
+    bot_supporters_ids: [],
+    bot_staff_ids: [],
+    bot_default_prefix: "",
+    bot_development_server_id: undefined,
+    bot_cooldown_bypass_ids: [],
+    bot_internal_logs: false,
+    bot_mention_with_prefix: false,
+  },
+  providers: {
+    type: "disabled",
+  },
+} as AkumaCreateBotOptions;
 
 /**
  * Interface for all our custom bot options.
  * All options are invoked on the main bot object for easy access.
  */
 export interface AkumaKodoBotInterface {
+  providers: {
+    mongodb: AkumaKodoMongodbProvider;
+  };
   utils: AkumaKodoUtilities;
   languageCollection: AkumaKodoCollection<bigint, string>;
   taskCollection: AkumaKodoCollection<string, AkumaKodoTask>;

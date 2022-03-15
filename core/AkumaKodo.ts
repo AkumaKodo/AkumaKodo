@@ -11,32 +11,32 @@ import {
   startBot,
   stopBot,
 } from "../deps.ts";
-import {AkumaCreateBotOptions, AkumaKodoBotInterface, defaultConfigOptions} from "./interfaces/Client.ts";
+import { AkumaCreateBotOptions, AkumaKodoBotInterface, defaultConfigOptions } from "./interfaces/Client.ts";
 import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
 import { delay } from "../internal/utils.ts";
 import { Milliseconds } from "./lib/utils/helpers.ts";
 import { AkumaKodoTaskModule } from "./lib/task/mod.ts";
-import {AkumaKodoEmbed, createAkumaKodoEmbed} from "./lib/utils/Embed.ts";
-import {AkumaKodoVersionControl} from "../internal/VersionControl.ts";
+import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
+import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
+import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 
 export class AkumaKodoBotCore {
   private launcher: {
     task: AkumaKodoTaskModule;
   };
-  private versionControl: AkumaKodoVersionControl
+  private versionControl: AkumaKodoVersionControl;
   public configuration: AkumaCreateBotOptions;
   public client: BotWithCache;
   public container: AkumaKodoBotInterface;
 
   public constructor(config: AkumaCreateBotOptions) {
-
     if (!config) {
-      this.configuration = defaultConfigOptions
+      this.configuration = defaultConfigOptions;
     }
 
-    this.versionControl = new AkumaKodoVersionControl(config)
-    this.versionControl.validate()
+    this.versionControl = new AkumaKodoVersionControl(config);
+    this.versionControl.validate();
 
     // If no optional values were passed
     config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
@@ -59,6 +59,12 @@ export class AkumaKodoBotCore {
     enablePermissionsPlugin(this.client);
 
     this.container = {
+      providers: {
+        mongodb: new AkumaKodoMongodbProvider({
+          provider: "mongodb",
+          mongodb_connection_url: config.providers?.mongodb_connection_url,
+        }, { ...config }),
+      },
       defaultCooldown: {
         seconds: Milliseconds.Second * 5,
         allowedUses: 1,
@@ -96,8 +102,8 @@ export class AkumaKodoBotCore {
           client.launcher.task.destroyTask();
         },
         embed() {
-          return new AkumaKodoEmbed()
-        }
+          return new AkumaKodoEmbed();
+        },
       },
     } as AkumaKodoBotInterface;
 

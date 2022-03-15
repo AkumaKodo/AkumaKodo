@@ -1,47 +1,48 @@
-import { AkumaKodoProvider, BaseProviderModel, ProviderOptions } from "./mod.ts";
-import { Bson, Collection, Database, MongoClient } from "../../deps.ts";
+import { AkumaKodoProvider, ProviderOptions } from "./mod.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { delay } from "../../internal/utils.ts";
-import { Milliseconds } from "../lib/utils/helpers.ts";
 import { AkumaCreateBotOptions } from "../interfaces/Client.ts";
+import { Model, MongoFactory, Prop, Schema, SchemaDecorator } from "../../deps.ts";
 
-/**
- * Base mongodb schema for our provider.
- */
-interface mongodbSchema extends BaseProviderModel {
-  _id: Bson.ObjectId;
+interface schemaInterface {
   guildId: bigint;
-  // deno-lint-ignore no-explicit-any
-  data: any;
+  settings: any;
+}
+
+@SchemaDecorator()
+class InternalMongoSchema extends Schema implements schemaInterface {
+  @Prop({
+    required: true,
+  })
+  guildId!: bigint;
+
+  @Prop({
+    required: false,
+    default: {},
+  })
+  settings!: unknown;
 }
 
 export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
-  protected cache: AkumaKodoCollection<bigint, mongodbSchema>;
-  protected client: MongoClient;
-  private __db: Database;
-  protected db: Collection<mongodbSchema>;
-  private database_name: string;
-  private options: ProviderOptions;
-  private connectedStatus: boolean;
+  protected metadata: AkumaKodoCollection<bigint, schemaInterface | undefined>;
+  protected database_name: string;
+  protected options: ProviderOptions;
+  // Typings for our mongo client instance
+  protected instance: Promise<Model<InternalMongoSchema>>;
+  private readonly connectedStatus: boolean;
   /**
    * Constructor for the mongodb provider.
    * @param options The options for the provider.
-   * @param model The model for the provider.
    * @param config The config for the provider.
    * @param name The name of the database mongodb will use.
    */
-  public constructor(options: ProviderOptions, model: mongodbSchema, config: AkumaCreateBotOptions, name?: string) {
-    super(options, model, config);
+  public constructor(options: ProviderOptions, config: AkumaCreateBotOptions, name?: string | undefined) {
+    super(options, config);
     this.options = options;
     if (!name) name = "AkumaKodo";
     this.database_name = name;
-    // Required resources
-    this.cache = new AkumaKodoCollection();
-    this.client = new MongoClient();
-    // We need to configure the database before the collection.
-    this.__db = this.client.database(name);
-    // Giving easier access to the collection.
-    this.db = this.__db.collection("settings");
+    // Mongo resources
+    this.instance = MongoFactory.getModel(InternalMongoSchema); // gives use access to mongo functions
+    this.metadata = new AkumaKodoCollection();
     this.connectedStatus = false;
   }
 
@@ -52,31 +53,14 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
   public async connect() {
     while (!this.connectedStatus) {
       try {
-        await delay(Milliseconds.Second * 2);
-        const cs = this.options.mongodb_connection_url ?? "mongodb://localhost:27017";
-        await this.client.connect(cs);
-        this.connectedStatus = true;
-        this.logger.create(`info`, "Mongodb Provider", `Connected to mongodb at ${cs}`);
+        let url = this.options.mongodb_connection_url;
+        if (!url) url = "mongodb://localhost:27017"; // default to localhost if no host is found.
+        await MongoFactory.forRoot(url);
+        this.logger.create("info", "Mongo Provider", `Connection success on > ${url}`);
       } catch (e) {
         this.logger.create("error", "Mongodb Provider", `Failed to connect to the database.\n ${e}`);
       }
     }
-  }
-
-  /**
-   * Disconnect from the database
-   * @protected
-   */
-  public async disconnect() {
-    await this.client.close();
-  }
-
-  /**
-   * Get the database client from mongodb
-   * @protected
-   */
-  protected get getMongoClient() {
-    return this.client;
   }
 
   /**
@@ -85,20 +69,21 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    */
   public async initialize() {
     if (this.connectedStatus) {
-      // give the bot process time to start up
-      await delay(Milliseconds.Second * 2);
-      // find all the settings in the collection and save them to the cache
-      const fillCollections = await this.db.find({ username: { $ne: null } }).toArray();
-      // Save all settings to the cache based on their guild id
-      for (const i in fillCollections) {
-        const settings = fillCollections[i];
-        this.cache.set(settings.guildId, settings);
+      await (await this.instance).initModel();
+      // Fetch all the documents from the database and cache them.
+      const data = await (await this.instance).findMany();
+      for (const item of data) {
+        this.metadata.set(item.guildId, <schemaInterface> item.settings);
       }
-      this.logger.create("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
+      this.logger.create(
+        "info",
+        "Mongo Provider initialize",
+        `Successfully loaded ${data.length} documents from the database.`,
+      );
     } else {
       this.logger.create(
         "error",
-        "Mongodb Provider",
+        "Mongodb Provider initialize",
         `Failed to initialize the database. Please check your connection.`,
       );
     }
@@ -106,20 +91,69 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
 
   /**
    * Get a value from the cache.
-   * @param guildId The guild id to get the value from.
+   * @param id The guild id to get the value from.
    * @param key The key to get the value from.
    * @param defaultValue The default value to return if the key is not found.
    */
-  public get(guildId: bigint, key: string, defaultValue: any) {
-    if (this.cache.has(guildId)) {
-      const settings = this.cache.get(guildId);
-      if (settings) {
-        const data = settings.data[key];
-        this.logger.create("info", "Mongodb Provider", `Getting value for ${key} from cache.\n${JSON.stringify(data)}`);
-        return data == null ? defaultValue : data;
-      }
-    } else {
-      return defaultValue;
+  public get(id: bigint, key: string, defaultValue: any) {
+    const data = this.metadata.get(id);
+
+    if (data) {
+      this.logger.create(
+        "info",
+        "Mongo Provider get",
+        `Fetched value from cache. Guild: ${id} Key: ${key} Value: ${data.settings[key]}`,
+      );
+      return data.settings[key];
     }
+
+    this.logger.create("warn", "Mongo Provider get", `Failed to get the value for ${id}. Returning default value.`);
+
+    return defaultValue;
+  }
+
+  /**
+   * Set a value in the cache and database.
+   * @param id The guild id to set the value in.
+   * @param key The key to set the value in.
+   * @param value The value to set.
+   */
+  public async set(id: bigint, key: string, value: any) {
+    const data = this.metadata.get(id);
+    // if we have old data, update it
+    if (data) {
+      const newData = data.settings[key] = value;
+      this.metadata.set(id, newData);
+    }
+
+    // saves the data in the database
+    await (await this.instance).updateOne({ guildId: id }, { $set: { settings: { [key]: value } } }, { upsert: true });
+
+    this.logger.create("info", "Mongo Provider set", `Successfully set ${key} to ${value} for guild ${id}`);
+  }
+
+  /**
+   * Delete a value from the cache and database.
+   * @param id
+   * @param key
+   */
+  public async delete(id: bigint, key: string) {
+    const data = this.metadata.get(id);
+    // if we have old data, update it
+    if (data) {
+      delete data.settings[key];
+      this.metadata.set(id, { ...data, settings: { ...data.settings } });
+    }
+
+    // saves the data in the database
+    await (await this.instance).deleteOne({ guildId: id });
+
+    this.logger.create("info", "Mongo Provider delete", `Deleted ${key} from guild ${id}`);
+  }
+
+  public async clear(id: bigint) {
+    this.metadata.delete(id);
+    await (await this.instance).deleteOne({ guildId: id });
+    this.logger.create("info", "Mongo Provider clear", `Cleared all data for guild ${id}`);
   }
 }
