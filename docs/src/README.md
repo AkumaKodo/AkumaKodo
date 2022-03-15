@@ -10,6 +10,7 @@ _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/
 ### Inspiration
 
 We took inspiration from these frameworks to help develop AkumaKodo into the tool it is today, thanks to all these great developers!
+
 - [Natico](https://github.com/naticoo)
 - [Akiro]()
 - [Amethyst](https://github.com/AmethystFramework)
