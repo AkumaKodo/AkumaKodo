@@ -1,5 +1,5 @@
 import { bold, cyan, gray, italic, magenta, red, yellow } from "../deps.ts";
-import { AkumaCreateBotOptions } from "../core/interfaces/Client.ts";
+import {AkumaCreateBotOptions, defaultConstructorOptions} from "../core/interfaces/Client.ts";
 
 export enum Loglevels {
   Debug,
@@ -122,8 +122,12 @@ export const log = logger;
  */
 
 export class AkumaKodoLogger {
-  private configuration: AkumaCreateBotOptions;
-  public constructor(config: AkumaCreateBotOptions) {
+  private configuration: AkumaCreateBotOptions | undefined;
+  public constructor(config?: AkumaCreateBotOptions) {
+    if (!config) {
+      this.configuration = defaultConstructorOptions
+    }
+
     this.configuration = config;
   }
   /**
@@ -134,7 +138,7 @@ export class AkumaKodoLogger {
    */
   public create(level: "debug" | "info" | "warn" | "error" | "fatal" | "table", event: string, context: any) {
     // Check if the user enabled internal logging.
-    if (!this.configuration.optional.bot_internal_logs) return;
+    if (!this.configuration?.optional.bot_internal_logs) return;
     try {
       // check if internal logging is enabled, if not return
       switch (level) {

@@ -11,7 +11,7 @@ import {
   startBot,
   stopBot,
 } from "../deps.ts";
-import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "./interfaces/Client.ts";
+import {AkumaCreateBotOptions, AkumaKodoBotInterface, defaultConfigOptions} from "./interfaces/Client.ts";
 import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
 import { delay } from "../internal/utils.ts";
@@ -31,12 +31,12 @@ export class AkumaKodoBotCore {
 
   public constructor(config: AkumaCreateBotOptions) {
 
+    if (!config) {
+      this.configuration = defaultConfigOptions
+    }
+
     this.versionControl = new AkumaKodoVersionControl(config)
     this.versionControl.validate()
-
-    if (!config) {
-      throw new Error("No configuration provided");
-    }
 
     // If no optional values were passed
     config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
@@ -110,7 +110,7 @@ export class AkumaKodoBotCore {
 
   public async createBot() {
     await startBot(this.client);
-    this.client.events.ready = async (bot, payload) => {
+    this.client.events.ready = (bot, payload) => {
       const Bot = bot as BotWithCache;
       if (payload.shardId + 1 === Bot.gateway.maxShards) {
         // Start task indexer on startup
