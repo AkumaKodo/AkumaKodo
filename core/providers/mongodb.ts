@@ -151,6 +151,10 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
     this.logger.create("info", "Mongo Provider delete", `Deleted ${key} from guild ${id}`);
   }
 
+  /**
+   * Delete all values from the cache and database for a guild.
+   * @param id The guild id to delete all values from.
+   */
   public async clear(id: bigint) {
     this.metadata.delete(id);
     await (await this.instance).deleteOne({ guildId: id });
