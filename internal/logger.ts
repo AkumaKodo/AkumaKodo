@@ -1,5 +1,5 @@
 import { bold, cyan, gray, italic, magenta, red, yellow } from "../deps.ts";
-import {AkumaCreateBotOptions, defaultConstructorOptions} from "../core/interfaces/Client.ts";
+import {AkumaCreateBotOptions, defaultConfigOptions} from "../core/interfaces/Client.ts";
 
 export enum Loglevels {
   Debug,
@@ -125,7 +125,7 @@ export class AkumaKodoLogger {
   private configuration: AkumaCreateBotOptions | undefined;
   public constructor(config?: AkumaCreateBotOptions) {
     if (!config) {
-      this.configuration = defaultConstructorOptions
+      this.configuration = defaultConfigOptions
     }
 
     this.configuration = config;
