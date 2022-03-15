@@ -18,15 +18,22 @@ import { delay } from "../internal/utils.ts";
 import { Milliseconds } from "./lib/utils/helpers.ts";
 import { AkumaKodoTaskModule } from "./lib/task/mod.ts";
 import {AkumaKodoEmbed, createAkumaKodoEmbed} from "./lib/utils/Embed.ts";
+import {AkumaKodoVersionControl} from "../internal/VersionControl.ts";
 
 export class AkumaKodoBotCore {
   private launcher: {
     task: AkumaKodoTaskModule;
   };
+  private versionControl: AkumaKodoVersionControl
   public configuration: AkumaCreateBotOptions;
   public client: BotWithCache;
   public container: AkumaKodoBotInterface;
+
   public constructor(config: AkumaCreateBotOptions) {
+
+    this.versionControl = new AkumaKodoVersionControl(config)
+    this.versionControl.validate()
+
     if (!config) {
       throw new Error("No configuration provided");
     }
@@ -62,7 +69,7 @@ export class AkumaKodoBotCore {
         intervals: [],
         initialTimeouts: [],
       },
-      slashCommands: new AkumaKodoCollection(),
+      commands: new AkumaKodoCollection(),
       taskCollection: new AkumaKodoCollection(),
       monitorCollection: new AkumaKodoCollection(),
       languageCollection: new AkumaKodoCollection(),
