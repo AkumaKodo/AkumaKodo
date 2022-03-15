@@ -1,6 +1,5 @@
-import { bold, BotWithCache, cyan, gray, italic, red, yellow } from "../deps.ts";
-import { AkumaKodoBotCore } from "../core/lib/AkumaKodo.ts";
-import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../core/interfaces/Client.ts";
+import { bold, cyan, gray, italic, magenta, red, yellow } from "../deps.ts";
+import { AkumaCreateBotOptions } from "../core/interfaces/Client.ts";
 
 export enum Loglevels {
   Debug,
@@ -8,6 +7,7 @@ export enum Loglevels {
   Warn,
   Error,
   Fatal,
+  Table,
 }
 
 const prefixes = new Map<Loglevels, string>([
@@ -16,6 +16,7 @@ const prefixes = new Map<Loglevels, string>([
   [Loglevels.Warn, "WARN"],
   [Loglevels.Error, "ERROR"],
   [Loglevels.Fatal, "FATAL"],
+  [Loglevels.Table, "TABLE"],
 ]);
 
 const noColor: (str: string) => string = (msg) => msg;
@@ -25,6 +26,7 @@ const colorFunctions = new Map<Loglevels, (str: string) => string>([
   [Loglevels.Warn, yellow],
   [Loglevels.Error, (str: string) => red(str)],
   [Loglevels.Fatal, (str: string) => red(bold(italic(str)))],
+  [Loglevels.Table, magenta],
 ]);
 
 interface ll {
@@ -61,6 +63,8 @@ export function logger({
         return console.error(...log);
       case Loglevels.Fatal:
         return console.error(...log);
+      case Loglevels.Table:
+        return console.table(...log);
       default:
         return console.log(...log);
     }
@@ -72,6 +76,10 @@ export function logger({
 
   function debug(...args: any[]) {
     log(Loglevels.Debug, ...args);
+  }
+
+  function table(...args: any[]) {
+    log(Loglevels.Table, ...args);
   }
 
   function info(...args: any[]) {
@@ -98,6 +106,7 @@ export function logger({
     warn,
     error,
     fatal,
+    table,
   };
 }
 
@@ -121,9 +130,9 @@ export class AkumaKodoLogger {
    * Internal logger class for the framework
    * @param level The log level to use
    * @param event The event to log
-   * @param message The message to log
+   * @param context The context to log
    */
-  public create(level: "debug" | "info" | "warn" | "error" | "fatal", event: string, context: any) {
+  public create(level: "debug" | "info" | "warn" | "error" | "fatal" | "table", event: string, context: any) {
     // Check if the user enabled internal logging.
     if (!this.configuration.optional.bot_internal_logs) return;
     try {
@@ -158,6 +167,12 @@ export class AkumaKodoLogger {
             logLevel: Loglevels.Fatal,
             name: `AkumaKodo Internal - ${event.toUpperCase()}`,
           }).fatal(context);
+          break;
+        case "table":
+          log({
+            logLevel: Loglevels.Table,
+            name: `AkumaKodo Internal - ${event.toUpperCase()}`,
+          }).info(context);
           break;
         default:
           log({

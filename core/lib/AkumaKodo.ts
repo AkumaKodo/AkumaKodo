@@ -27,6 +27,10 @@ export class AkumaKodoBotCore {
   public client: BotWithCache;
   public container: AkumaKodoBotInterface;
   public constructor(config: AkumaCreateBotOptions) {
+    if (!config) {
+      throw new Error("No configuration provided");
+    }
+
     // If no optional values were passed
     config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
     config.optional.bot_mention_with_prefix = config.optional.bot_mention_with_prefix || false;
@@ -91,7 +95,9 @@ export class AkumaKodoBotCore {
       task: new AkumaKodoTaskModule(this.client, this.container),
     };
 
-    this.container.logger.create("info", "initializeCoreClient", "Core initialized.");
+    this.container.logger.create("table", "AkumaKodo Bot Core", `Configuration passed to client: \n${config}`);
+
+    this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
   }
 
   public async createBot() {
