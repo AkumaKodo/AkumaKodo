@@ -1,3 +1,3 @@
 // Core lib exports
 
-export * from "./core/lib/AkumaKodo.ts";
+export * from "./core/AkumaKodo.ts";
