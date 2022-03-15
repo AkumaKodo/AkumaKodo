@@ -4,8 +4,8 @@ import { cooldownInterface, InteractionCommand } from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
 import { AkumaKodoLogger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
-import { AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
-import { AkumaKodoBotCore } from "../lib/AkumaKodo.ts";
+import {AkumaKodoEmbed, AkumaKodoEmbedInterface} from "../lib/utils/Embed.ts";
+import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 
 export interface AkumaCreateBotOptions extends CreateBotOptions {
   /** Optional options for client */
@@ -72,6 +72,7 @@ export interface AkumaKodoUtilities {
   createTask(client: AkumaKodoBotCore, task: AkumaKodoTask): void;
   destroyTasks(client: AkumaKodoBotCore): void;
   createEmbed(options: AkumaKodoEmbedInterface): void;
+  embed(): AkumaKodoEmbed
 }
 
 export type Async<T> = PromiseLike<T> | T;
