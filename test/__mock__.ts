@@ -8,7 +8,7 @@ const Bot = new AkumaKodoBotCore({
   botId: 946398697254703174n,
   dir: "",
   events: {},
-  intents: ["Guilds"],
+  intents: ["Guilds", "GuildMessages", "GuildMembers"],
   optional: {
     bot_internal_logs: true,
   },
@@ -16,3 +16,7 @@ const Bot = new AkumaKodoBotCore({
 });
 
 await Bot.createBot();
+
+Bot.client.events.messageCreate = (_, payload) => {
+  Bot.container.logger.create("info", "messageCreate", payload.content);
+};
