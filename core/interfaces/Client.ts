@@ -1,22 +1,13 @@
-import {
-  BotWithCache,
-  BotWithHelpersPlugin,
-  CreateBotOptions,
-  createGatewayManager,
-  DiscordenoInteraction,
-  DiscordenoMessage,
-  EventHandlers,
-} from "../../deps.ts";
+import { CreateBotOptions, DiscordenoMessage } from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { cooldownInterface, InteractionCommand, SlashSubcommand, SlashSubcommandGroup } from "./Command.ts";
+import { cooldownInterface, InteractionCommand } from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
-import { AkumaKodoLogger, logger } from "../../internal/logger.ts";
+import { AkumaKodoLogger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
 import { AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
 import { AkumaKodoBotCore } from "../lib/AkumaKodo.ts";
 
 export interface AkumaCreateBotOptions extends CreateBotOptions {
-  dir: string;
   /** Optional options for client */
   optional: {
     /** The ID's of the bot owners */
@@ -25,6 +16,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     bot_supporters_ids?: bigint[];
     /** The ID's of the bot staff */
     bot_staff_ids?: bigint[];
+    /** The bot default prefix */
     bot_default_prefix?: AkumaKodoPrefix | undefined;
     /** The development server for your bot */
     bot_development_server_id?: bigint;
@@ -32,7 +24,15 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     bot_cooldown_bypass_ids?: bigint[];
     /** The framework logs things to the console for internal testing. You can enable this if you wish for more developer logs. */
     bot_internal_logs?: boolean;
+    /** If mentions act as a bot prefix */
     bot_mention_with_prefix?: boolean;
+  };
+  /** Optional providers for the bot client */
+  providers?: {
+    /** The type of provider client */
+    type: "mongodb" | "postgres" | "mysql";
+    /** Enables the provider */
+    enabled: boolean;
   };
 }
 
@@ -41,30 +41,20 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
  * All options are invoked on the main bot object for easy access.
  */
 export interface AkumaKodoBotInterface {
-  /**
-   * Helpful functions to make your bot easier to use all in one method.
-   */
   utilities?: AkumaKodoUtilities;
   languageCollection: AkumaKodoCollection<bigint, string>;
   taskCollection: AkumaKodoCollection<string, AkumaKodoTask>;
   monitorCollection: AkumaKodoCollection<string, AkumaKodoMonitor>;
   runningTasks: _runningTaskInterface;
-  /** Access slash commands data */
   slashCommands: AkumaKodoCollection<string, InteractionCommand>;
   defaultCooldown: cooldownInterface;
-  /** ID of users who bypass the cooldown */
   ignoreCooldown: bigint[];
-  /** Access to the client logger */
   logger: AkumaKodoLogger;
   fullyReady: boolean;
-  /** The bot prefix */
   prefix?: AkumaKodoPrefix;
   mentionWithPrefix: boolean;
 }
 
-/**
- * typings for bot utils
- */
 export interface AkumaKodoUtilities {
   // createSlashCommand(bot: AkumaKodoBotInterface, command: InteractionCommand): void;
   // createSlashSubcommandGroup(

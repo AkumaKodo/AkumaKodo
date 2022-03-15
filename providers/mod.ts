@@ -1,5 +1,5 @@
-import {AkumaKodoLogger} from "../internal/logger.ts";
-import {AkumaCreateBotOptions} from "../core/interfaces/Client.ts";
+import { AkumaKodoLogger } from "../internal/logger.ts";
+import { AkumaCreateBotOptions } from "../core/interfaces/Client.ts";
 /**
  * Base provider class for all providers.
  */

@@ -3,8 +3,8 @@ import { Bson, Collection, Database, MongoClient } from "../deps.ts";
 import { AkumaKodoCollection } from "../core/lib/utils/Collection.ts";
 import { delay } from "../internal/utils.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
-import {Milliseconds} from "../core/lib/utils/helpers.ts";
-import {AkumaCreateBotOptions} from "../core/interfaces/Client.ts";
+import { Milliseconds } from "../core/lib/utils/helpers.ts";
+import { AkumaCreateBotOptions } from "../core/interfaces/Client.ts";
 
 /**
  * Base mongodb schema for our provider.
@@ -31,7 +31,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    * @param config The config for the provider.
    * @param name The name of the database mongodb will use.
    */
-  public constructor(options: ProviderOptions, model: mongodbSchema, config: AkumaCreateBotOptions,  name?: string) {
+  public constructor(options: ProviderOptions, model: mongodbSchema, config: AkumaCreateBotOptions, name?: string) {
     super(options, model, config);
     this.options = options;
     if (!name) name = "AkumaKodo";
@@ -60,8 +60,8 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         this.logger.create(`info`, "Mongodb Provider", `Connected to mongodb at ${cs}`);
       } catch (e) {
         this.logger.create("error", "Mongodb Provider", `Failed to connect to the database.`);
+      }
     }
-  }
   }
 
   /**
@@ -97,7 +97,11 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       }
       this.logger.create("info", "Mongodb Provider", `Loaded ${this.cache.size} settings to cache.`);
     } else {
-      this.logger.create("error", "Mongodb Provider", `Failed to initialize the database. Please check your connection.`);
+      this.logger.create(
+        "error",
+        "Mongodb Provider",
+        `Failed to initialize the database. Please check your connection.`,
+      );
     }
   }
 

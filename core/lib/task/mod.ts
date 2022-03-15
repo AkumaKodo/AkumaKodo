@@ -1,10 +1,10 @@
 import { AkumaKodoTask } from "../../interfaces/Task.ts";
 import { AkumaKodoCollection } from "../utils/Collection.ts";
-import {BotWithCache} from "https://deno.land/x/discordeno_cache_plugin@0.0.21/src/addCacheCollections.ts";
-import {AkumaKodoBotInterface} from "../../interfaces/Client.ts";
+import { BotWithCache } from "https://deno.land/x/discordeno_cache_plugin@0.0.21/src/addCacheCollections.ts";
+import { AkumaKodoBotInterface } from "../../interfaces/Client.ts";
 
 export class AkumaKodoTaskModule {
-  private client:  BotWithCache
+  private client: BotWithCache;
   private container: AkumaKodoBotInterface;
   public constructor(client: BotWithCache, container: AkumaKodoBotInterface) {
     this.client = client;
@@ -40,6 +40,7 @@ export class AkumaKodoTaskModule {
         }, task.interval - (Date.now() % task.interval) ?? undefined),
       );
     }
+    this.container.logger.create("info", "initializeTask", `Task module initialized`);
   }
 
   /**
@@ -53,6 +54,7 @@ export class AkumaKodoTaskModule {
     if (callback) {
       callback();
     }
+    this.container.logger.create("info", "createAkumaKodoTask", `Task ${task.name} created`);
   }
 
   /**

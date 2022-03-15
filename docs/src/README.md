@@ -9,12 +9,17 @@ _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/
 
 ## Why use AkumaKodo
 
-- Slash Command and Message Command support.
-- Build in providers for custom configuration settings in multiple servers.
+- Database providers for beginners getting started.
 - Built in caching by default for quick data retrieval.
 - Built in logging system with multiple log levels and terminal colors.
 - Build in inhibitor system for permission handling.
 - Built in task for custom scheduled events and actions.
+
+## Why not use AkumaKodo
+
+- You don't know javascript basics.
+- Don't want to use the deno runtime.
+- You like functional programming only.
 
 ## Installation
 
@@ -22,30 +27,32 @@ _Coming soon..._
 
 ## Example bot
 
-_Example does not work yet..._
-
 ```typescript
-import { AkumaKodoBot, createAkumaKodoBot } from "./deps.ts";
+import { AkumaKodoBotCore } from "url-soon";
+import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
 
-await createAkumaKodoBot(AkumaKodoBot, {
-  botId: 1n,
-  token: "token",
-  intents: ["GUILDS", "GUILD_MEMBERS", "GUILD_MESSAGES"],
+const env = dotEnvConfig({ export: true });
+const TOKEN = env.DISCORD_BOT_TOKEN || "";
+
+// Bot configuration
+const Bot = new AkumaKodoBotCore({
+  botId: 946398697254703174n,
   events: {},
-});
-
-AkumaKodoBot.createMessageCommand({
-  name: "ping",
-  description: "Ping!",
-  execute: (ctx) => {
-    ctx.reply({
-      content: "Pong!",
-    });
+  intents: ["Guilds", "GuildMessages", "GuildMembers"],
+  optional: {
+    bot_internal_logs: true,
   },
+  token: TOKEN,
 });
 
-AkumaKodoBot.events.ready = (_, payload) => {
-  AkumaKodoBot.logger().info(`[READY] Bot is online and ready in ${AkumaKodoBot.guilds.size} guilds!`);
+await Bot.createBot(); // Creates ws connection and starts listening
+
+Bot.client.events.messageCreate = (_, payload) => {
+  Bot.container.logger.create("info", "messageCreate", payload.content);
+};
+
+Bot.client.events.ready = (_, payload) => {
+  Bot.container.logger.create("info", "ready", "Online and ready to work!");
 };
 ```
 

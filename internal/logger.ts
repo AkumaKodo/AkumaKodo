@@ -1,6 +1,6 @@
-import {bold, BotWithCache, cyan, gray, italic, red, yellow} from "../deps.ts";
+import { bold, BotWithCache, cyan, gray, italic, red, yellow } from "../deps.ts";
 import { AkumaKodoBotCore } from "../core/lib/AkumaKodo.ts";
-import {AkumaCreateBotOptions, AkumaKodoBotInterface} from "../core/interfaces/Client.ts";
+import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../core/interfaces/Client.ts";
 
 export enum Loglevels {
   Debug,
