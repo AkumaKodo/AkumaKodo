@@ -1,4 +1,4 @@
-import { AkumaKodoBotCore } from "../core/lib/AkumaKodo.ts";
+import { AkumaKodoBotCore } from "../core/AkumaKodo.ts";
 
 import { dotEnvConfig } from "../deps.ts";
 const env = dotEnvConfig({ export: true });
