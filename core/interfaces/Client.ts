@@ -10,9 +10,10 @@ import {
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { cooldownInterface, InteractionCommand, SlashSubcommand, SlashSubcommandGroup } from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
-import { logger } from "../../internal/logger.ts";
+import { AkumaKodoLogger, logger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
 import { AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
+import { AkumaKodoBotCore } from "../lib/AkumaKodo.ts";
 
 export interface AkumaCreateBotOptions extends CreateBotOptions {
   dir: string;
@@ -29,7 +30,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     bot_development_server_id?: bigint;
     /** Users who can bypass the bots cool-downs for commands*/
     bot_cooldown_bypass_ids?: bigint[];
-    /** The framework logs things to the console for internal testing. You can enable this if you wish. */
+    /** The framework logs things to the console for internal testing. You can enable this if you wish for more developer logs. */
     bot_internal_logs?: boolean;
     bot_mention_with_prefix?: boolean;
   };
@@ -54,7 +55,7 @@ export interface AkumaKodoBotInterface {
   /** ID of users who bypass the cooldown */
   ignoreCooldown: bigint[];
   /** Access to the client logger */
-  logger: typeof logger;
+  logger: AkumaKodoLogger;
   fullyReady: boolean;
   /** The bot prefix */
   prefix?: AkumaKodoPrefix;
@@ -78,8 +79,8 @@ export interface AkumaKodoUtilities {
   //   subcommandGroup: SlashSubcommand,
   //   options?: { split?: boolean; retries?: number },
   // ): Promise<void>;
-  createTask(bot: AkumaKodoBotInterface, task: AkumaKodoTask): void;
-  destroyTasks(bot: AkumaKodoBotInterface): void;
+  createTask(client: AkumaKodoBotCore, task: AkumaKodoTask): void;
+  destroyTasks(client: AkumaKodoBotCore): void;
   createEmbed(options: AkumaKodoEmbedInterface): void;
 }
 

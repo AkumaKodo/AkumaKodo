@@ -8,26 +8,25 @@ import {
   enableCacheSweepers,
   enableHelpersPlugin,
   enablePermissionsPlugin,
-  EventEmitter,
-  startBot, stopBot,
+  startBot,
+  stopBot,
 } from "../../deps.ts";
 import { AkumaCreateBotOptions, AkumaKodoBotInterface } from "../interfaces/Client.ts";
 import { AkumaKodoCollection } from "./utils/Collection.ts";
-import { AkumaKodoLogger, logger } from "../../internal/logger.ts";
+import { AkumaKodoLogger } from "../../internal/logger.ts";
 import { delay } from "../../internal/utils.ts";
-import {Milliseconds} from "./utils/helpers.ts";
-import {AkumaKodoTaskModule} from "./task/mod.ts";
-import {createAkumaKodoEmbed} from "./utils/Embed.ts";
+import { Milliseconds } from "./utils/helpers.ts";
+import { AkumaKodoTaskModule } from "./task/mod.ts";
+import { createAkumaKodoEmbed } from "./utils/Embed.ts";
 
-export class AkumaKodoBotCore extends EventEmitter {
-  private lancher = {
-    task: new AkumaKodoTaskModule()
-  }
+export class AkumaKodoBotCore {
+  private launcher: {
+    task: AkumaKodoTaskModule;
+  };
   public configuration: AkumaCreateBotOptions;
   public client: BotWithCache;
   public container: AkumaKodoBotInterface;
   public constructor(config: AkumaCreateBotOptions) {
-    super();
     // If no optional values were passed
     config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
     config.optional.bot_mention_with_prefix = config.optional.bot_mention_with_prefix || false;
@@ -37,10 +36,21 @@ export class AkumaKodoBotCore extends EventEmitter {
     config.optional.bot_internal_logs = config.optional.bot_internal_logs || false;
     config.optional.bot_supporters_ids = config.optional.bot_supporters_ids || [];
 
+    // Sets the configuration settings
+    this.configuration = config;
+
+    // Sets the container for the bot
+    this.client = enableCachePlugin(createBot(config));
+
+    enableHelpersPlugin(this.client);
+    enableCachePlugin(this.client);
+    enableCacheSweepers(this.client);
+    enablePermissionsPlugin(this.client);
+
     this.container = {
       defaultCooldown: {
         seconds: Milliseconds.Second * 5,
-        allowedUses: 1
+        allowedUses: 1,
       },
       ignoreCooldown: config.optional.bot_cooldown_bypass_ids,
       prefix: config.optional.bot_default_prefix,
@@ -53,7 +63,7 @@ export class AkumaKodoBotCore extends EventEmitter {
       monitorCollection: new AkumaKodoCollection(),
       languageCollection: new AkumaKodoCollection(),
       fullyReady: false,
-      logger: logger,
+      logger: new AkumaKodoLogger(this.configuration),
       mentionWithPrefix: true,
       utilities: {
         createEmbed(options) {
@@ -68,27 +78,20 @@ export class AkumaKodoBotCore extends EventEmitter {
         // createSlashSubcommandGroup(bot, command, subcommandGroup, retries) {
         //   createSlashSubcommandGroup(bot, command, subcommandGroup, retries);
         // },
-        createTask(bot, task) {
-          this.lancher.task.createAkumaKodoTask(bot, task);
+        createTask(client, task) {
+          client.launcher.task.createAkumaKodoTask(task);
         },
-        destroyTasks(bot) {
-          this.lancher.task.destroyTask(bot);
+        destroyTasks(client) {
+          client.launcher.task.destroyTask();
         },
-      }
-    } as AkumaKodoBotInterface
+      },
+    } as AkumaKodoBotInterface;
 
-    // Sets the configuration settings
-    this.configuration = config;
+    this.launcher = {
+      task: new AkumaKodoTaskModule(this.client, this.container),
+    };
 
-    // Sets the container for the bot
-    this.client = enableCachePlugin(createBot(config));
-
-    enableHelpersPlugin(this.client);
-    enableCachePlugin(this.client);
-    enableCacheSweepers(this.client);
-    enablePermissionsPlugin(this.client);
-
-    AkumaKodoLogger("info", "initializeCoreClient", "Core initialized.");
+    this.container.logger.create("info", "initializeCoreClient", "Core initialized.");
   }
 
   public async createBot() {
@@ -97,9 +100,10 @@ export class AkumaKodoBotCore extends EventEmitter {
       await delay(1000);
       const Bot = bot as BotWithCache;
       if (payload.shardId + 1 === Bot.gateway.maxShards) {
+        // Start task indexer on startup
+        this.launcher.task.initializeTask();
         this.container.fullyReady = true;
-        AkumaKodoLogger("info", "createBot", "Connection successful!");
-        return Bot;
+        this.container.logger.create("info", "createBot", "Connection successful!");
       }
     };
   }
@@ -107,6 +111,6 @@ export class AkumaKodoBotCore extends EventEmitter {
   public async destroyBot() {
     await delay(1000);
     await stopBot(this.client);
-    AkumaKodoLogger("info", "destroyBot", "Connection destroy successful!");
+    this.container.logger.create("info", "destroyBot", "Connection destroy successful!");
   }
 }

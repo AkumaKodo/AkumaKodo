@@ -1,6 +1,4 @@
-import { DiscordenoUser, editMessage, fetchMembers, getMember, sendMessage } from "../../../deps.ts";
-import { AkumaKodoEmbed } from "./Embed.ts";
-import { AkumaKodoBot } from "../AkumaKodo.ts";
+import { DiscordenoUser } from "../../../deps.ts";
 
 export enum Milliseconds {
   Year = 1000 * 60 * 60 * 24 * 30 * 12,

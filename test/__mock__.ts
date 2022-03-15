@@ -1,4 +1,8 @@
-import {AkumaKodoBotCore} from "../core/lib/AkumaKodo.ts";
+import { AkumaKodoBotCore } from "../core/lib/AkumaKodo.ts";
+
+import { dotEnvConfig } from "../deps.ts";
+const env = dotEnvConfig({ export: true });
+const token = env.DISCORD_BOT_TOKEN || "";
 
 const Bot = new AkumaKodoBotCore({
   botId: 946398697254703174n,
@@ -8,7 +12,7 @@ const Bot = new AkumaKodoBotCore({
   optional: {
     bot_internal_logs: true,
   },
-  token: "OTQ2Mzk4Njk3MjU0NzAzMTc0.YheIeA.tWtFnFKkSKcxUeTi1-f588Khch0",
+  token: token,
 });
 
 await Bot.createBot();
