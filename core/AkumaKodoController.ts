@@ -2,7 +2,7 @@ import { AkumaKodoBotCore } from "./AkumaKodo.ts";
 import { EventEmitter } from "../deps.ts";
 
 export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitter {
-  private client: T;
+  protected client: T;
   /* The directory of the modules */
   public dir: string;
   public modules: any;

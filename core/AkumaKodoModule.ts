@@ -27,7 +27,7 @@ export abstract class AkumaKodoModule {
   public toString() {
     return this.id;
   }
-  abstract exec(...args: unknown[]): unknown | Promise<unknown>;
+  abstract execute(...args: unknown[]): unknown | Promise<unknown>;
 }
 
 export interface AkumaKodoModuleOptions {
