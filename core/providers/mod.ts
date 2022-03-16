@@ -9,7 +9,7 @@ export abstract class AkumaKodoProvider {
     this.logger = new AkumaKodoLogger(config);
     if (options.provider === "mongodb") {
       if (!options.mongodb_connection_url) {
-        throw new Error("MongoDB connection URL is required.");
+        throw new Error("MongoDB connection URL is required with this provider.");
       }
       this.logger.create("info", "Provider", "MongoDB provider loaded!");
     } else if (options.provider === "postgres") {
@@ -30,3 +30,5 @@ export interface ProviderOptions {
 export interface BaseProviderModel {
   type?: "mongodb" | "postgres" | "mysql";
 }
+
+export { AkumaKodoMongodbProvider } from "./mongodb.ts";
