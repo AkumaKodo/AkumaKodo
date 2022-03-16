@@ -106,3 +106,7 @@ export type AkumaKodoPrefix =
   | ((
     message: DiscordenoMessage,
   ) => Async<string | string[]>);
+
+export interface Events {
+  [name: string]: (...args: any[]) => Promise<any> | any;
+}
