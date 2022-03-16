@@ -4,8 +4,8 @@ import { EventEmitter } from "../deps.ts";
 export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitter {
   protected client: T;
   /* The directory of the modules */
-  public dir: string;
-  public modules: any;
+  protected dir: string;
+  public pool: any;
   public constructor(client: T, dir: string) {
     super();
     this.client = client;
@@ -21,13 +21,13 @@ export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitte
     return mod;
   }
   public remove(id: any) {
-    const mod = this.modules.get(id.toString());
+    const mod = this.pool.get(id.toString());
     if (!mod) return;
     this.deregister(mod);
     return mod;
   }
   public async reload(id: any) {
-    const mod = this.modules.get(id);
+    const mod = this.pool.get(id);
     if (!mod) return;
     this.deregister(mod);
 
@@ -35,14 +35,14 @@ export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitte
     return await this.load(filepath);
   }
   public deregister(mod: any) {
-    this.modules.delete(mod.id);
+    this.pool.delete(mod.id);
   }
   public async reloadAll() {
-    for (const m of Array.from(this.modules.values()) as any[]) {
+    for (const m of Array.from(this.pool.values()) as any[]) {
       if (m.filepath) await this.reload(m.id);
     }
 
-    return this.modules;
+    return this.pool;
   }
   public async loadALL(dirPath?: any) {
     dirPath = await Deno.realPath(dirPath || this.dir);
@@ -61,6 +61,6 @@ export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitte
     mod.filepath = filepath;
     mod.handler = this;
     mod.client = this.client;
-    this.modules.set(mod.id, mod);
+    this.pool.set(mod.id, mod);
   }
 }
