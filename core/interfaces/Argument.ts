@@ -1,8 +1,11 @@
 // All the items the parsers return
-import { DiscordenoChannel, DiscordenoMember, DiscordenoMessage, DiscordenoRole } from "../../deps.ts";
-import {AkumaKodoBotCore} from "../AkumaKodo.ts";
-import {AkumaKodoCollection} from "../lib/utils/Collection.ts";
-import {AkumaKodoCommand} from "./Command.ts";
+import {
+    ApplicationCommandOption,
+    DiscordenoChannel,
+    DiscordenoMember,
+    DiscordenoMessage,
+    DiscordenoRole
+} from "../../deps.ts";
 
 export type returnItems = DiscordenoRole | DiscordenoChannel | DiscordenoMember | number | string | boolean | undefined;
 
@@ -26,23 +29,44 @@ export const applyOptions = <T extends any>(options: T) =>
     };
   };
 
+export interface AkumaKodoMessage extends DiscordenoMessage {
+    // TODO(#001) - implement
+   send: () => Promise<void>;
+}
 
-export class AkumaArgumentGenorator {
-    client: AkumaKodoBotCore
-    arguments: AkumaKodoCollection<string, Argument>
+export interface ConvertedOptions {
+    [name: string]: any;
+}
+export interface prefixFn {
+    (message: AkumaKodoMessage): string | string[] | Promise<string | string[]>;
+}
+export interface ArgOptions extends ApplicationCommandOption {
+    match?: Matches;
+    //The custom function that will be ran instead of the default argument function
+    customType?: customType;
+    //The prompt that will be given when a user doesnt provide that argument
+    prompt?: string;
+    //If the option is a channel type, the channels shown will be restricted to these types
+    channel_types?: string[];
+    //If the option is an INTEGER or NUMBER type, the minimum value permitted
+    min_value?: number;
+    //If the options is an INTEGER or NUMBER type, the maximum value permitted
+    max_value?: number;
+    //Enable autocomplete interactions for this option
+    autocomplete?: boolean;
+}
+export type customType = (message: AkumaKodoMessage | DiscordenoMessage | any, content: string) => any | Promise<any>;
 
-    constructor(client: AkumaKodoBotCore) {
-        this.client = client;
-        this.arguments = new AkumaKodoCollection();
-        this.preload()
-    }
-
-    /** Preload all the arguments to our cache */
-   private preload() {
-
-    }
-
-    public async handleArguments(command: AkumaKodoCommand, message: DiscordenoMessage, args?: string) {
-
-    }
+export enum Matches {
+    rest,
+    content,
+}
+export enum ArgumentTypes {
+    string = 3,
+    interger = 4,
+    boolean = 5,
+    user = 6,
+    channel = 7,
+    subCommand = 1,
+    subCOmmandGroup = 2,
 }
