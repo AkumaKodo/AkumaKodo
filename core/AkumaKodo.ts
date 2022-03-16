@@ -119,10 +119,8 @@ export class AkumaKodoBotCore {
     this.client.events.ready = (bot, payload) => {
       const Bot = bot as BotWithCache;
       if (payload.shardId + 1 === Bot.gateway.maxShards) {
-        // Start task indexer on startup
-        this.launcher.task.initializeTask();
         this.container.fullyReady = true;
-        this.container.logger.create("info", "createBot", "Connection successful!");
+        this.container.logger.create("info", "createBot", "AkumaKodo Connection successful!");
       }
     };
   }
