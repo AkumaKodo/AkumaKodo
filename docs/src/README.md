@@ -14,7 +14,7 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 - [Natico](https://github.com/naticoo)
 - [Akiro]()
 - [Amethyst](https://github.com/AmethystFramework)
-- [Discord.js](https://discord.js.org/#/)
+- [Discord.js Commando](https://github.com/discordjs/Commando)
 
 ## Why use AkumaKodo
 
@@ -23,6 +23,7 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 - Built in logging system with multiple log levels and terminal colors.
 - Build in inhibitor system for permission handling.
 - Built in task for custom scheduled events and actions.
+- Function programming or OOP style.
 
 ## Why not use AkumaKodo
 
