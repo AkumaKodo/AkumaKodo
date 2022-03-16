@@ -1,5 +1,4 @@
-/** base command interface */
-import { Permission } from "../../deps.ts";
+import { PermissionStrings } from "../../deps.ts";
 
 /** Base command interface. All commands have these options */
 export interface AkumaKodoCommand {
@@ -24,13 +23,13 @@ export interface AkumaKodoCommand {
   /** The command category */
   category?: string[];
   /**The channel permissions needed by the member to execute the command*/
-  userChannelPermissions?: Permission[];
+  userChannelPermissions?: PermissionStrings[];
   /**The guild permissions needed by the member to execute the command*/
-  userGuildPermissions?: Permission[];
+  userGuildPermissions?: PermissionStrings[];
   /**The channel permissions needed by the bot to execute the command*/
-  botChannelPermissions?: Permission[];
+  botChannelPermissions?: PermissionStrings[];
   /**The guild permissions needed by the bot to execute the command*/
-  botGuildPermissions?: Permission[];
+  botGuildPermissions?: PermissionStrings[];
   /** Runs the command function */
 }
 
