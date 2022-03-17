@@ -1,9 +1,7 @@
 import {
-  AkumaCreateBotOptions,
   AkumaKodoConfigurationInterface,
   AkumaKodoContainerInterface
 } from "../../interfaces/Client.ts";
-import { AkumaKodoModule } from "./mod.ts";
 import { AkumaKodoCommand } from "../../interfaces/Command.ts";
 import { DiscordenoInteraction } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/interaction.ts";
 import {
