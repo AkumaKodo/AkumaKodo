@@ -203,7 +203,20 @@
 in <code>TypeScript and deno</code>. It is designed to be a <code>modular and extensible</code> framework that
 extends the functionality of the deno runtime. It is designed to be easy to use while
 maintaining a high level of <code>performance</code>.</p>
+<p><img src="images/misc/AkumaKodoLogo.png" alt="AkumaKodo logo" /></p>
+<p><img src="https://img.shields.io/github/commit-activity/m/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub commit activity" />
+<img src="https://img.shields.io/github/contributors/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub contributors" />
+<img src="https://img.shields.io/github/stars/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub Repo stars" />
+<img src="https://img.shields.io/discord/837830514130812970?style=for-the-badge" alt="Discord" /></p>
 <p><em>The framework is build on discordeno version <a href="https://deno.land/x/discordeno@13.0.0-rc18">13.0.0-rc18</a></em></p>
+<h3 id="inspiration"><a class="header" href="#inspiration">Inspiration</a></h3>
+<p>We took inspiration from these frameworks to help develop AkumaKodo into the tool it is today, thanks to all these great developers!</p>
+<ul>
+<li><a href="https://github.com/naticoo">Natico</a></li>
+<li><a href="https://discord-akairo.github.io/#/">discord-akairo</a></li>
+<li><a href="https://github.com/AmethystFramework">Amethyst</a></li>
+<li><a href="https://github.com/discordjs/Commando">discord.js-Commando</a></li>
+</ul>
 <h2 id="why-use-akumakodo"><a class="header" href="#why-use-akumakodo">Why use AkumaKodo</a></h2>
 <ul>
 <li>Database providers for beginners getting started.</li>
@@ -211,6 +224,7 @@ maintaining a high level of <code>performance</code>.</p>
 <li>Built in logging system with multiple log levels and terminal colors.</li>
 <li>Build in inhibitor system for permission handling.</li>
 <li>Built in task for custom scheduled events and actions.</li>
+<li>Function programming or OOP style.</li>
 </ul>
 <h2 id="why-not-use-akumakodo"><a class="header" href="#why-not-use-akumakodo">Why not use AkumaKodo</a></h2>
 <ul>
@@ -222,31 +236,31 @@ maintaining a high level of <code>performance</code>.</p>
 <p><em>Coming soon...</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
 <pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;url-soon&quot;;
-import { config as dotEnvConfig  } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
+import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
 
 const env = dotEnvConfig({ export: true });
 const TOKEN = env.DISCORD_BOT_TOKEN || &quot;&quot;;
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore({
-    botId: 946398697254703174n,
-    events: {},
-    intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
-    optional: {
-        bot_internal_logs: true,
-    },
-    token: TOKEN,
+  botId: 946398697254703174n,
+  events: {},
+  intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
+  optional: {
+    bot_internal_logs: true,
+  },
+  token: TOKEN,
 });
 
 await Bot.createBot(); // Creates ws connection and starts listening
 
 Bot.client.events.messageCreate = (_, payload) =&gt; {
-    Bot.container.logger.create(&quot;info&quot;, &quot;messageCreate&quot;, payload.content);
+  Bot.container.logger.create(&quot;info&quot;, &quot;messageCreate&quot;, payload.content);
 };
 
 Bot.client.events.ready = (_, payload) =&gt; {
-    Bot.container.logger.create(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
-}
+  Bot.container.logger.create(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
+};
 </code></pre>
 <p>Continue reading!</p>
 <script src="/morsels_assets/search-ui.bundle.js" type="text/javascript" charset="utf-8"></script>
@@ -1083,20 +1097,6 @@ if (window.location.search) {
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
