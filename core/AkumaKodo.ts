@@ -65,10 +65,10 @@ export class AkumaKodoBotCore extends EventEmitter {
 
     this.container = {
       providers: {
-        mongodb: new AkumaKodoMongodbProvider({
+        mongodb: config.providers?.type === "mongodb" ? new AkumaKodoMongodbProvider({
           provider: "mongodb",
           mongodb_connection_url: config.providers?.mongodb_connection_url,
-        }, { ...config }),
+        }, { ...config }) : undefined,
       },
       defaultCooldown: {
         seconds: Milliseconds.Second * 5,

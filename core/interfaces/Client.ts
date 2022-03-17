@@ -29,7 +29,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     bot_mention_with_prefix?: boolean;
   };
   /** Optional providers for the bot client */
-  providers?: {
+  providers: {
     /** The type of provider client */
     type: "mongodb" | "postgres" | "mysql" | "disabled";
     mongodb_connection_url?: string;
@@ -61,8 +61,8 @@ export const defaultConfigOptions = {
  * All options are invoked on the main bot object for easy access.
  */
 export interface AkumaKodoBotInterface {
-  providers: {
-    mongodb: AkumaKodoMongodbProvider;
+  providers?: {
+    mongodb?: AkumaKodoMongodbProvider;
   };
   utils: AkumaKodoUtilities;
   languageCollection: AkumaKodoCollection<bigint, string>;
