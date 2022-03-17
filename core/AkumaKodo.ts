@@ -172,25 +172,6 @@ export class AkumaKodoBotCore {
     this.instance.events.ready = (_, payload) => {
       // Wait till shards are loaded to start the bot
       if (payload.shardId + 1 === this.instance.gateway.maxShards) {
-        // Handle slash commands
-        this.instance.events.interactionCreate = async (bot, interaction) => {
-          // SLASH COMMAND
-          if (interaction.type === InteractionTypes.ApplicationCommand) {
-            return await this.launcher.command.runCommand(interaction);
-          }
-
-          if (interaction.type === InteractionTypes.MessageComponent) {
-            if (!interaction.data) return;
-
-            // THE INTERACTION CAME FROM A BUTTON
-            if (
-              (interaction.data as ButtonData).componentType ===
-                MessageComponentTypes.Button
-            ) {
-              // processButtonCollectors(bot, interaction)
-            }
-          }
-        };
         this.launcher.task.initializeTask();
         this.container.fullyReady = true;
         this.container.logger.create("info", "createBot", "AkumaKodo Connection successful!");

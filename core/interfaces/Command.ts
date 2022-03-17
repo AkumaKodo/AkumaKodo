@@ -44,7 +44,7 @@ export interface AkumaKodoCommand {
   /**A collection of */
   subcommands?: AkumaKodoCollection<string, SlashSubcommandGroup | AkumaKodoSubcommand>;
   /** The function that is executed when the command is run */
-  run?: (bot: AkumaKodoBotCore, data: DiscordenoInteraction) => unknown;
+  run: (data: DiscordenoInteraction) => unknown;
 }
 
 /**The interface for slash subcommands groups*/
