@@ -6,7 +6,7 @@ export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitte
   protected client: T;
   /* The directory of the modules */
   protected dir: string;
-  public module: AkumaKodoCollection<string, any>;
+  public pool: AkumaKodoCollection<string, any>;
   public constructor(client: T, dir: string) {
     super();
     this.client = client;
@@ -23,13 +23,13 @@ export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitte
     return mod;
   }
   public remove(id: any) {
-    const mod = this.module.get(id.toString());
+    const mod = this.pool.get(id.toString());
     if (!mod) return;
     this.deregister(mod);
     return mod;
   }
   public async reload(id: any) {
-    const mod = this.module.get(id);
+    const mod = this.pool.get(id);
     if (!mod) return;
     this.deregister(mod);
 
@@ -40,7 +40,7 @@ export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitte
     this.module.delete(mod.id);
   }
   public async reloadAll() {
-    for (const m of Array.from(this.module.values()) as any[]) {
+    for (const m of Array.from(this.pool.values()) as any[]) {
       if (m.filepath) await this.reload(m.id);
     }
 

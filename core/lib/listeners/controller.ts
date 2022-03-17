@@ -3,7 +3,7 @@ import { AkumaKodoController } from "../../AkumaKodoController.ts";
 import { AkumaKodoCollection } from "../utils/Collection.ts";
 import { AkumaKodoListener } from "./mod.ts";
 
-export class AkumaKodoListenerController<T extends AkumaKodoBotCore> extends AkumaKodoController<any> {
+export class AkumaKodoListenerController<T extends AkumaKodoBotCore> extends AkumaKodoController<T> {
   declare pool: AkumaKodoCollection<string, AkumaKodoListener>;
   emitters: AkumaKodoCollection<string, any>;
   dir: string;
