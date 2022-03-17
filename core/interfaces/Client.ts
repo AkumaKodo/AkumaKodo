@@ -36,6 +36,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
   }
 }
 
+/** Default options for client if non are passed */
 export const defaultConfigOptions = {
   events: {},
   intents: [],
