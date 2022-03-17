@@ -1,6 +1,6 @@
 # Summary
 
-[Introduction](README.md)
+[Introduction](./README.md)
 
 # Framework
 
@@ -10,10 +10,9 @@
   - [Command handling]()
   - [Event handling]()
 - [AkumaKodo Advanced]()
-  - [Inhibitors]()
-  - [Monitors]()
   - [Task]()
   - [Providers]()
+  - [Events]()
 
 # API
 

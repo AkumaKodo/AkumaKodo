@@ -13,16 +13,14 @@ import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
 import { delay } from "../internal/utils.ts";
 import { Milliseconds } from "./lib/utils/helpers.ts";
-import { AkumaKodoTaskModule } from "./lib/task/mod.ts";
 import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
-import { AkumaKodoModule } from "./lib/modules/mod.ts";
+import {AkumaKodoTaskModule} from "./lib/modules/TaskModule.ts";
+import {AkumaKodoCommandModule} from "./lib/modules/CommandModule.ts";
 
 /**
- * AkumaKodo is a discord bot framework.
- * It is designed to be modular and easy to extend.
- * It is also designed to be easy to use.
+ * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
  *
  * @core AkumaKodoBotCore
  * @author ThatGuyJamal
@@ -36,7 +34,7 @@ export class AkumaKodoBotCore {
    */
   private launcher: {
     task: AkumaKodoTaskModule;
-    modules: AkumaKodoModule;
+    command: AkumaKodoCommandModule;
   };
   /**
    * A utility function to check your version of deno for booting the bot.
@@ -129,20 +127,20 @@ export class AkumaKodoBotCore {
         createEmbed(options) {
           createAkumaKodoEmbed(options);
         },
-        // createSlashCommand(bot, command) {
-        //   createSlashCommand(bot, command);
-        // },
+        createCommand(bot, command) {
+          bot.launcher.command.createCommand(command);
+        },
         // createSlashSubcommand(bot, command, subcommandGroup, options) {
         //   createSlashSubcommand(bot, command, subcommandGroup, options);
         // },
         // createSlashSubcommandGroup(bot, command, subcommandGroup, retries) {
         //   createSlashSubcommandGroup(bot, command, subcommandGroup, retries);
         // },
-        createTask(client, task) {
-          client.launcher.task.createAkumaKodoTask(task);
+        createTask(client, task, callback) {
+          client.launcher.task.createAkumaKodoTask(task, callback);
         },
-        destroyTasks(client) {
-          client.launcher.task.destroyTask();
+        destroyTasks(client, callback) {
+          client.launcher.task.destroyTask(callback);
         },
         embed() {
           return new AkumaKodoEmbed();
@@ -151,8 +149,8 @@ export class AkumaKodoBotCore {
     } as AkumaKodoContainerInterface;
 
     this.launcher = {
-      task: new AkumaKodoTaskModule(this.instance, this.container),
-      modules: new AkumaKodoModule(this.configuration),
+      task: new AkumaKodoTaskModule(config),
+      command: new AkumaKodoCommandModule(this.configuration),
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
@@ -166,6 +164,7 @@ export class AkumaKodoBotCore {
     this.instance.events.ready = (bot, payload) => {
       const Bot = bot as BotWithCache;
       if (payload.shardId + 1 === Bot.gateway.maxShards) {
+        this.launcher.task.initializeTask()
         this.container.fullyReady = true;
         this.container.logger.create("info", "createBot", "AkumaKodo Connection successful!");
       }

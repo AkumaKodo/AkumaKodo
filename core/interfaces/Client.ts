@@ -81,7 +81,8 @@ export interface AkumaKodoContainerInterface {
 }
 
 export interface AkumaKodoUtilities {
-  // createSlashCommand(bot: AkumaKodoBotInterface, command: InteractionCommand): void;
+  /** Creates a command */
+  createCommand(bot: AkumaKodoBotCore, command: AkumaKodoCommand): void | Promise<void>;
   // createSlashSubcommandGroup(
   //   bot: AkumaKodoBotInterface,
   //   command: string,
@@ -94,8 +95,11 @@ export interface AkumaKodoUtilities {
   //   subcommandGroup: SlashSubcommand,
   //   options?: { split?: boolean; retries?: number },
   // ): Promise<void>;
-  createTask(client: AkumaKodoBotCore, task: AkumaKodoTask): void;
-  destroyTasks(client: AkumaKodoBotCore): void;
+  /** Creates a Task */
+  createTask(bot: AkumaKodoBotCore, task: AkumaKodoTask, callback?: () => any): void | Promise<void>;
+  /** Deletes a Task */
+  destroyTasks(bot: AkumaKodoBotCore, callback?: () => any): void | Promise<void>;
+  /** Creates an Embed */
   createEmbed(options: AkumaKodoEmbedInterface): void;
   embed(): AkumaKodoEmbed;
 }
