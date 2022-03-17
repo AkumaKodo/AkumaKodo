@@ -1,5 +1,5 @@
 import { AkumaKodoLogger } from "../../internal/logger.ts";
-import { AkumaKodoConfigurationInterface} from "../interfaces/Client.ts";
+import { AkumaKodoConfigurationInterface } from "../interfaces/Client.ts";
 /**
  * Base provider class for all providers.
  */

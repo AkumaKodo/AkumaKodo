@@ -8,6 +8,8 @@ export interface AkumaKodoCommand {
   trigger: string;
   /**The command description */
   description: string;
+  /** The command scope */
+  scope: "Guild" | "Global" | "Development";
   /** A longer description of the command */
   extendedDescription?: string;
   /** The command usage and examples */
@@ -25,12 +27,14 @@ export interface AkumaKodoCommand {
   nsfw?: boolean;
   /**Whether the command can only be used by the bots owners*/
   ownerOnly?: boolean;
-  /**A list of member and role ids that can bypass the command cooldown*/
-  ignoreCooldowns?: bigint[];
+  /** If the command can only be run in a development guild. */
+  devOnly?: boolean;
   /**If the command can only be used in guilds*/
   guildOnly?: true;
   /**If the command can only be used in dms*/
   dmOnly?: false;
+  /**A list of member and role ids that can bypass the command cooldown*/
+  ignoreCooldowns?: bigint[];
   /**The bot permissions needed by the bot to execute the command*/
   botPermissions?: PermissionStrings[];
   /**The user permissions needed by the user to execute the command*/

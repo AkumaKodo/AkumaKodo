@@ -1,19 +1,23 @@
-import {
-  AkumaKodoConfigurationInterface,
-  AkumaKodoContainerInterface
-} from "../../interfaces/Client.ts";
+import { AkumaKodoConfigurationInterface, AkumaKodoContainerInterface } from "../../interfaces/Client.ts";
 import { AkumaKodoCommand } from "../../interfaces/Command.ts";
 import { DiscordenoInteraction } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/interaction.ts";
 import {
   InteractionResponseTypes,
 } from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/interactions/interactionResponseTypes.ts";
-import {AkumaKodoBotCore} from "../../AkumaKodo.ts";
-import {BotWithCache} from "https://deno.land/x/discordeno_cache_plugin@0.0.21/src/addCacheCollections.ts";
+import { AkumaKodoBotCore } from "../../AkumaKodo.ts";
+import { BotWithCache } from "https://deno.land/x/discordeno_cache_plugin@0.0.21/src/addCacheCollections.ts";
+import { MakeRequired } from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/util.ts";
+import {
+  EditGlobalApplicationCommand,
+} from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/interactions/commands/editGlobalApplicationCommand.ts";
+import {
+  upsertApplicationCommands,
+} from "https://deno.land/x/discordeno@13.0.0-rc18/src/helpers/interactions/commands/upsertApplicationCommands.ts";
 
 export class AkumaKodoCommandModule {
-  public container: AkumaKodoContainerInterface
-  public configuration: AkumaKodoConfigurationInterface
-  private instance: BotWithCache
+  public container: AkumaKodoContainerInterface;
+  public configuration: AkumaKodoConfigurationInterface;
+  private readonly instance: BotWithCache;
   constructor(bot: BotWithCache, container: AkumaKodoContainerInterface, config: AkumaKodoConfigurationInterface) {
     this.container = container;
     this.configuration = config;
@@ -98,6 +102,83 @@ export class AkumaKodoCommandModule {
           },
         });
       }
+    }
+  }
+
+  public async updateApplicationCommands(scope?: "Guild" | "Global" | "Development") {
+    const globalCommands: MakeRequired<EditGlobalApplicationCommand, "name">[] = [];
+    const perGuildCommands: MakeRequired<EditGlobalApplicationCommand, "name">[] = [];
+    const developmentCommands: MakeRequired<EditGlobalApplicationCommand, "name">[] = [];
+
+    for (const command of this.container.commands.values()) {
+      if (command.scope) {
+        if (command.scope === "Guild") {
+          perGuildCommands.push({
+            name: command.trigger,
+            description: command.description || "No description provided",
+            type: command.type,
+            options: command.options ? command.options : undefined,
+          });
+        } else if (command.scope === "Global") {
+          globalCommands.push({
+            name: command.trigger,
+            description: command.description || "No description provided",
+            type: command.type,
+            options: command.options ? command.options : undefined,
+          });
+        } else if (command.scope === "Development") {
+          developmentCommands.push({
+            name: command.trigger,
+            description: command.description || "No description provided",
+            type: command.type,
+            options: command.options ? command.options : undefined,
+          });
+        }
+      }
+    }
+    /**
+     * Updates the global application commands
+     */
+    if (globalCommands.length && (scope === "Global" || scope === undefined)) {
+      this.container.logger.create(
+        "info",
+        "Update global commands",
+        "Updating Global Commands, this takes up to 1 hour to take effect...",
+      );
+      this.container.logger.create("info", "Update global commands", `Commands added: ${globalCommands.join(", ")}`);
+      await this.instance.helpers.upsertApplicationCommands(globalCommands).catch((e) =>
+        this.container.logger.create("error", "Update global commands Error", e)
+      );
+    }
+    /**
+     * Updates the guild application commands
+     */
+    if (perGuildCommands.length && (scope === "Guild" || scope === undefined)) {
+      this.container.logger.create(
+        "info",
+        "Update guild commands",
+        "Updating Guild Commands, this takes up to 1 minute to take effect...",
+      );
+      this.container.logger.create("info", "Update guild commands", `Commands added: ${perGuildCommands.join(", ")}`);
+      this.instance.guilds.forEach((guild) => {
+        upsertApplicationCommands(this.instance, perGuildCommands, guild.id);
+      });
+    }
+
+    /**
+     * Update the development commands
+     */
+    if (developmentCommands.length && (scope === "Development" || scope === undefined)) {
+      this.container.logger.create(
+        "info",
+        "Update development commands",
+        "Updating Development Commands, this takes up to 1 minute to take effect...",
+      );
+      upsertApplicationCommands(
+        this.instance,
+        developmentCommands,
+        this.configuration.optional.bot_development_server_id,
+      ).catch((e) => this.container.logger.create("error", "Update development commands Error", e));
     }
   }
 }

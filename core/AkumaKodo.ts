@@ -162,6 +162,23 @@ export class AkumaKodoBotCore {
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
+    this.initializeInteractions();
+  }
+
+  protected initializeInteractions() {
+    this.launcher.command.updateApplicationCommands().then(() => {
+      this.container.logger.create("info", "AkumaKodo Bot Core", "Application commands updated!");
+    });
+
+    this.instance.events.interactionCreate = (_, interaction) => {
+      if (!interaction.data) return;
+
+      switch (interaction.type) {
+        case InteractionTypes.ApplicationCommand:
+          this.container.commands.get(interaction.data.name!)?.run(interaction);
+          break;
+      }
+    };
   }
 
   /**

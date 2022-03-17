@@ -1,6 +1,6 @@
 import { AkumaKodoProvider, ProviderOptions } from "./mod.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { AkumaKodoConfigurationInterface} from "../interfaces/Client.ts";
+import { AkumaKodoConfigurationInterface } from "../interfaces/Client.ts";
 import { Model, MongoFactory, Prop, Schema, SchemaDecorator } from "../../deps.ts";
 
 interface schemaInterface {

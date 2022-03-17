@@ -1,13 +1,13 @@
 import {
   AkumaCreateBotOptions,
   AkumaKodoConfigurationInterface,
-  AkumaKodoContainerInterface
+  AkumaKodoContainerInterface,
 } from "../../interfaces/Client.ts";
 import { AkumaKodoTask } from "../../interfaces/Task.ts";
 import { AkumaKodoCollection } from "../utils/Collection.ts";
 
-export class AkumaKodoTaskModule  {
-  public container: AkumaKodoContainerInterface
+export class AkumaKodoTaskModule {
+  public container: AkumaKodoContainerInterface;
   constructor(container: AkumaKodoContainerInterface) {
     this.container = container;
   }
