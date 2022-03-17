@@ -14,13 +14,18 @@ export class AkumaKodoCommandModule extends AkumaKodoModule {
    */
   public createCommand(command: AkumaKodoCommand): AkumaKodoCommand {
     // Check things before the command is set in cache
-    AkumaKodoCommandModule.precheck(command);
+    AkumaKodoCommandModule.preCheck(command);
     this.container.commands.set(command.trigger.toLowerCase(), command);
     this.container.logger.create("info", "create command", `Created command ${command.trigger}`);
     return command;
   }
 
-  private static precheck(command: AkumaKodoCommand) {
+  /**
+   * Checks if a command is valid before loading it into the collection.
+   * @param command
+   * @private
+   */
+  private static preCheck(command: AkumaKodoCommand) {
     if (command.trigger.length > 32) {
       throw new Error("Command trigger is too long! Max 32 characters" + `For command ${command.trigger}`);
     }
@@ -37,4 +42,20 @@ export class AkumaKodoCommandModule extends AkumaKodoModule {
       throw new Error("Command trigger cannot contain #!" + `For command ${command.trigger}`);
     }
   }
+
+  /**
+   * Gets a command by trigger and return its data.
+   * You can use this to get command information such as category, description, usage, etc.
+   * @param trigger
+   */
+  public getCommand(trigger: string): AkumaKodoCommand | undefined {
+    const command: AkumaKodoCommand | undefined = this.container.commands.get(trigger)
+    if(command) {
+      return command;
+    } else {
+      return undefined;
+    }
+  }
+
+  
 }

@@ -8,6 +8,10 @@ export interface AkumaKodoCommand {
   trigger: string;
   /**The command description */
   description: string;
+  /** A longer description of the command */
+  extendedDescription?: string;
+  /** The command usage and examples */
+  usage?: string[];
   /**The category that can be used to organize commands*/
   category?: string;
   /** Rate limit for the command */
