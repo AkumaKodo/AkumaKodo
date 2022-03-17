@@ -1,7 +1,11 @@
 import { PermissionStrings } from "../../deps.ts";
+import {AkumaKodoModule} from "../AkumaKodoModule.ts";
+import {AkumaKodoBotCore} from "../AkumaKodo.ts";
+import {AkumaKodoCommandHandler} from "../lib/commands/CommandHandler.ts";
+import {ArgOptions} from "./Argument.ts";
 
 /** Base command interface. All commands have these options */
-export interface AkumaKodoCommand {
+export interface e {
   /** The name of this command. */
   trigger: string;
   /** The command description */
@@ -38,4 +42,23 @@ export interface cooldownInterface {
   seconds: number;
   /** How often the user is allowed to use the command until he is in cooldown */
   allowedUses: number;
+}
+
+export abstract class AkumaKodoCommand extends AkumaKodoModule {
+  declare handler: AkumaKodoCommandHandler<AkumaKodoBotCore>;
+  category = "default";
+  trigger: string = this.id;
+  aliases: string[] | undefined = [this.trigger];
+  examples: string[] | undefined;
+  ownerOnly: boolean | undefined;
+  required: boolean | undefined;
+  description: string | undefined;
+  slash: boolean | undefined;
+  enabled: boolean | undefined;
+  superUserOnly: boolean | undefined;
+  options?: ArgOptions[] | undefined;
+  clientPermissions: PermissionStrings[] | undefined;
+  userPermissions: PermissionStrings[] | undefined;
+  cooldown?: number | undefined;
+  ratelimit = 3;
 }

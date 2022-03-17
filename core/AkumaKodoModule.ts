@@ -1,6 +1,9 @@
 /**Base class for modules */
 import { AkumaKodoBotCore } from "./AkumaKodo.ts";
 
+/***
+ * Base class for modules
+ */
 export abstract class AkumaKodoModule {
   public id: string;
   public filepath: string;
