@@ -5,7 +5,7 @@ import { AkumaKodoInhibitor } from "./mod.ts";
 import { DiscordenoMessage } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/message.ts";
 import { AkumaKodoCommand } from "../../interfaces/Command.ts";
 
-export class NaticoInhibitorController<T extends AkumaKodoBotCore> extends AkumaKodoController<T> {
+export class AkumaKodoInhibitorController<T extends AkumaKodoBotCore> extends AkumaKodoController<T> {
   declare pool: AkumaKodoCollection<string, AkumaKodoInhibitor>;
   protected dir: string;
 
