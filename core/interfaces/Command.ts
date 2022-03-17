@@ -2,10 +2,10 @@ import { PermissionStrings } from "../../deps.ts";
 import { AkumaKodoModule } from "../AkumaKodoModule.ts";
 import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoCommandHandler } from "../lib/commands/CommandHandler.ts";
-import { ArgOptions } from "./Argument.ts";
+import { ArgOptions, prefixFn } from "./Argument.ts";
 
 /** Base command interface. All commands have these options */
-export interface e {
+export interface oldCommandOptions {
   /** The name of this command. */
   trigger: string;
   /** The command description */
@@ -61,4 +61,40 @@ export abstract class AkumaKodoCommand extends AkumaKodoModule {
   userPermissions: PermissionStrings[] | undefined;
   cooldown?: number | undefined;
   ratelimit = 3;
+}
+
+export interface AkumaKodoSubCommandOptions extends NaticoCommandOptions {
+  subOf: string;
+}
+export abstract class AkumaKodoSubCommand extends NaticoCommand {
+  subOf!: string;
+}
+
+export interface AkumaKodoCommandHandlerOptions {
+  /** The path to the command directory */
+  dir?: string;
+  prefix?: prefixFn | string | string[];
+  IgnoreCooldowns?: bigint[];
+  owners?: bigint[];
+  /**
+   * cooldown in milliseconds
+   */
+  cooldown?: number;
+  ratelimit?: number;
+  superusers?: bigint[];
+  /**
+   * Commands will only work in guild channels with this on
+   */
+  guildOnly?: boolean;
+  handleEdits?: boolean;
+  /**
+   * Single means all subcommands in the same file; multiple means in every file
+   */
+  subType?: "single" | "multiple";
+  commandUtil?: boolean;
+  storeMessages?: boolean;
+  mentionPrefix?: boolean;
+  handleSlashCommands?: boolean;
+  handleArgs?: boolean;
+  // handleSlashes?: boolean;
 }
