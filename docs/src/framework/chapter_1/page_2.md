@@ -28,4 +28,6 @@ Your bot should be created.
 
 ![Bot created](../../images/framework/new_bot.png)
 
-Make sure to copy and paste your token for later as you will need this to authenticate with the discord api.
+Make sure to copy and paste your token for later than you will need this to authenticate with the discord api.
+
+Now that you have a bot application, you can connect to the AkumaKodo framework and start creating your bot! Keep reading in the next chapter.
