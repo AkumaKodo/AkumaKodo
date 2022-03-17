@@ -1,6 +1,3 @@
-/**
- * Root file for the library and its source code.
- */
 import {
   BotWithCache,
   createBot,
@@ -8,12 +5,8 @@ import {
   enableCacheSweepers,
   enableHelpersPlugin,
   enablePermissionsPlugin,
-  EventEmitter,
-  EventHandlers,
-  GenericFunction,
   startBot,
   stopBot,
-  WrappedFunction,
 } from "../deps.ts";
 import { AkumaCreateBotOptions, AkumaKodoBotInterface, defaultConfigOptions } from "./interfaces/Client.ts";
 import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
@@ -25,7 +18,7 @@ import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 
-export class AkumaKodoBotCore extends EventEmitter {
+export class AkumaKodoBotCore {
   private launcher: {
     task: AkumaKodoTaskModule;
   };
@@ -35,7 +28,6 @@ export class AkumaKodoBotCore extends EventEmitter {
   public container: AkumaKodoBotInterface;
 
   public constructor(config: AkumaCreateBotOptions) {
-    super();
     if (!config) {
       this.configuration = defaultConfigOptions;
     }
@@ -140,18 +132,5 @@ export class AkumaKodoBotCore extends EventEmitter {
     await delay(1000);
     await stopBot(this.client);
     this.container.logger.create("info", "destroyBot", "Connection destroy successful!");
-  }
-
-  public on(eventName: string | symbol, listener: GenericFunction | WrappedFunction) {
-    this.addEvent(eventName.toString() as keyof EventHandlers);
-    // @ts-ignore - This is a hack to make sure the event is added to the event handlers
-    return super.on(eventName, listener);
-  }
-  /**
-   * @param event Add an event to be emitted
-   */
-  public addEvent(event: keyof EventHandlers) {
-    //Removing the first argument since that's the bot every time!
-    this.client.events[event] = (...args: unknown[]) => this.emit(event, ...args.slice(1));
   }
 }
