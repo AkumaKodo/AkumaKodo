@@ -5,6 +5,8 @@ in `TypeScript and deno`. It is designed to be a `modular and extensible` framew
 extends the functionality of the deno runtime. It is designed to be easy to use while
 maintaining a high level of `performance`.
 
+![AkumaKodo logo](images/misc/AkumaKodoLogo.png)
+
 _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/discordeno@13.0.0-rc18)_
 
 ### Inspiration
@@ -12,9 +14,9 @@ _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/
 We took inspiration from these frameworks to help develop AkumaKodo into the tool it is today, thanks to all these great developers!
 
 - [Natico](https://github.com/naticoo)
-- [Akiro]()
+- [discord-akairo](https://discord-akairo.github.io/#/)
 - [Amethyst](https://github.com/AmethystFramework)
-- [Discord.js Commando](https://github.com/discordjs/Commando)
+- [discord.js-Commando](https://github.com/discordjs/Commando)
 
 ## Why use AkumaKodo
 
