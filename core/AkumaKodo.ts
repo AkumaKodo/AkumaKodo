@@ -17,6 +17,7 @@ import { AkumaKodoTaskModule } from "./lib/task/mod.ts";
 import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
+import {AkumaKodoModule} from "./lib/modules/mod.ts";
 
 /**
  * AkumaKodo is a discord bot framework.
@@ -35,6 +36,7 @@ export class AkumaKodoBotCore {
    */
   private launcher: {
     task: AkumaKodoTaskModule;
+    modules: AkumaKodoModule
   };
   /**
    * A utility function to check your version of deno for booting the bot.
@@ -146,6 +148,7 @@ export class AkumaKodoBotCore {
 
     this.launcher = {
       task: new AkumaKodoTaskModule(this.instance, this.container),
+      modules: new AkumaKodoModule(this.instance, this.configuration),
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
