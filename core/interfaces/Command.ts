@@ -1,8 +1,8 @@
 import { PermissionStrings } from "../../deps.ts";
-import {AkumaKodoModule} from "../AkumaKodoModule.ts";
-import {AkumaKodoBotCore} from "../AkumaKodo.ts";
-import {AkumaKodoCommandHandler} from "../lib/commands/CommandHandler.ts";
-import {ArgOptions} from "./Argument.ts";
+import { AkumaKodoModule } from "../AkumaKodoModule.ts";
+import { AkumaKodoBotCore } from "../AkumaKodo.ts";
+import { AkumaKodoCommandHandler } from "../lib/commands/CommandHandler.ts";
+import { ArgOptions } from "./Argument.ts";
 
 /** Base command interface. All commands have these options */
 export interface e {

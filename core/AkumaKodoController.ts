@@ -1,12 +1,12 @@
 import { AkumaKodoBotCore } from "./AkumaKodo.ts";
 import { EventEmitter } from "../deps.ts";
-import {AkumaKodoCollection} from "./lib/utils/Collection.ts";
+import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
 
 export class AkumaKodoController<T extends AkumaKodoBotCore> extends EventEmitter {
   protected client: T;
   /* The directory of the modules */
   protected dir: string;
-  public module: AkumaKodoCollection<string, any>
+  public module: AkumaKodoCollection<string, any>;
   public constructor(client: T, dir: string) {
     super();
     this.client = client;

@@ -1,7 +1,7 @@
 /**Base class for modules */
 import { AkumaKodoBotCore } from "./AkumaKodo.ts";
 
-/***
+/** *
  * Base class for modules
  */
 export abstract class AkumaKodoModule {
