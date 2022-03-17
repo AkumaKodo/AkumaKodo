@@ -7,6 +7,11 @@ maintaining a high level of `performance`.
 
 ![AkumaKodo logo](images/misc/AkumaKodoLogo.png)
 
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/AkumaKodo/AkumaKodo?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/AkumaKodo/AkumaKodo?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/AkumaKodo/AkumaKodo?style=for-the-badge)
+![Discord](https://img.shields.io/discord/837830514130812970?style=for-the-badge)
+
 _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/discordeno@13.0.0-rc18)_
 
 ### Inspiration
