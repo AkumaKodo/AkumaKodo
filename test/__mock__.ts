@@ -9,7 +9,7 @@ const Bot = new AkumaKodoBotCore({
   events: {},
   intents: ["Guilds", "GuildMessages", "GuildMembers"],
   optional: {
-    bot_internal_logs: true,
+    bot_debug_mode: true,
   },
   token: TOKEN,
   providers: {

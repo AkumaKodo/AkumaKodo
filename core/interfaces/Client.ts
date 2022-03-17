@@ -24,7 +24,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     /** Users who can bypass the bots cool-downs for commands*/
     bot_cooldown_bypass_ids?: bigint[];
     /** The framework logs things to the console for internal testing. You can enable this if you wish for more developer logs. */
-    bot_internal_logs?: boolean;
+    bot_debug_mode?: boolean;
     /** If mentions act as a bot prefix */
     bot_mention_with_prefix?: boolean;
   };
@@ -49,7 +49,7 @@ export const defaultConfigOptions = {
     bot_default_prefix: "",
     bot_development_server_id: undefined,
     bot_cooldown_bypass_ids: [],
-    bot_internal_logs: false,
+    bot_debug_mode: false,
     bot_mention_with_prefix: false,
   },
   providers: {

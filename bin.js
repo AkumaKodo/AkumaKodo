@@ -24333,7 +24333,7 @@ class AkumaKodoLogger {
         this.configuration = config;
     }
     create(level, event, context) {
-        if (!this.configuration?.optional.bot_internal_logs) return;
+        if (!this.configuration?.optional.bot_debug_mode) return;
         try {
             switch(level){
                 case "debug":
@@ -24801,7 +24801,7 @@ class AkumaKodoBotCore extends EventEmitter {
         config.optional.bot_default_prefix = config.optional.bot_default_prefix || undefined;
         config.optional.bot_development_server_id = config.optional.bot_development_server_id || undefined;
         config.optional.bot_cooldown_bypass_ids = config.optional.bot_cooldown_bypass_ids || [];
-        config.optional.bot_internal_logs = config.optional.bot_internal_logs || false;
+        config.optional.bot_debug_mode = config.optional.bot_debug_mode || false;
         config.optional.bot_supporters_ids = config.optional.bot_supporters_ids || [];
         this.configuration = config;
         this.client = enableCachePlugin(createBot(config));

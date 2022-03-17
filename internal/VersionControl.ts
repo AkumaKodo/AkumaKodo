@@ -7,7 +7,7 @@ export class AkumaKodoVersionControl {
   private readonly RequiredDenoVersion: string;
 
   constructor(config: AkumaCreateBotOptions) {
-    this.RequiredDenoVersion = "1.19.0";
+    this.RequiredDenoVersion = "2.20.1";
     this.logger = new AkumaKodoLogger(config);
   }
   /**
@@ -29,7 +29,7 @@ export class AkumaKodoVersionControl {
       const n = Number(userVersion[i]);
       if (o > n) {
         this.logger.create(
-          "warn",
+          "error",
           "Version Control",
           "The version of the project is less than the required version. Please update to deno " +
             this.RequiredDenoVersion,
@@ -38,7 +38,7 @@ export class AkumaKodoVersionControl {
       }
       if (o < n) {
         this.logger.create(
-          "info",
+          "warn",
           "Version Control",
           "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
             this.RequiredDenoVersion,
@@ -47,7 +47,7 @@ export class AkumaKodoVersionControl {
       }
       if (!isNaN(o) && isNaN(n)) {
         this.logger.create(
-          "debug",
+          "error",
           "Version Control",
           "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
             this.RequiredDenoVersion,
@@ -56,7 +56,7 @@ export class AkumaKodoVersionControl {
       }
       if (isNaN(o) && !isNaN(n)) {
         this.logger.create(
-          "debug",
+          "info",
           "Version Control",
           "The version of the project is greater than the required version. Please update to deno " +
             this.RequiredDenoVersion,

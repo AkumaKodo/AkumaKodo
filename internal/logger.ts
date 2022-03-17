@@ -138,7 +138,7 @@ export class AkumaKodoLogger {
    */
   public create(level: "debug" | "info" | "warn" | "error" | "fatal" | "table", event: string, context: any) {
     // Check if the user enabled internal logging.
-    if (!this.configuration?.optional.bot_internal_logs) return;
+    if (!this.configuration?.optional.bot_debug_mode) return;
     try {
       // check if internal logging is enabled, if not return
       switch (level) {

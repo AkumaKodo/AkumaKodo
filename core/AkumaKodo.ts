@@ -60,7 +60,16 @@ export class AkumaKodoBotCore {
     }
 
     this.versionControl = new AkumaKodoVersionControl(config);
-    this.versionControl.validate();
+    const validation = this.versionControl.validate();
+    // Stop the progress if the version is not valid.
+    // We will only warn on debug for other options as they will not break the bot.
+    if(validation === 1) {
+      // In case debug is not enabled we will still send an error message.
+      if(!config.optional.bot_debug_mode) {
+        console.error(`[AkumaKodo] - Your version of Deno is not supported. Please update to the latest version of Deno ~ https://deno.land/`)
+      }
+      Deno.exit(0)
+    }
 
     // If no optional values were passed
     config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
@@ -68,7 +77,7 @@ export class AkumaKodoBotCore {
     config.optional.bot_default_prefix = config.optional.bot_default_prefix || undefined;
     config.optional.bot_development_server_id = config.optional.bot_development_server_id || undefined;
     config.optional.bot_cooldown_bypass_ids = config.optional.bot_cooldown_bypass_ids || [];
-    config.optional.bot_internal_logs = config.optional.bot_internal_logs || false;
+    config.optional.bot_debug_mode = config.optional.bot_debug_mode || false;
     config.optional.bot_supporters_ids = config.optional.bot_supporters_ids || [];
 
     // Sets the configuration settings
