@@ -60,7 +60,7 @@ export const defaultConfigOptions = {
  * Interface for all our custom bot options.
  * All options are invoked on the main bot object for easy access.
  */
-export interface AkumaKodoBotInterface {
+export interface AkumaKodoContainerInterface {
   providers?: {
     type: "mongodb" | "postgres" | "mysql" | "disabled";
     mongodb?: AkumaKodoMongodbProvider;

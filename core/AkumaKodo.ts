@@ -8,7 +8,7 @@ import {
   startBot,
   stopBot,
 } from "../deps.ts";
-import { AkumaCreateBotOptions, AkumaKodoBotInterface, defaultConfigOptions } from "./interfaces/Client.ts";
+import { AkumaCreateBotOptions, AkumaKodoContainerInterface, defaultConfigOptions } from "./interfaces/Client.ts";
 import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
 import { delay } from "../internal/utils.ts";
@@ -18,14 +18,41 @@ import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 
+/**
+ * AkumaKodo is a discord bot framework.
+ * It is designed to be modular and easy to extend.
+ * It is also designed to be easy to use.
+ *
+ * @core AkumaKodoBotCore
+ * @author ThatGuyJamal
+ *
+ * This is the core of the framework and the gateway to all other modules.
+ */
 export class AkumaKodoBotCore {
+  /**
+   * An internal method used to fire Core functions. This is not used by the external developer.
+   * @private
+   */
   private launcher: {
     task: AkumaKodoTaskModule;
   };
+  /**
+   * A utility function to check your version of deno for booting the bot.
+   * @private
+   */
   private versionControl: AkumaKodoVersionControl;
+  /**
+   * @description - The configuration - Any configuration options passed to the bot will be stored here. Allowing easy access to the configuration options and data for developers.
+   */
   public configuration: AkumaCreateBotOptions;
+  /**
+   * @description - The instance - The bot itself and all its functions from discordeno.
+   */
   public instance: BotWithCache;
-  public container: AkumaKodoBotInterface;
+  /**
+   * @description The container - a collection of all the instance modules, classes, and utils that cen be used by the bot developer.
+   */
+  public container: AkumaKodoContainerInterface;
 
   public constructor(config: AkumaCreateBotOptions) {
     if (!config) {
@@ -50,6 +77,8 @@ export class AkumaKodoBotCore {
     // Sets the container for the bot
     this.instance = enableCachePlugin(createBot(config));
 
+    // Enables the plugins on the instance of the bot
+    // This needs to be done before other setup functions
     enableHelpersPlugin(this.instance);
     enableCachePlugin(this.instance);
     enableCacheSweepers(this.instance);
@@ -104,7 +133,7 @@ export class AkumaKodoBotCore {
           return new AkumaKodoEmbed();
         },
       },
-    } as AkumaKodoBotInterface;
+    } as AkumaKodoContainerInterface;
 
     this.launcher = {
       task: new AkumaKodoTaskModule(this.instance, this.container),

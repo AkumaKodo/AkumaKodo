@@ -1,12 +1,12 @@
 import { AkumaKodoTask } from "../../interfaces/Task.ts";
 import { AkumaKodoCollection } from "../utils/Collection.ts";
 import { BotWithCache } from "https://deno.land/x/discordeno_cache_plugin@0.0.21/src/addCacheCollections.ts";
-import { AkumaKodoBotInterface } from "../../interfaces/Client.ts";
+import { AkumaKodoContainerInterface } from "../../interfaces/Client.ts";
 
 export class AkumaKodoTaskModule {
   private client: BotWithCache;
-  private container: AkumaKodoBotInterface;
-  public constructor(client: BotWithCache, container: AkumaKodoBotInterface) {
+  private container: AkumaKodoContainerInterface;
+  public constructor(client: BotWithCache, container: AkumaKodoContainerInterface) {
     this.client = client;
     this.container = container;
   }
