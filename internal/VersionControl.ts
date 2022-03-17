@@ -12,6 +12,8 @@ export class AkumaKodoVersionControl {
   }
   /**
    * Validates the version of the project.
+   *
+   * This function will parse your deno version and compare it to the required version.
    */
   public validate() {
     const internalVersion = this.RequiredDenoVersion.split(".");
@@ -38,7 +40,7 @@ export class AkumaKodoVersionControl {
         this.logger.create(
           "info",
           "Version Control",
-          "The version of the project is greater than the required version. You can ignore this log. Recommended version: " +
+          "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
             this.RequiredDenoVersion,
         );
         return -1;
@@ -47,7 +49,7 @@ export class AkumaKodoVersionControl {
         this.logger.create(
           "debug",
           "Version Control",
-          "The version of the project is greater than the required version. You can ignore this log. Recommended version: " +
+          "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
             this.RequiredDenoVersion,
         );
         return 1;
