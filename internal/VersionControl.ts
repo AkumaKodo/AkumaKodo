@@ -1,12 +1,12 @@
 /** Versioning protection for the project. */
 import { AkumaKodoLogger } from "./logger.ts";
-import { AkumaCreateBotOptions } from "../core/interfaces/Client.ts";
+import { AkumaKodoConfigurationInterface } from "../core/interfaces/Client.ts";
 
 export class AkumaKodoVersionControl {
   private logger: AkumaKodoLogger;
   private readonly RequiredDenoVersion: string;
 
-  constructor(config: AkumaCreateBotOptions) {
+  constructor(config: AkumaKodoConfigurationInterface) {
     this.RequiredDenoVersion = "1.20.1";
     this.logger = new AkumaKodoLogger(config);
   }

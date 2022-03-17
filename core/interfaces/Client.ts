@@ -8,7 +8,27 @@ import { AkumaKodoEmbed, AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
 import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
-export interface AkumaCreateBotOptions extends CreateBotOptions {
+export interface AkumaCreateBotOptions extends CreateBotOptions {}
+
+/** Default options for client if non are passed */
+export const defaultConfigOptions = {
+  optional: {
+    bot_owners_ids: [],
+    bot_supporters_ids: [],
+    bot_staff_ids: [],
+    bot_default_prefix: "",
+    bot_development_server_id: undefined,
+    bot_cooldown_bypass_ids: [],
+    bot_debug_mode: false,
+    bot_mention_with_prefix: false,
+    bot_log_command_reply: false,
+    providers: {
+      type: "disabled",
+    },
+  },
+} as AkumaKodoConfigurationInterface;
+
+export interface AkumaKodoConfigurationInterface {
   /** Optional options for client */
   optional: {
     /** The ID's of the bot owners */
@@ -27,35 +47,16 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     bot_debug_mode?: boolean;
     /** If mentions act as a bot prefix */
     bot_mention_with_prefix?: boolean;
-  };
-  /** Optional providers for the bot client */
-  providers: {
-    /** The type of provider client */
-    type: "mongodb" | "postgres" | "mysql" | "disabled";
-    mongodb_connection_url?: string;
+    /** Enables command error replays such as command not found and more logging... */
+    bot_log_command_reply?: boolean;
+    /** Optional providers for the bot client */
+    providers: {
+      /** The type of provider client */
+      type: "mongodb" | "postgres" | "mysql" | "disabled";
+      mongodb_connection_url?: string;
+    };
   };
 }
-
-/** Default options for client if non are passed */
-export const defaultConfigOptions = {
-  events: {},
-  intents: [],
-  botId: 0n,
-  token: "",
-  optional: {
-    bot_owners_ids: [],
-    bot_supporters_ids: [],
-    bot_staff_ids: [],
-    bot_default_prefix: "",
-    bot_development_server_id: undefined,
-    bot_cooldown_bypass_ids: [],
-    bot_debug_mode: false,
-    bot_mention_with_prefix: false,
-  },
-  providers: {
-    type: "disabled",
-  },
-} as AkumaCreateBotOptions;
 
 /**
  * Interface for all our custom bot options.
@@ -80,6 +81,9 @@ export interface AkumaKodoContainerInterface {
   mentionWithPrefix: boolean;
 }
 
+/**
+ * Utility interface for the bot.
+ */
 export interface AkumaKodoUtilities {
   /** Creates a command */
   createCommand(bot: AkumaKodoBotCore, command: AkumaKodoCommand): void | Promise<void>;

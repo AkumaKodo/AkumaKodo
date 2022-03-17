@@ -1,6 +1,6 @@
 import { AkumaKodoProvider, ProviderOptions } from "./mod.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { AkumaCreateBotOptions } from "../interfaces/Client.ts";
+import { AkumaKodoConfigurationInterface} from "../interfaces/Client.ts";
 import { Model, MongoFactory, Prop, Schema, SchemaDecorator } from "../../deps.ts";
 
 interface schemaInterface {
@@ -35,7 +35,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
    * @param config The config for the provider.
    * @param name The name of the database mongodb will use.
    */
-  public constructor(options: ProviderOptions, config: AkumaCreateBotOptions, name?: string | undefined) {
+  public constructor(options: ProviderOptions, config: AkumaKodoConfigurationInterface, name?: string | undefined) {
     super(options, config);
     this.options = options;
     if (!name) name = "AkumaKodo";

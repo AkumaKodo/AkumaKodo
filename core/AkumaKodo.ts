@@ -1,14 +1,22 @@
 import {
   BotWithCache,
+  ButtonData,
   createBot,
   enableCachePlugin,
   enableCacheSweepers,
   enableHelpersPlugin,
   enablePermissionsPlugin,
+  InteractionTypes,
+  MessageComponentTypes,
   startBot,
   stopBot,
 } from "../deps.ts";
-import { AkumaCreateBotOptions, AkumaKodoContainerInterface, defaultConfigOptions } from "./interfaces/Client.ts";
+import {
+  AkumaCreateBotOptions,
+  AkumaKodoConfigurationInterface,
+  AkumaKodoContainerInterface,
+  defaultConfigOptions,
+} from "./interfaces/Client.ts";
 import { AkumaKodoCollection } from "./lib/utils/Collection.ts";
 import { AkumaKodoLogger } from "../internal/logger.ts";
 import { delay } from "../internal/utils.ts";
@@ -16,8 +24,8 @@ import { Milliseconds } from "./lib/utils/helpers.ts";
 import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
-import {AkumaKodoTaskModule} from "./lib/modules/TaskModule.ts";
-import {AkumaKodoCommandModule} from "./lib/modules/CommandModule.ts";
+import { AkumaKodoTaskModule } from "./lib/modules/TaskModule.ts";
+import { AkumaKodoCommandModule } from "./lib/modules/CommandModule.ts";
 
 /**
  * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
@@ -44,7 +52,7 @@ export class AkumaKodoBotCore {
   /**
    * @description - The configuration - Any configuration options passed to the bot will be stored here. Allowing easy access to the configuration options and data for developers.
    */
-  public configuration: AkumaCreateBotOptions;
+  public configuration: AkumaKodoConfigurationInterface;
   /**
    * @description - The instance - The bot itself and all its functions from discordeno.
    */
@@ -54,8 +62,8 @@ export class AkumaKodoBotCore {
    */
   public container: AkumaKodoContainerInterface;
 
-  public constructor(config: AkumaCreateBotOptions) {
-    if (!config) {
+  public constructor(botOptions: AkumaCreateBotOptions, config: AkumaKodoConfigurationInterface) {
+    if (!config.optional) {
       this.configuration = defaultConfigOptions;
     }
 
@@ -86,7 +94,7 @@ export class AkumaKodoBotCore {
     this.configuration = config;
 
     // Sets the container for the bot
-    this.instance = enableCachePlugin(createBot(config));
+    this.instance = enableCachePlugin(createBot(botOptions));
 
     // Enables the plugins on the instance of the bot
     // This needs to be done before other setup functions
@@ -97,12 +105,12 @@ export class AkumaKodoBotCore {
 
     this.container = {
       providers: {
-        type: config.providers.type,
+        type: config.optional.providers.type,
         // Checks if the provider was enabled or disabled by user
-        mongodb: config.providers?.type === "mongodb" || config.providers?.type !== "disabled"
+        mongodb: config.optional.providers?.type === "mongodb" || config.optional.providers?.type !== "disabled"
           ? new AkumaKodoMongodbProvider({
             provider: "mongodb",
-            mongodb_connection_url: config.providers?.mongodb_connection_url,
+            mongodb_connection_url: config.optional.providers?.mongodb_connection_url,
           }, { ...config })
           : undefined,
       },
@@ -149,8 +157,8 @@ export class AkumaKodoBotCore {
     } as AkumaKodoContainerInterface;
 
     this.launcher = {
-      task: new AkumaKodoTaskModule(config),
-      command: new AkumaKodoCommandModule(this.configuration),
+      task: new AkumaKodoTaskModule(this.container),
+      command: new AkumaKodoCommandModule(this.instance, this.container, this.configuration),
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
@@ -161,10 +169,29 @@ export class AkumaKodoBotCore {
    */
   public async createBot() {
     await startBot(this.instance);
-    this.instance.events.ready = (bot, payload) => {
-      const Bot = bot as BotWithCache;
-      if (payload.shardId + 1 === Bot.gateway.maxShards) {
-        this.launcher.task.initializeTask()
+    this.instance.events.ready = (_, payload) => {
+      // Wait till shards are loaded to start the bot
+      if (payload.shardId + 1 === this.instance.gateway.maxShards) {
+        // Handle slash commands
+        this.instance.events.interactionCreate = async (bot, interaction) => {
+          // SLASH COMMAND
+          if (interaction.type === InteractionTypes.ApplicationCommand) {
+            return await this.launcher.command.runCommand(interaction);
+          }
+
+          if (interaction.type === InteractionTypes.MessageComponent) {
+            if (!interaction.data) return;
+
+            // THE INTERACTION CAME FROM A BUTTON
+            if (
+              (interaction.data as ButtonData).componentType ===
+                MessageComponentTypes.Button
+            ) {
+              // processButtonCollectors(bot, interaction)
+            }
+          }
+        };
+        this.launcher.task.initializeTask();
         this.container.fullyReady = true;
         this.container.logger.create("info", "createBot", "AkumaKodo Connection successful!");
       }

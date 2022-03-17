@@ -1,10 +1,25 @@
-import { AkumaCreateBotOptions } from "../../interfaces/Client.ts";
+import {
+  AkumaCreateBotOptions,
+  AkumaKodoConfigurationInterface,
+  AkumaKodoContainerInterface
+} from "../../interfaces/Client.ts";
 import { AkumaKodoModule } from "./mod.ts";
 import { AkumaKodoCommand } from "../../interfaces/Command.ts";
+import { DiscordenoInteraction } from "https://deno.land/x/discordeno@13.0.0-rc18/src/transformers/interaction.ts";
+import {
+  InteractionResponseTypes,
+} from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/interactions/interactionResponseTypes.ts";
+import {AkumaKodoBotCore} from "../../AkumaKodo.ts";
+import {BotWithCache} from "https://deno.land/x/discordeno_cache_plugin@0.0.21/src/addCacheCollections.ts";
 
-export class AkumaKodoCommandModule extends AkumaKodoModule {
-  public constructor(config: AkumaCreateBotOptions) {
-    super(config);
+export class AkumaKodoCommandModule {
+  public container: AkumaKodoContainerInterface
+  public configuration: AkumaKodoConfigurationInterface
+  private instance: BotWithCache
+  constructor(bot: BotWithCache, container: AkumaKodoContainerInterface, config: AkumaKodoConfigurationInterface) {
+    this.container = container;
+    this.configuration = config;
+    this.instance = bot;
   }
 
   /**
@@ -49,13 +64,42 @@ export class AkumaKodoCommandModule extends AkumaKodoModule {
    * @param trigger
    */
   public getCommand(trigger: string): AkumaKodoCommand | undefined {
-    const command: AkumaKodoCommand | undefined = this.container.commands.get(trigger)
-    if(command) {
+    const command: AkumaKodoCommand | undefined = this.container.commands.get(trigger);
+    if (command) {
       return command;
     } else {
       return undefined;
     }
   }
 
-  
+  public async runCommand(interaction: DiscordenoInteraction) {
+    const data = interaction.data;
+
+    if (!data?.name) return;
+
+    const command = this.getCommand(data.name);
+
+    // if the command exist we run it, else ignore this function
+    if (command) {
+      try {
+        // @ts-ignore - we know that the command is valid
+        command.run(this, interaction);
+        this.container.logger.create("info", "run command", `Command ${data?.name} was ran!`);
+      } catch (error) {
+        this.container.logger.create("error", "run command", `Command ${data?.name} failed to run!`);
+        this.container.logger.create("error", "run command", error);
+      }
+    } else {
+      // Check if command reply is enabled
+      if (this.configuration.optional.bot_log_command_reply) {
+        return await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.ChannelMessageWithSource,
+          private: true,
+          data: {
+            content: `Command \`${data?.name}\` is not a valid command!`,
+          },
+        });
+      }
+    }
+  }
 }

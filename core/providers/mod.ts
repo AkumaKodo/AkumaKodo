@@ -1,11 +1,11 @@
 import { AkumaKodoLogger } from "../../internal/logger.ts";
-import { AkumaCreateBotOptions } from "../interfaces/Client.ts";
+import { AkumaKodoConfigurationInterface} from "../interfaces/Client.ts";
 /**
  * Base provider class for all providers.
  */
 export abstract class AkumaKodoProvider {
   protected logger: AkumaKodoLogger;
-  protected constructor(options: ProviderOptions, config: AkumaCreateBotOptions) {
+  protected constructor(options: ProviderOptions, config: AkumaKodoConfigurationInterface) {
     this.logger = new AkumaKodoLogger(config);
     if (options.provider === "mongodb") {
       if (!options.mongodb_connection_url) {

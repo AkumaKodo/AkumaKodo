@@ -8,13 +8,14 @@ const Bot = new AkumaKodoBotCore({
   botId: 946398697254703174n,
   events: {},
   intents: ["Guilds", "GuildMessages", "GuildMembers"],
-  optional: {
-    bot_debug_mode: true,
-  },
   token: TOKEN,
-  providers: {
-    type: "disabled",
-  },
+}, {
+ optional: {
+   bot_debug_mode: true,
+   providers: {
+     type: "disabled",
+   },
+ }
 });
 
 await Bot.createBot();
