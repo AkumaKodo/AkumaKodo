@@ -24,7 +24,7 @@ export class AkumaKodoBotCore {
   };
   private versionControl: AkumaKodoVersionControl;
   public configuration: AkumaCreateBotOptions;
-  public client: BotWithCache;
+  public instance: BotWithCache;
   public container: AkumaKodoBotInterface;
 
   public constructor(config: AkumaCreateBotOptions) {
@@ -48,16 +48,18 @@ export class AkumaKodoBotCore {
     this.configuration = config;
 
     // Sets the container for the bot
-    this.client = enableCachePlugin(createBot(config));
+    this.instance = enableCachePlugin(createBot(config));
 
-    enableHelpersPlugin(this.client);
-    enableCachePlugin(this.client);
-    enableCacheSweepers(this.client);
-    enablePermissionsPlugin(this.client);
+    enableHelpersPlugin(this.instance);
+    enableCachePlugin(this.instance);
+    enableCacheSweepers(this.instance);
+    enablePermissionsPlugin(this.instance);
 
     this.container = {
       providers: {
-        mongodb: config.providers?.type === "mongodb" ? new AkumaKodoMongodbProvider({
+        type: config.providers.type,
+        // Checks if the provider was enabled or disabled by user
+        mongodb: config.providers?.type === "mongodb" || config.providers?.type !== "disabled" ? new AkumaKodoMongodbProvider({
           provider: "mongodb",
           mongodb_connection_url: config.providers?.mongodb_connection_url,
         }, { ...config }) : undefined,
@@ -105,7 +107,7 @@ export class AkumaKodoBotCore {
     } as AkumaKodoBotInterface;
 
     this.launcher = {
-      task: new AkumaKodoTaskModule(this.client, this.container),
+      task: new AkumaKodoTaskModule(this.instance, this.container),
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
@@ -115,8 +117,8 @@ export class AkumaKodoBotCore {
    * Creates the bot process and starts the bot
    */
   public async createBot() {
-    await startBot(this.client);
-    this.client.events.ready = (bot, payload) => {
+    await startBot(this.instance);
+    this.instance.events.ready = (bot, payload) => {
       const Bot = bot as BotWithCache;
       if (payload.shardId + 1 === Bot.gateway.maxShards) {
         this.container.fullyReady = true;
@@ -130,7 +132,7 @@ export class AkumaKodoBotCore {
    */
   public async destroyBot() {
     await delay(1000);
-    await stopBot(this.client);
+    await stopBot(this.instance);
     this.container.logger.create("info", "destroyBot", "Connection destroy successful!");
   }
 }

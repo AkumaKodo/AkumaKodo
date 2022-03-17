@@ -33,7 +33,7 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {
     /** The type of provider client */
     type: "mongodb" | "postgres" | "mysql" | "disabled";
     mongodb_connection_url?: string;
-  };
+  }
 }
 
 export const defaultConfigOptions = {
@@ -62,6 +62,7 @@ export const defaultConfigOptions = {
  */
 export interface AkumaKodoBotInterface {
   providers?: {
+    type: "mongodb" | "postgres" | "mysql" | "disabled";
     mongodb?: AkumaKodoMongodbProvider;
   };
   utils: AkumaKodoUtilities;
