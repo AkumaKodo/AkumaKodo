@@ -7,7 +7,7 @@ export class AkumaKodoVersionControl {
   private readonly RequiredDenoVersion: string;
 
   constructor(config: AkumaCreateBotOptions) {
-    this.RequiredDenoVersion = "2.20.1";
+    this.RequiredDenoVersion = "1.20.1";
     this.logger = new AkumaKodoLogger(config);
   }
   /**
