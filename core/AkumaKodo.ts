@@ -66,7 +66,7 @@ export class AkumaKodoBotCore {
     if(validation === 1) {
       // In case debug is not enabled we will still send an error message.
       if(!config.optional.bot_debug_mode) {
-        console.error(`[AkumaKodo] - Your version of Deno is not supported. Please update to the latest version of Deno ~ https://deno.land/`)
+        console.error(`[AkumaKodo] - Your version of Deno is not supported. Please update to the latest version of Deno ~ deno upgrade`)
       }
       Deno.exit(0)
     }
