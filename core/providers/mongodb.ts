@@ -48,7 +48,6 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
 
   /**
    * Connect to the database
-   * @protected
    */
   public async connect() {
     while (!this.connectedStatus) {

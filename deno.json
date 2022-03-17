@@ -8,7 +8,7 @@
   },
   "fmt": {
     "files": {
-      "exclude": ["./documentation/book/**", "node_modules/**"]
+      "exclude": ["documentation/book/**", "node_modules/**"]
     },
     "options": {
       "useTabs": false,
