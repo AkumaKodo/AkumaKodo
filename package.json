@@ -1,9 +1,9 @@
 {
   "name": "akumakodo",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
-  "repository": "https://github.com/ThatGuyJamal/AkumaKodo.git",
-  "author": "ThatGuyJamal <43446907+ThatGuyJamal@users.noreply.github.com>",
+  "repository": "https://github.com/AkumaKodo/AkumaKodo.git",
+  "author": "ThatGuyJamal",
   "license": "MIT",
   "devDependencies": {
     "gh-pages": "^3.2.3"
