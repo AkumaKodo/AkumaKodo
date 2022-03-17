@@ -152,7 +152,7 @@ export class AkumaKodoBotCore {
 
     this.launcher = {
       task: new AkumaKodoTaskModule(this.instance, this.container),
-      modules: new AkumaKodoModule(this.instance, this.configuration),
+      modules: new AkumaKodoModule(this.configuration),
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
