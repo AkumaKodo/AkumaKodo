@@ -17,7 +17,7 @@ import { AkumaKodoTaskModule } from "./lib/task/mod.ts";
 import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
-import {AkumaKodoModule} from "./lib/modules/mod.ts";
+import { AkumaKodoModule } from "./lib/modules/mod.ts";
 
 /**
  * AkumaKodo is a discord bot framework.
@@ -36,7 +36,7 @@ export class AkumaKodoBotCore {
    */
   private launcher: {
     task: AkumaKodoTaskModule;
-    modules: AkumaKodoModule
+    modules: AkumaKodoModule;
   };
   /**
    * A utility function to check your version of deno for booting the bot.
@@ -65,12 +65,14 @@ export class AkumaKodoBotCore {
     const validation = this.versionControl.validate();
     // Stop the progress if the version is not valid.
     // We will only warn on debug for other options as they will not break the bot.
-    if(validation === 1) {
+    if (validation === 1) {
       // In case debug is not enabled we will still send an error message.
-      if(!config.optional.bot_debug_mode) {
-        console.error(`[AkumaKodo] - Your version of Deno is not supported. Please update to the latest version of Deno ~ deno upgrade`)
+      if (!config.optional.bot_debug_mode) {
+        console.error(
+          `[AkumaKodo] - Your version of Deno is not supported. Please update to the latest version of Deno ~ deno upgrade`,
+        );
       }
-      Deno.exit(0)
+      Deno.exit(0);
     }
 
     // If no optional values were passed
@@ -99,10 +101,12 @@ export class AkumaKodoBotCore {
       providers: {
         type: config.providers.type,
         // Checks if the provider was enabled or disabled by user
-        mongodb: config.providers?.type === "mongodb" || config.providers?.type !== "disabled" ? new AkumaKodoMongodbProvider({
-          provider: "mongodb",
-          mongodb_connection_url: config.providers?.mongodb_connection_url,
-        }, { ...config }) : undefined,
+        mongodb: config.providers?.type === "mongodb" || config.providers?.type !== "disabled"
+          ? new AkumaKodoMongodbProvider({
+            provider: "mongodb",
+            mongodb_connection_url: config.providers?.mongodb_connection_url,
+          }, { ...config })
+          : undefined,
       },
       defaultCooldown: {
         seconds: Milliseconds.Second * 5,

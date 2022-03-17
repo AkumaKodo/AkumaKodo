@@ -1,9 +1,7 @@
-import {PermissionStrings} from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/permissions/permissionStrings.ts";
-import {
-  ApplicationCommandOption, ApplicationCommandTypes, DiscordenoInteraction
-} from "../../deps.ts";
-import {AkumaKodoCollection} from "../lib/utils/Collection.ts";
-import {AkumaKodoBotCore} from "../AkumaKodo.ts";
+import { PermissionStrings } from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/permissions/permissionStrings.ts";
+import { ApplicationCommandOption, ApplicationCommandTypes, DiscordenoInteraction } from "../../deps.ts";
+import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
+import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 
 export interface AkumaKodoCommand {
   /**The command trigger that runs the command */
@@ -63,7 +61,7 @@ export interface AkumaKodoSubcommand extends AkumaKodoCommand {
   options?: ApplicationCommandOption[];
   /**The subcommand type*/
   SubcommandType?: "subcommand";
-};
+}
 
 export interface cooldownInterface {
   seconds: number;

@@ -13,8 +13,8 @@ const Bot = new AkumaKodoBotCore({
   },
   token: TOKEN,
   providers: {
-    type: "disabled"
-  }
+    type: "disabled",
+  },
 });
 
 await Bot.createBot();
