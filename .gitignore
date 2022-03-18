@@ -10,3 +10,7 @@ node_modules/
 # docs
 book/
 morsels_output/
+
+# Deno stuff
+registries/
+deps/
