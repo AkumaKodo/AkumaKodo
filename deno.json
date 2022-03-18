@@ -1,14 +1,23 @@
 {
   "lint": {
     "rules": {
-      "tags": ["recommended"],
-      "include": ["ban-untagged-todo"],
-      "exclude": ["no-unused-vars"]
+      "tags": [
+        "recommended"
+      ],
+      "include": [
+        "ban-untagged-todo"
+      ],
+      "exclude": [
+        "no-unused-vars"
+      ]
     }
   },
   "fmt": {
     "files": {
-      "exclude": ["documentation/book/**", "node_modules/**"]
+      "exclude": [
+        "documentation/book/**",
+        "node_modules/**"
+      ]
     },
     "options": {
       "useTabs": false,

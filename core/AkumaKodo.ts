@@ -162,14 +162,25 @@ export class AkumaKodoBotCore {
     };
 
     this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
-    this.initializeInteractions();
   }
 
-  protected initializeInteractions() {
-    this.launcher.command.updateApplicationCommands().then(() => {
+  /**
+   * @description - Loads all internal event handlers for the bot client.
+   * We handel Development scoped commands only by default. You can call this function again with your scope if you wish to use global commands.
+   */
+  public initializeInternalEvents(scope?: "Global" | "Development") {
+    this.launcher.command.updateApplicationCommands("Development").then(() => {
       this.container.logger.create("info", "AkumaKodo Bot Core", "Application commands updated!");
     });
 
+    if (scope === "Global") {
+      if (this.configuration.optional.bot_debug_mode) this.container.logger.create("warn", "initialize Internal Events", "Global scope not recommended while in development mode!")
+      this.launcher.command.updateApplicationCommands("Global").then(() => {
+        this.container.logger.create("info", "AkumaKodo Bot Core", "Application commands updated!");
+      });
+    }
+
+    // Runs the interactionCreate event for all active slash commands in the bot.
     this.instance.events.interactionCreate = (_, interaction) => {
       if (!interaction.data) return;
 
