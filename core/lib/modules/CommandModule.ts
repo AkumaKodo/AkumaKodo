@@ -28,7 +28,19 @@ export class AkumaKodoCommandModule {
    * @param interaction An interaction
    * @param context The interaction reply options
    */
-  public async createCommandReply(interaction: DiscordenoInteraction, context?: InteractionApplicationCommandCallbackData, hidden = false, type?: "Pong" | "ChannelMessageWithSource" | "DeferredChannelMessageWithSource" | "DeferredUpdateMessage" | "UpdateMessage" | "ApplicationCommandAutocompleteResult" | "Modal") {
+  public async createCommandReply(
+    interaction: DiscordenoInteraction,
+    context?: InteractionApplicationCommandCallbackData,
+    hidden = false,
+    type?:
+      | "Pong"
+      | "ChannelMessageWithSource"
+      | "DeferredChannelMessageWithSource"
+      | "DeferredUpdateMessage"
+      | "UpdateMessage"
+      | "ApplicationCommandAutocompleteResult"
+      | "Modal",
+  ) {
     switch (type) {
       case "Pong":
         await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
@@ -175,7 +187,6 @@ export class AkumaKodoCommandModule {
             "Update development commands",
             "Updating Development Commands, this will only take a few seconds...",
           );
-
         }
       } else {
         if (command.scope === "Global") {

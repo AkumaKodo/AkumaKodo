@@ -172,7 +172,6 @@ export class AkumaKodoBotCore {
    * We handel Development scoped commands only by default. You can call this function again with your scope if you wish to use global commands.
    */
   public initializeInternalEvents(scope?: "Global" | "Development") {
-
     try {
       this.launcher.command.updateApplicationCommands("Development").then(() => {
         this.container.logger.create("info", "Development Commands", "Application commands updated!");
@@ -202,41 +201,47 @@ export class AkumaKodoBotCore {
 
         switch (interaction.type) {
           case InteractionTypes.ApplicationCommand:
-
             try {
               // get the command then run out checks before execution
               const command = this.container.commands.get(interaction.data.name!);
-              if (!command) return
+              if (!command) return;
 
               // check if the user has the permission to run this command
               if (command.userPermissions) {
-
-                const validUserPermissions = validatePermissions(interaction.member?.permissions!, command.userPermissions);
+                const validUserPermissions = validatePermissions(
+                  interaction.member?.permissions!,
+                  command.userPermissions,
+                );
 
                 // If the permission check returns false, we cancel the command.
                 if (!validUserPermissions) {
                   if (this.configuration.optional.bot_log_command_reply) {
                     return this.launcher.command.createCommandReply(interaction, {
-                      content: `You do not have the required permissions to run this command! Missing: ${command.userPermissions.join(", ")
-                        }`,
+                      content: `You do not have the required permissions to run this command! Missing: ${
+                        command.userPermissions.join(", ")
+                      }`,
                     }, true);
                   }
-                  return
+                  return;
                 } else {
                   return command.run(interaction);
                 }
               } else if (command.botPermissions) {
-
-                const validBotPermissions = botHasGuildPermissions(this.instance, this.instance.id, command.botPermissions)
+                const validBotPermissions = botHasGuildPermissions(
+                  this.instance,
+                  this.instance.id,
+                  command.botPermissions,
+                );
 
                 if (!validBotPermissions) {
                   if (this.configuration.optional.bot_log_command_reply) {
                     return this.launcher.command.createCommandReply(interaction, {
-                      content: `I do not have the required permissions to run this command! Missing: ${command.botPermissions?.join(", ")
-                        }`,
+                      content: `I do not have the required permissions to run this command! Missing: ${
+                        command.botPermissions?.join(", ")
+                      }`,
                     }, true);
                   }
-                  return
+                  return;
                 } else {
                   return command.run(interaction);
                 }
