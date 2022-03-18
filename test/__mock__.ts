@@ -2,7 +2,6 @@ import { AkumaKodoBotCore } from "../core/AkumaKodo.ts";
 import {
   delay,
   dotEnvConfig,
-  InteractionResponseTypes,
 } from "../deps.ts";
 
 const env = dotEnvConfig({ export: true });
@@ -13,13 +12,13 @@ if (!TOKEN) {
 }
 
 const Bot = new AkumaKodoBotCore({
-  botId: BigInt("954180517908082739"),
+  botId: BigInt("946398697254703174"),
   events: {},
   intents: ["Guilds", "GuildMessages", "GuildMembers"],
   token: TOKEN,
 }, {
   optional: {
-    bot_development_server_id: BigInt("954186846504648706"),
+    bot_development_server_id: BigInt("946461976408764476"),
     bot_debug_mode: true,
     providers: {
       type: "disabled",
