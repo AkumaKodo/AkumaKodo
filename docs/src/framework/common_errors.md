@@ -1,0 +1,33 @@
+# Common Errors
+
+When developing in any technology we often come across some hardships, well here is a list of possible errors you may see in our framework
+when developing and how you can possibly fix them.
+
+Remember, you can always ask more questions at our [@discord]() server if nothing here helps.
+
+## Framework Errors
+
+```
+[403] The Authorization token you passed did not have permission to the resource.
+at Object.runMethod
+(https://deno.land/x/discordeno@13.0.0-rc18/src/rest/runMethod.ts:21:9)
+at upsertApplicationCommands
+(https://deno.land/x/discordeno@13.0.0-rc18/src/helpers/interactions/commands/upsertApplicationCommands.ts:19:33)
+```
+
+If you have seen this error on start-up of your bot it could mean a few things:
+
+1. You don't have permissions to send slash commands in this server. In discord the bot needs to be in the server to upload slash commands.
+   so make sure which ever development guild id you input was correct. [Review](./chapter_1/page_3.md) this page for the first steps.
+
+   Also keep in mind that discordeno uses `type bigint` over number so make sure you entered your application id as `BigInt("your-id")`.
+   This goes for your guild id to.
+
+2. Another reason for this error may be your bot was not invited with the `application.commands` scope. Make sure your bots invite url has
+   this scope, kick the bot and reinvite it.
+
+   Example url:
+
+   ```
+   https://discord.com/api/oauth2/authorize?client_id=your-id&permissions=0&scope=bot%20applications.commands
+   ```

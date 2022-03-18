@@ -13,6 +13,7 @@
   - [Task]()
   - [Providers]()
   - [Events]()
+- [Common Errors](./framework/common_errors.md)
 
 # API
 
