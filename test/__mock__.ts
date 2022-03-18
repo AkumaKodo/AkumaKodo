@@ -32,7 +32,7 @@ await Bot.createBot();
 Bot.instance.events.messageCreate = async (bot, payload) => {
   if (payload.content === "typescript-spammer") {
     const pSpam: number[] = []
-    for (let i = 0; i < 100; i++) {
+    for (let i = 0; i < 50; i++) {
       delay(3000)
       await Bot.instance.helpers.sendMessage(payload.channelId, {
         content: `typescript-spammer #${i}`,
