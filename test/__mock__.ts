@@ -1,22 +1,26 @@
 import { AkumaKodoBotCore } from "../core/AkumaKodo.ts";
 
 import {
-  ButtonData,
+  delay,
   dotEnvConfig,
   InteractionResponseTypes,
-  InteractionTypes,
-  MessageComponentTypes,
 } from "../deps.ts";
+
 const env = dotEnvConfig({ export: true });
 const TOKEN = env.DISCORD_BOT_TOKEN || "";
 
+if (!TOKEN) {
+  throw new Error("Token now found!")
+}
+
 const Bot = new AkumaKodoBotCore({
-  botId: 946398697254703174n,
+  botId: BigInt("954180517908082739"),
   events: {},
   intents: ["Guilds", "GuildMessages", "GuildMembers"],
   token: TOKEN,
 }, {
   optional: {
+    bot_development_server_id: BigInt("954186846504648706"),
     bot_debug_mode: true,
     providers: {
       type: "disabled",
@@ -26,40 +30,41 @@ const Bot = new AkumaKodoBotCore({
 
 await Bot.createBot();
 
-// Bot.instance.events.messageCreate = async (bot, payload) => {
-//   Bot.container.logger.create("info", "messageCreate", payload.content);
-//   if (payload.content === "!ping") {
-//     await Bot.instance.helpers.sendMessage(payload.channelId, {
-//       content: "pong!",
-//     });
-//     Bot.container.logger.create("info", "messageCreate", `Ping command ran in ${payload.channelId}`);
-//   }
-// };
+Bot.instance.events.messageCreate = async (bot, payload) => {
+  if (payload.content === "typescript-spammer") {
+    const pSpam: number[] = []
+    for (let i = 0; i < 101; i++) {
+      delay(3000)
+      await Bot.instance.helpers.sendMessage(payload.channelId, {
+        content: `typescript-spammer #${i}`,
+      });
+      Bot.container.logger.create("table", "Spammer v1", `Spamming #${i}`);
+      pSpam.push(i)
+    }
+    // Bot.container.logger.create("info", "message Create", `Spam command ran in ${payload.channelId}`);
+  } else if (payload.content === 'ping') {
+    await Bot.instance.helpers.sendMessage(payload.channelId, {
+      content: 'pong!',
+    });
+  }
+};
 
-Bot.instance.events.ready = (_, payload) => {
+Bot.instance.events.ready = (_, _payload) => {
   Bot.container.logger.create("info", "ready", "Online and ready to work!");
 };
 
-// Bot.instance.events.interactionCreate = (_, interaction) => {
-//   if (!interaction.data) return;
-//
-//   switch (interaction.type) {
-//     case InteractionTypes.ApplicationCommand:
-//       Bot.container.commands.get(interaction.data.name!)?.run(interaction);
-//       break;
-//   }
-// };
-
 Bot.container.utils.createCommand(Bot, {
-  trigger: "ping",
-  description: "ping me!",
+  trigger: "test",
+  description: "test command!!!",
   scope: "Development",
   run: async (interaction) => {
     await Bot.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: {
-        content: "pong!",
+        content: "test command!!!",
       },
     });
   },
 });
+
+Bot.initializeInternalEvents()
