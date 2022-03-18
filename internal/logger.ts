@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { bold, cyan, gray, italic, magenta, red, yellow } from "../deps.ts";
 import { AkumaKodoConfigurationInterface, defaultConfigOptions } from "../core/interfaces/Client.ts";
 
