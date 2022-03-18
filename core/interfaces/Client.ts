@@ -15,7 +15,7 @@ import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
 // deno-lint-ignore no-empty-interface
-export interface AkumaCreateBotOptions extends CreateBotOptions {}
+export interface AkumaCreateBotOptions extends CreateBotOptions { }
 
 /** Default options for client if non are passed */
 export const defaultConfigOptions = {
@@ -98,6 +98,8 @@ export interface AkumaKodoUtilities {
     bot: AkumaKodoBotCore,
     interaction: DiscordenoInteraction,
     context: InteractionApplicationCommandCallbackData,
+    hidden: boolean,
+    type?: "Pong" | "ChannelMessageWithSource" | "DeferredChannelMessageWithSource" | "DeferredUpdateMessage" | "UpdateMessage" | "ApplicationCommandAutocompleteResult" | "Modal",
   ): any | Promise<any>;
   // createSlashSubcommandGroup(
   //   bot: AkumaKodoBotInterface,

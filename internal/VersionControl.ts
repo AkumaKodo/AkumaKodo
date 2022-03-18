@@ -68,7 +68,7 @@ export class AkumaKodoVersionControl {
     this.logger.create(
       "debug",
       "Version Control",
-      "Deno version checks passed! Your version is up to date on deno " + this.RequiredDenoVersion,
+      "Deno version checks passed! Your version is up to date on deno v" + this.RequiredDenoVersion,
     );
 
     return 0;

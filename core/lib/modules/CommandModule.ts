@@ -2,11 +2,13 @@ import { AkumaKodoConfigurationInterface, AkumaKodoContainerInterface } from "..
 import { AkumaKodoCommand } from "../../interfaces/Command.ts";
 import {
   BotWithCache,
+  CreateMessage,
   DiscordenoInteraction,
   EditGlobalApplicationCommand,
   InteractionApplicationCommandCallbackData,
   InteractionResponseTypes,
   MakeRequired,
+  sendMessage,
   upsertApplicationCommands,
 } from "../../../deps.ts";
 
@@ -26,11 +28,65 @@ export class AkumaKodoCommandModule {
    * @param interaction An interaction
    * @param context The interaction reply options
    */
-  createCommandReply(interaction: DiscordenoInteraction, context: InteractionApplicationCommandCallbackData) {
-    this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: context,
-    });
+  public async createCommandReply(interaction: DiscordenoInteraction, context?: InteractionApplicationCommandCallbackData, hidden = false, type?: "Pong" | "ChannelMessageWithSource" | "DeferredChannelMessageWithSource" | "DeferredUpdateMessage" | "UpdateMessage" | "ApplicationCommandAutocompleteResult" | "Modal") {
+    switch (type) {
+      case "Pong":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.Pong,
+          private: hidden,
+          data: context,
+        });
+        break;
+      case "ChannelMessageWithSource":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.ChannelMessageWithSource,
+          private: hidden,
+          data: context,
+        });
+        break;
+      case "DeferredChannelMessageWithSource":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+          private: hidden,
+          data: context,
+        });
+        break;
+      case "DeferredUpdateMessage":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.DeferredUpdateMessage,
+          private: hidden,
+          data: context,
+        });
+        break;
+      case "UpdateMessage":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.UpdateMessage,
+          private: hidden,
+          data: context,
+        });
+        break;
+      case "ApplicationCommandAutocompleteResult":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
+          private: hidden,
+          data: context,
+        });
+        break;
+      case "Modal":
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.Modal,
+          private: hidden,
+          data: context,
+        });
+        break;
+      default:
+        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+          type: InteractionResponseTypes.ChannelMessageWithSource,
+          private: hidden,
+          data: context,
+        });
+        break;
+    }
   }
 
   /**

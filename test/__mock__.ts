@@ -59,11 +59,11 @@ Bot.container.utils.createCommand(Bot, {
   trigger: "test",
   description: "test command!",
   scope: "Development",
-  userPermissions: ["ADMINISTRATOR"],
+  botPermissions: ["ADMINISTRATOR"],
   run: async (interaction) => {
     await Bot.container.utils.createCommandReply(Bot, interaction, {
       content: "test command ran!",
-    });
+    }, true);
   },
 });
 
@@ -74,7 +74,7 @@ Bot.container.utils.createCommand(Bot, {
   run: async (interaction) => {
     await Bot.container.utils.createCommandReply(Bot, interaction, {
       content: "pong!",
-    });
+    }, false);
   },
 });
 
