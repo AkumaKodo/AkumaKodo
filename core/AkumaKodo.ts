@@ -227,8 +227,6 @@ export class AkumaKodoBotCore {
                 }
               } else if (command.botPermissions) {
 
-                console.log(command.botPermissions)
-
                 const validBotPermissions = botHasGuildPermissions(this.instance, this.instance.id, command.botPermissions)
 
                 if (!validBotPermissions) {
