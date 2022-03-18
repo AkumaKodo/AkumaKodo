@@ -47,30 +47,51 @@ _Coming soon..._
 ```typescript
 import { AkumaKodoBotCore } from "url-soon";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
+import {
+  delay,
+  InteractionResponseTypes,
+} from "https://deno.land/x/discordeno@13.0.0-rc18/mod.ts";
 
 const env = dotEnvConfig({ export: true });
 const TOKEN = env.DISCORD_BOT_TOKEN || "";
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore({
-  botId: 946398697254703174n,
+  botId: BigInt("954180517908082739"),
   events: {},
   intents: ["Guilds", "GuildMessages", "GuildMembers"],
-  optional: {
-    bot_internal_logs: true,
-  },
   token: TOKEN,
+}, {
+  optional: {
+    bot_development_server_id: BigInt("954186846504648706"),
+    bot_debug_mode: true,
+    providers: {
+      type: "disabled",
+    },
+  },
 });
 
 await Bot.createBot(); // Creates ws connection and starts listening
 
-Bot.client.events.messageCreate = (_, payload) => {
-  Bot.container.logger.create("info", "messageCreate", payload.content);
-};
-
 Bot.client.events.ready = (_, payload) => {
   Bot.container.logger.create("info", "ready", "Online and ready to work!");
 };
+
+Bot.container.utils.createCommand(Bot, {
+  trigger: "ping",
+  description: "ping me!",
+  scope: "Development",
+  run: async (interaction) => {
+    await Bot.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: {
+        content: `Pong! ${interaction.user.username}`,
+      },
+    });
+  },
+});
+
+Bot.initializeInternalEvents()
 ```
 
 Continue reading!
