@@ -1,6 +1,14 @@
 import { AkumaKodoConfigurationInterface, AkumaKodoContainerInterface } from "../../interfaces/Client.ts";
 import { AkumaKodoCommand } from "../../interfaces/Command.ts";
-import { BotWithCache, DiscordenoInteraction, EditGlobalApplicationCommand, InteractionResponseTypes, MakeRequired, upsertApplicationCommands } from "../../../deps.ts";
+import {
+  BotWithCache,
+  DiscordenoInteraction,
+  EditGlobalApplicationCommand,
+  InteractionApplicationCommandCallbackData,
+  InteractionResponseTypes,
+  MakeRequired,
+  upsertApplicationCommands,
+} from "../../../deps.ts";
 
 export class AkumaKodoCommandModule {
   public container: AkumaKodoContainerInterface;
@@ -11,6 +19,18 @@ export class AkumaKodoCommandModule {
     this.container = container;
     this.configuration = config;
     this.instance = bot;
+  }
+
+  /**
+   * A quick util for a developer to send interaction command messages
+   * @param interaction An interaction
+   * @param context The interaction reply options
+   */
+  createCommandReply(interaction: DiscordenoInteraction, context: InteractionApplicationCommandCallbackData) {
+    this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+      type: InteractionResponseTypes.ChannelMessageWithSource,
+      data: context,
+    });
   }
 
   /**
@@ -88,18 +108,19 @@ export class AkumaKodoCommandModule {
           if (!this.configuration.optional.bot_development_server_id) {
             throw new Error("Development server id is not set in config options!");
           }
-          this.container.logger.create(
-            "info",
-            "Update development commands",
-            "Updating Development Commands, this takes up to 1 minute to take effect...",
-          );
           upsertApplicationCommands(
             this.instance,
             developmentCommands,
             this.configuration.optional.bot_development_server_id,
           ).catch((e) => this.container.logger.create("error", "Update development commands Error", e));
-        }
 
+          this.container.logger.create(
+            "info",
+            "Update development commands",
+            "Updating Development Commands, this will only take a few seconds...",
+          );
+
+        }
       } else {
         if (command.scope === "Global") {
           globalCommands.push({
@@ -119,7 +140,11 @@ export class AkumaKodoCommandModule {
             "Update global commands",
             "Updating Global Commands, this takes up to 1 hour to take effect...",
           );
-          this.container.logger.create("info", "Update global commands", `Commands added: ${globalCommands.join(", ")}`);
+          this.container.logger.create(
+            "info",
+            "Update global commands",
+            `Commands added: ${globalCommands.join(", ")}`,
+          );
           await this.instance.helpers.upsertApplicationCommands(globalCommands).catch((e) =>
             this.container.logger.create("error", "Update global commands Error", e)
           );

@@ -1,16 +1,14 @@
 import {
   BotWithCache,
-  ButtonData,
   createBot,
   enableCachePlugin,
   enableCacheSweepers,
   enableHelpersPlugin,
   enablePermissionsPlugin,
-  InteractionResponseTypes,
   InteractionTypes,
-  MessageComponentTypes,
   startBot,
   stopBot,
+  validatePermissions,
 } from "../deps.ts";
 import {
   AkumaCreateBotOptions,
@@ -139,6 +137,9 @@ export class AkumaKodoBotCore {
         createCommand(bot, command) {
           bot.launcher.command.createCommand(command);
         },
+        createCommandReply(bot, interaction, ctx) {
+          bot.launcher.command.createCommandReply(interaction, ctx);
+        },
         // createSlashSubcommand(bot, command, subcommandGroup, options) {
         //   createSlashSubcommand(bot, command, subcommandGroup, options);
         // },
@@ -170,30 +171,71 @@ export class AkumaKodoBotCore {
    * We handel Development scoped commands only by default. You can call this function again with your scope if you wish to use global commands.
    */
   public initializeInternalEvents(scope?: "Global" | "Development") {
-    this.launcher.command.updateApplicationCommands("Development").then(() => {
-      this.container.logger.create("info", "AkumaKodo Bot Core", "Application commands updated!");
-    });
 
-    if (scope === "Global") {
-      if (this.configuration.optional.bot_debug_mode) this.container.logger.create("warn", "initialize Internal Events", "Global scope not recommended while in development mode!")
-      this.launcher.command.updateApplicationCommands("Global").then(() => {
-        this.container.logger.create("info", "AkumaKodo Bot Core", "Application commands updated!");
+    try {
+      this.launcher.command.updateApplicationCommands("Development").then(() => {
+        this.container.logger.create("info", "Development Commands", "Application commands updated!");
       });
-    }
 
-    // Runs the interactionCreate event for all active slash commands in the bot.
-    this.instance.events.interactionCreate = (_, interaction) => {
-      if (!interaction.data) return;
-      switch (interaction.type) {
-        case InteractionTypes.ApplicationCommand:
-          try {
-            this.container.commands.get(interaction.data.name!)?.run(interaction)
-          } catch (e) {
-            this.container.logger.create("error", "AkumaKodo Bot Core", `Error while running command: ${e}`);
-          }
-          break;
+      // Checks if user wants to init global commands
+      if (scope === "Global") {
+        if (this.configuration.optional.bot_debug_mode) {
+          this.container.logger.create(
+            "warn",
+            "initialize Internal Events",
+            "Global scope not recommended while in development mode!",
+          );
+        }
+        this.launcher.command.updateApplicationCommands("Global").then(() => {
+          this.container.logger.create("info", "Global Commands", "Global Application commands updated!");
+        });
       }
-    };
+    } catch (error) {
+      this.container.logger.create("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
+      this.container.logger.create("error", "AkumaKodo Bot Core", error);
+      // Only start listening for events after all slash commands are posted!
+    } finally {
+      // Runs the interactionCreate event for all active slash commands in the bot.
+      this.instance.events.interactionCreate = (_, interaction) => {
+        if (!interaction.data) return;
+        switch (interaction.type) {
+          case InteractionTypes.ApplicationCommand:
+            try {
+              // get the command then run out checks before execution
+              const command = this.container.commands.get(interaction.data.name!);
+              if (!command) return
+              // check if the user has the permission to run this command
+              if (command.userPermissions) {
+                const validUserPermissions = validatePermissions(interaction.member?.permissions!, command.userPermissions);
+
+                /**
+                 * TODO - Handle bot permissions
+                 * 
+                 * const validBotPermissions = validatePermissions(, command.botPermissions);
+                 * console.debug(`Valid: ${validBotPermissions}`);
+                 */
+
+                // If the permission check returns false, we cancel the command.
+                if (!validUserPermissions) {
+                  if (this.configuration.optional.bot_log_command_reply) {
+                    return this.launcher.command.createCommandReply(interaction, {
+                      content: `You do not have the required permissions to run this command! Missing: ${command.userPermissions.join(", ")
+                        }`,
+                    });
+                  }
+                  return
+                } else {
+                  return command.run(interaction);
+                }
+              }
+              return command.run(interaction);
+            } catch (e) {
+              this.container.logger.create("error", "Interaction create", `Error while running command: ${e}`);
+            }
+            break;
+        }
+      };
+    }
   }
 
   /**

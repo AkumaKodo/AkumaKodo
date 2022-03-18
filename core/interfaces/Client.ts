@@ -1,4 +1,10 @@
-import { CreateBotOptions, DiscordenoMessage } from "../../deps.ts";
+// deno-lint-ignore-file no-explicit-any
+import {
+  CreateBotOptions,
+  DiscordenoInteraction,
+  DiscordenoMessage,
+  InteractionApplicationCommandCallbackData,
+} from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { AkumaKodoCommand, cooldownInterface } from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
@@ -8,6 +14,7 @@ import { AkumaKodoEmbed, AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
 import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
+// deno-lint-ignore no-empty-interface
 export interface AkumaCreateBotOptions extends CreateBotOptions {}
 
 /** Default options for client if non are passed */
@@ -86,7 +93,12 @@ export interface AkumaKodoContainerInterface {
  */
 export interface AkumaKodoUtilities {
   /** Creates a command */
-  createCommand(bot: AkumaKodoBotCore, command: AkumaKodoCommand): void | Promise<void>;
+  createCommand(bot: AkumaKodoBotCore, command: AkumaKodoCommand): any | Promise<any>;
+  createCommandReply(
+    bot: AkumaKodoBotCore,
+    interaction: DiscordenoInteraction,
+    context: InteractionApplicationCommandCallbackData,
+  ): any | Promise<any>;
   // createSlashSubcommandGroup(
   //   bot: AkumaKodoBotInterface,
   //   command: string,
@@ -100,11 +112,11 @@ export interface AkumaKodoUtilities {
   //   options?: { split?: boolean; retries?: number },
   // ): Promise<void>;
   /** Creates a Task */
-  createTask(bot: AkumaKodoBotCore, task: AkumaKodoTask, callback?: () => any): void | Promise<void>;
+  createTask(bot: AkumaKodoBotCore, task: AkumaKodoTask, callback?: () => any): any | Promise<any>;
   /** Deletes a Task */
-  destroyTasks(bot: AkumaKodoBotCore, callback?: () => any): void | Promise<void>;
+  destroyTasks(bot: AkumaKodoBotCore, callback?: () => any): any | Promise<any>;
   /** Creates an Embed */
-  createEmbed(options: AkumaKodoEmbedInterface): void;
+  createEmbed(options: AkumaKodoEmbedInterface): any;
   embed(): AkumaKodoEmbed;
 }
 

@@ -47,10 +47,7 @@ _Coming soon..._
 ```typescript
 import { AkumaKodoBotCore } from "url-soon";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
-import {
-  delay,
-  InteractionResponseTypes,
-} from "https://deno.land/x/discordeno@13.0.0-rc18/mod.ts";
+import { delay, InteractionResponseTypes } from "https://deno.land/x/discordeno@13.0.0-rc18/mod.ts";
 
 const env = dotEnvConfig({ export: true });
 const TOKEN = env.DISCORD_BOT_TOKEN || "";
@@ -91,7 +88,7 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 
-Bot.initializeInternalEvents()
+Bot.initializeInternalEvents();
 ```
 
 Continue reading!

@@ -32,7 +32,7 @@ export class AkumaKodoVersionControl {
           "error",
           "Version Control",
           "The version of the project is less than the required version. Please update to deno " +
-            this.RequiredDenoVersion,
+          this.RequiredDenoVersion,
         );
         return 1;
       }
@@ -41,7 +41,7 @@ export class AkumaKodoVersionControl {
           "warn",
           "Version Control",
           "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
-            this.RequiredDenoVersion,
+          this.RequiredDenoVersion,
         );
         return -1;
       }
@@ -50,7 +50,7 @@ export class AkumaKodoVersionControl {
           "error",
           "Version Control",
           "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
-            this.RequiredDenoVersion,
+          this.RequiredDenoVersion,
         );
         return 1;
       }
@@ -59,13 +59,17 @@ export class AkumaKodoVersionControl {
           "info",
           "Version Control",
           "The version of the project is greater than the required version. Please update to deno " +
-            this.RequiredDenoVersion,
+          this.RequiredDenoVersion,
         );
         return -1;
       }
     }
 
-    this.logger.create("debug", "VersionControl", "Deno version checks passed! Your version is up to date on deno " + this.RequiredDenoVersion );
+    this.logger.create(
+      "debug",
+      "Version Control",
+      "Deno version checks passed! Your version is up to date on deno " + this.RequiredDenoVersion,
+    );
 
     return 0;
   }

@@ -1,5 +1,4 @@
 import { AkumaKodoBotCore } from "../core/AkumaKodo.ts";
-
 import {
   delay,
   dotEnvConfig,
@@ -53,19 +52,28 @@ Bot.instance.events.messageCreate = async (bot, payload) => {
 };
 
 Bot.instance.events.ready = (_, _payload) => {
-  Bot.container.logger.create("info", "ready", "Online and ready to work!");
+  Bot.container.logger.log("info", "ready", "Online and ready to work!");
 };
 
 Bot.container.utils.createCommand(Bot, {
   trigger: "test",
   description: "test command!",
   scope: "Development",
+  userPermissions: ["ADMINISTRATOR"],
   run: async (interaction) => {
-    await Bot.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-      type: InteractionResponseTypes.ChannelMessageWithSource,
-      data: {
-        content: "test command!",
-      },
+    await Bot.container.utils.createCommandReply(Bot, interaction, {
+      content: "test command ran!",
+    });
+  },
+});
+
+Bot.container.utils.createCommand(Bot, {
+  trigger: "ping",
+  description: "ping pong me!",
+  scope: "Development",
+  run: async (interaction) => {
+    await Bot.container.utils.createCommandReply(Bot, interaction, {
+      content: "pong!",
     });
   },
 });

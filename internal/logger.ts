@@ -131,6 +131,47 @@ export class AkumaKodoLogger {
 
     this.configuration = config;
   }
+
+  public log(level: "debug" | "info" | "warn" | "error" | "fatal", event: string, message: string) {
+    switch (level) {
+      case "debug":
+        log({
+          logLevel: Loglevels.Debug,
+          name: event,
+        }).debug(message);
+        break;
+      case "info":
+        log({
+          logLevel: Loglevels.Info,
+          name: event,
+        }).info(message);
+        break;
+      case "warn":
+        log({
+          logLevel: Loglevels.Warn,
+          name: event,
+        }).warn(message);
+        break;
+      case "error":
+        log({
+          logLevel: Loglevels.Error,
+          name: event,
+        }).error(message);
+        break;
+      case "fatal":
+        log({
+          logLevel: Loglevels.Fatal,
+          name: event,
+        }).fatal(message);
+        break;
+      default:
+        log({
+          logLevel: Loglevels.Info,
+          name: event,
+        }).info(message);
+        break;
+    }
+  }
   /**
    * Internal logger class for the framework
    * @param level The log level to use
