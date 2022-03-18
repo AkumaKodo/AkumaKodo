@@ -6,7 +6,7 @@
 		"source.fixAll": true,
 		"source.organizeImports": true
 	},
-	"cSpell.words": ["Akuma", "cooldown", "Kodo", "upsert"],
+	"cSpell.words": ["Akuma", "cooldown", "Discordeno", "Kodo", "upsert"],
 	"deno.lint": true,
 	"deno.unstable": true
 }

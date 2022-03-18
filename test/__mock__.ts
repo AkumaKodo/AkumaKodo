@@ -33,7 +33,7 @@ await Bot.createBot();
 Bot.instance.events.messageCreate = async (bot, payload) => {
   if (payload.content === "typescript-spammer") {
     const pSpam: number[] = []
-    for (let i = 0; i < 101; i++) {
+    for (let i = 0; i < 100; i++) {
       delay(3000)
       await Bot.instance.helpers.sendMessage(payload.channelId, {
         content: `typescript-spammer #${i}`,
@@ -41,6 +41,9 @@ Bot.instance.events.messageCreate = async (bot, payload) => {
       Bot.container.logger.create("table", "Spammer v1", `Spamming #${i}`);
       pSpam.push(i)
     }
+    await Bot.instance.helpers.sendMessage(payload.channelId, {
+      content: `\`typescript-spammer complete!\``,
+    });
     // Bot.container.logger.create("info", "message Create", `Spam command ran in ${payload.channelId}`);
   } else if (payload.content === 'ping') {
     await Bot.instance.helpers.sendMessage(payload.channelId, {
@@ -55,13 +58,13 @@ Bot.instance.events.ready = (_, _payload) => {
 
 Bot.container.utils.createCommand(Bot, {
   trigger: "test",
-  description: "test command!!!",
+  description: "test command!",
   scope: "Development",
   run: async (interaction) => {
     await Bot.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
       type: InteractionResponseTypes.ChannelMessageWithSource,
       data: {
-        content: "test command!!!",
+        content: "test command!",
       },
     });
   },

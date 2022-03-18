@@ -6,6 +6,7 @@ import {
   enableCacheSweepers,
   enableHelpersPlugin,
   enablePermissionsPlugin,
+  InteractionResponseTypes,
   InteractionTypes,
   MessageComponentTypes,
   startBot,
@@ -183,10 +184,13 @@ export class AkumaKodoBotCore {
     // Runs the interactionCreate event for all active slash commands in the bot.
     this.instance.events.interactionCreate = (_, interaction) => {
       if (!interaction.data) return;
-
       switch (interaction.type) {
         case InteractionTypes.ApplicationCommand:
-          this.container.commands.get(interaction.data.name!)?.run(interaction);
+          try {
+            this.container.commands.get(interaction.data.name!)?.run(interaction)
+          } catch (e) {
+            this.container.logger.create("error", "AkumaKodo Bot Core", `Error while running command: ${e}`);
+          }
           break;
       }
     };
