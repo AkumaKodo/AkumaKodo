@@ -4,6 +4,7 @@ export class FileSystemModule {
     private container: AkumaKodoContainerInterface;
     private savedPaths: string[];
     private uniqueFilePathCounter: number;
+    private _errors: number
 
     public constructor(config: AkumaKodoContainerInterface) {
         this.savedPaths = [];
@@ -43,9 +44,10 @@ export class FileSystemModule {
 
             this.uniqueFilePathCounter++;
 
-            this.container.logger.create("info", "FS import", `Saved ${this.uniqueFilePathCounter} files!`);
+            if (this._errors < 1) this.container.logger.create("info", "FS import", `Saved ${this.uniqueFilePathCounter} ${this.uniqueFilePathCounter > 1 ? "files" : "file"}!`);
         } catch (e) {
-            this.container.logger.create("error", "FS import", `Failed to import ${path}!`);
+            this._errors++;
+            this.container.logger.create("error", "FS import", `Failed to import path: ${path}`);
         }
     }
 
@@ -59,9 +61,11 @@ export class FileSystemModule {
                 `${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/fileloader.ts#${this.uniqueFilePathCounter}`
             );
             this.savedPaths = [];
-            this.container.logger.create("info", "FS load", "Loaded all files!");
+
+            if (this._errors < 1) this.container.logger.create("info", "FS load", "Loaded all files!");
         } catch (e) {
-            this.container.logger.create("error", "FS load", `Failed to load files! ${e}`);
+            this._errors++
+            this.container.logger.create("error", "FS load", `Failed to load fileloader.ts\n ${e}`);
         }
     }
 
@@ -94,8 +98,9 @@ export class FileSystemModule {
 
             await this.load();
 
-            this.container.logger.create("info", "FS fastLoader", "Loaded all files!");
+            if (this._errors < 1) this.container.logger.create("info", "FS fastLoader", "Loaded all files!");
         } catch (e) {
+            this._errors++
             this.container.logger.create("error", "FS fastLoader", `Failed to load files! ${e}`);
         }
     }
