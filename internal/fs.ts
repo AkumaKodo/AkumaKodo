@@ -1,62 +1,76 @@
-export class FileSystemModule {
-    private savedPaths: string[];
-    private uniqueFilePathCounter: number
+import { AkumaKodoContainerInterface } from "../core/interfaces/Client.ts";
 
-    public constructor() {
+export class FileSystemModule {
+    private container: AkumaKodoContainerInterface;
+    private savedPaths: string[];
+    private uniqueFilePathCounter: number;
+
+    public constructor(config: AkumaKodoContainerInterface) {
         this.savedPaths = [];
         this.uniqueFilePathCounter = 0;
+        this.container = config;
     }
     /**
      * Imports all the files in the given directory and saves them to an array of strings to load later
-     * @param path 
+     * @param path
      */
     public async import(path: string) {
-        path = path.replaceAll("\\", "/");
+        try {
+            path = path.replaceAll("\\", "/");
 
-        const files = Deno.readDirSync(Deno.realPathSync(path));
+            const files = Deno.readDirSync(Deno.realPathSync(path));
 
-        for (const file of files) {
+            for (const file of files) {
+                if (!file.name) continue;
 
-            if (!file.name) continue;
+                const currentPath = `${path}/${file.name}`;
 
-            const currentPath = `${path}/${file.name}`;
+                if (file.isFile) {
+                    // if the file is not typescript, ignore it
+                    if (!currentPath.endsWith(".ts")) continue;
+                    this.savedPaths.push(
+                        `import "${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/${currentPath.substring(
+                            currentPath.indexOf(`src/`),
+                        )
+                        }#${this.uniqueFilePathCounter}";`,
+                    );
+                    continue;
+                }
 
-            if (file.isFile) {
-                // if the file is not typescript, ignore it
-                if (!currentPath.endsWith(".ts")) continue;
-                this.savedPaths.push(
-                    `import "${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/${currentPath.substring(
-                        currentPath.indexOf(`src/`),
-                    )
-                    }#${this.uniqueFilePathCounter}";`,
-                );
-                continue;
+                // Recursive function!
+                await this.import(currentPath);
             }
 
-            // Recursive function!
-            await this.import(currentPath);
-        }
+            this.uniqueFilePathCounter++;
 
-        this.uniqueFilePathCounter++;
+            this.container.logger.create("info", "FS import", `Saved ${this.uniqueFilePathCounter} files!`);
+        } catch (e) {
+            this.container.logger.create("error", "FS import", `Failed to import ${path}!`);
+        }
     }
 
     /**
-     * Loads all the saved paths from the file cache then imports them.
+     * Loads all the saved paths from the paths array then imports them.
      */
     public async load() {
-        await Deno.writeTextFile("fileloader.ts", this.savedPaths.join("\n").replaceAll("\\", "/"));
-        await import(
-            `${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/fileloader.ts#${this.uniqueFilePathCounter}`
-        );
-        this.savedPaths = [];
+        try {
+            await Deno.writeTextFile("fileloader.ts", this.savedPaths.join("\n").replaceAll("\\", "/"));
+            await import(
+                `${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/fileloader.ts#${this.uniqueFilePathCounter}`
+            );
+            this.savedPaths = [];
+            this.container.logger.create("info", "FS load", "Loaded all files!");
+        } catch (e) {
+            this.container.logger.create("error", "FS load", `Failed to load files! ${e}`);
+        }
     }
 
     /**
      * Util for loading all the files in a directory recursively.
      * Example: Commands, Events, etc
-     * @param paths 
-     * @param between 
-     * @param before 
+     * @param paths
+     * @param between
+     * @param before
      */
     public async fastLoader(
         /** An array of directories to import recursively. */
@@ -68,15 +82,21 @@ export class FileSystemModule {
         /** A function that runs before **actually** importing all the files. */
         before?: (uniqueFilePathCounter: number, paths: string[]) => void,
     ) {
-        await Promise.all(
-            [...paths].map((path) => {
-                if (between) between(path, this.uniqueFilePathCounter, paths);
-                this.import(path);
-            }),
-        );
+        try {
+            await Promise.all(
+                [...paths].map((path) => {
+                    if (between) between(path, this.uniqueFilePathCounter, paths);
+                    this.import(path);
+                }),
+            );
 
-        if (before) before(this.uniqueFilePathCounter, paths);
+            if (before) before(this.uniqueFilePathCounter, paths);
 
-        await this.load();
+            await this.load();
+
+            this.container.logger.create("info", "FS fastLoader", "Loaded all files!");
+        } catch (e) {
+            this.container.logger.create("error", "FS fastLoader", `Failed to load files! ${e}`);
+        }
     }
 }

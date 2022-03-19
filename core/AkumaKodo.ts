@@ -50,7 +50,7 @@ export class AkumaKodoBotCore {
    * Internal file system module
    * @private
    */
-  private fs: FileSystemModule
+  private fs: FileSystemModule;
   /**
    * A utility function to check your version of deno for booting the bot.
    * @private
@@ -102,8 +102,6 @@ export class AkumaKodoBotCore {
 
     // Sets the container for the bot
     this.instance = enableCachePlugin(createBot(botOptions));
-
-    this.fs = new FileSystemModule()
 
     // Enables the plugins on the instance of the bot
     // This needs to be done before other setup functions
@@ -175,9 +173,11 @@ export class AkumaKodoBotCore {
         },
         fastLoader(bot, paths, between, before) {
           bot.fs.fastLoader(paths, between, before);
-        }
-      }
+        },
+      },
     } as AkumaKodoContainerInterface;
+
+    this.fs = new FileSystemModule(this.container);
 
     this.launcher = {
       task: new AkumaKodoTaskModule(this.container),
@@ -237,8 +237,9 @@ export class AkumaKodoBotCore {
                 if (!validUserPermissions) {
                   if (this.configuration.optional.bot_log_command_reply) {
                     return this.launcher.command.createCommandReply(interaction, {
-                      content: `You do not have the required permissions to run this command! Missing: ${command.userPermissions.join(", ")
-                        }`,
+                      content: `You do not have the required permissions to run this command! Missing: ${
+                        command.userPermissions.join(", ")
+                      }`,
                     }, true);
                   }
                   return;
@@ -255,8 +256,9 @@ export class AkumaKodoBotCore {
                 if (!validBotPermissions) {
                   if (this.configuration.optional.bot_log_command_reply) {
                     return this.launcher.command.createCommandReply(interaction, {
-                      content: `I do not have the required permissions to run this command! Missing: ${command.botPermissions?.join(", ")
-                        }`,
+                      content: `I do not have the required permissions to run this command! Missing: ${
+                        command.botPermissions?.join(", ")
+                      }`,
                     }, true);
                   }
                   return;
