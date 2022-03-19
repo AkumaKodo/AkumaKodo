@@ -45,7 +45,7 @@ _Coming soon..._
 ## Example bot
 
 ```typescript
-import { AkumaKodoBotCore } from "url-soon";
+import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.0";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
 
 const env = dotEnvConfig({ export: true });
