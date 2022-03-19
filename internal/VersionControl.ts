@@ -74,7 +74,30 @@ export class AkumaKodoVersionControl {
     return 0;
   }
 
+  /**
+   * TODO - Use this function when v1 is out on deno land.
+   *  Return the latest stable version from the deno.land/x repository.
+   * @returns The version of the project.
+   */
+  private async getLatestVersion() {
+    const response = await fetch("https://cdn.deno.land/akumakodo/meta/versions.json");
+    const versions: Versions = await response.json();
+    return versions.latest;
+  }
+
   private static getInternalVersion() {
     return Deno.version.deno;
   }
+}
+
+type Versions = {
+  latest: string;
+  versions: string[];
+};
+
+/** Check the compatibility with the current Deno version */
+export interface DenoInfo {
+  current: string;
+  minimum: string;
+  command: string;
 }
