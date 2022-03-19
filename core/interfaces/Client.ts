@@ -15,7 +15,7 @@ import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
 // deno-lint-ignore no-empty-interface
-export interface AkumaCreateBotOptions extends CreateBotOptions {}
+export interface AkumaCreateBotOptions extends CreateBotOptions { }
 
 /** Default options for client if non are passed */
 export const defaultConfigOptions = {
@@ -77,6 +77,8 @@ export interface AkumaKodoContainerInterface {
   fs: {
     import: (bot: AkumaKodoBotCore, path: string) => Promise<void> | void;
     load: (bot: AkumaKodoBotCore) => Promise<void> | void;
+    /** Load your sub directory's using this function.
+     *  Keep in mind it uses your absolute path in your project. */
     fastLoader: (
       bot: AkumaKodoBotCore,
       /** An array of directories to import recursively. */
