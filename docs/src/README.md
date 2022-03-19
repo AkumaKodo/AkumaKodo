@@ -54,14 +54,14 @@ const TOKEN = env.DISCORD_BOT_TOKEN || "";
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
   {
-    botId: BigInt("954180517908082739"),
+    botId: BigInt("your-bot-id"),
     events: {},
     intents: ["Guilds", "GuildMessages", "GuildMembers"],
     token: TOKEN,
   },
   {
     optional: {
-      bot_development_server_id: BigInt("954186846504648706"),
+      bot_development_server_id: BigInt("your-guild-id"),
       bot_debug_mode: true,
       providers: {
         type: "disabled",
