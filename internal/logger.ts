@@ -178,10 +178,23 @@ export class AkumaKodoLogger {
    * @param event The event to log
    * @param context The context to log
    */
-  public debug(level: "debug" | "info" | "warn" | "error" | "fatal" | "table", event: string, context: any) {
+  public debug(
+    level: "debug" | "info" | "warn" | "error" | "fatal" | "table",
+    event: string,
+    context: any,
+    status?: "alpha" | "canary" | "stable" | "beta",
+  ) {
     // Check if the user enabled internal logging.
     if (!this.configuration?.optional.bot_debug_mode) return;
     try {
+      // Enable the unstable log level
+      if (status && status !== "stable") {
+        this.log(
+          "warn",
+          "AkumaKodo Logger",
+          `The event ${event.toLowerCase()} is not status ${status.toLowerCase()} ~ Please keep in mind this method may have unsolved bugs.`,
+        );
+      }
       // check if internal logging is enabled, if not return
       switch (level) {
         case "debug":
