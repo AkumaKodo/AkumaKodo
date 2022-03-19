@@ -15,8 +15,11 @@
   "fmt": {
     "files": {
       "exclude": [
-        "documentation/book/**",
-        "node_modules/**"
+        "docs/book/",
+        "node_modules/",
+        "gen/",
+        "deps/",
+        "registries/"
       ]
     },
     "options": {
