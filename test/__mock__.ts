@@ -25,7 +25,7 @@ export const Bot = new AkumaKodoBotCore({
 
 await Bot.createBot();
 
-Bot.instance.events.messageCreate = async (bot, payload) => {
+Bot.instance.events.messageCreate = async (_, payload) => {
   if (payload.content === "typescript-spammer") {
     const pSpam: number[] = [];
     for (let i = 0; i < 50; i++) {
