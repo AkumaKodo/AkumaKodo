@@ -12,9 +12,9 @@ const changelog = new Changelog("AkumaKodo")
       .changed("Added internal slash command handling using events. You can now enable or disable this.")
       .changed("Logger Errors to warn on un-stable modes.")
       .removed(
-        "For now until slash commands are fully implemented, I will not focus on message based commands. You will have to implement them yourself for now.",
+        "For now, until slash commands are fully implemented, I will not focus on message-based commands. You will have to implement them yourself.",
       ),
-  )
+  );
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");
