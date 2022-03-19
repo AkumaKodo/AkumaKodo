@@ -10,6 +10,7 @@ export class FileSystemModule {
         this.savedPaths = [];
         this.uniqueFilePathCounter = 0;
         this.container = config;
+        this._errors = 0;
     }
     /**
      * Imports all the files in the given directory and saves them to an array of strings to load later
