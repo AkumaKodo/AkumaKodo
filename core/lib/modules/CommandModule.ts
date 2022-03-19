@@ -17,7 +17,11 @@ export class AkumaKodoCommandModule {
   public configuration: AkumaKodoConfigurationInterface;
   private readonly instance: BotWithCache;
 
-  public constructor(bot: BotWithCache, container: AkumaKodoContainerInterface, config: AkumaKodoConfigurationInterface) {
+  public constructor(
+    bot: BotWithCache,
+    container: AkumaKodoContainerInterface,
+    config: AkumaKodoConfigurationInterface,
+  ) {
     this.container = container;
     this.configuration = config;
     this.instance = bot;

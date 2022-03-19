@@ -71,7 +71,7 @@ Bot.container.utils.createCommand(Bot, {
     await Bot.container.utils.createCommandReply(Bot, interaction, {
       embeds: [
         Bot.container.utils.embed().setColor("random").setDescription("pong!"),
-      ]
+      ],
     }, false);
   },
 });
