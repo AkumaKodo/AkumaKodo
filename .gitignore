@@ -15,3 +15,4 @@ morsels_output/
 registries/
 deps/
 gen/
+fileloader.ts
