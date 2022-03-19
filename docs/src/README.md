@@ -27,12 +27,10 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 
 ## Why use AkumaKodo
 
-- Database providers for beginners getting started.
-- Built in caching by default for quick data retrieval.
-- Built in logging system with multiple log levels and terminal colors.
-- Build in inhibitor system for permission handling.
-- Built in task for custom scheduled events and actions.
-- Function programming or OOP style.
+- Command driven framework
+- Utilities to make development easier
+- Internal framework debug mode
+- Pre-built Database providers
 
 ## Why not use AkumaKodo
 
