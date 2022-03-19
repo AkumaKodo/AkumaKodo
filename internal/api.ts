@@ -1,1 +1,1 @@
-export class api {}
+export class AkumaKodoApi {}

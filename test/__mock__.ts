@@ -75,5 +75,4 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 
-
 Bot.initializeInternalEvents();

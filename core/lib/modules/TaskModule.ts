@@ -1,9 +1,5 @@
 // deno-lint-ignore-file
-import {
-  AkumaCreateBotOptions,
-  AkumaKodoConfigurationInterface,
-  AkumaKodoContainerInterface,
-} from "../../interfaces/Client.ts";
+import { AkumaKodoContainerInterface } from "../../interfaces/Client.ts";
 import { AkumaKodoTask } from "../../interfaces/Task.ts";
 import { AkumaKodoCollection } from "../utils/Collection.ts";
 
@@ -45,7 +41,7 @@ export class AkumaKodoTaskModule {
         }, task.interval - (Date.now() % task.interval) ?? undefined),
       );
     }
-    this.container.logger.debug("info", "initialize Task", `Task module initialized`);
+    this.container.logger.debug("info", "initialize Task", `Task module initialized`, "beta");
   }
 
   /**

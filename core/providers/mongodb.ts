@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 import { AkumaKodoProvider, ProviderOptions } from "./mod.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
 import { AkumaKodoConfigurationInterface } from "../interfaces/Client.ts";
