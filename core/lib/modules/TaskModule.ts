@@ -8,7 +8,7 @@ import { AkumaKodoCollection } from "../utils/Collection.ts";
 
 export class AkumaKodoTaskModule {
   public container: AkumaKodoContainerInterface;
-  constructor(container: AkumaKodoContainerInterface) {
+  public constructor(container: AkumaKodoContainerInterface) {
     this.container = container;
   }
 
