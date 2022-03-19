@@ -69,7 +69,9 @@ Bot.container.utils.createCommand(Bot, {
   scope: "Development",
   run: async (interaction) => {
     await Bot.container.utils.createCommandReply(Bot, interaction, {
-      content: "pong!",
+      embeds: [
+        Bot.container.utils.embed().setColor("random").setDescription("pong!"),
+      ]
     }, false);
   },
 });

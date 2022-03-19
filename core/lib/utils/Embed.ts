@@ -85,9 +85,9 @@ export class AkumaKodoEmbed {
   setColor(color: string) {
     this.color = color.toLowerCase() === `random`
       ? // Random color
-        Math.floor(Math.random() * (0xffffff + 1))
+      Math.floor(Math.random() * (0xffffff + 1))
       : // Convert the hex to a acceptable color for discord
-        parseInt(color.replace("#", ""), 16);
+      parseInt(color.replace("#", ""), 16);
 
     return this;
   }

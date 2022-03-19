@@ -15,7 +15,7 @@ import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
 // deno-lint-ignore no-empty-interface
-export interface AkumaCreateBotOptions extends CreateBotOptions {}
+export interface AkumaCreateBotOptions extends CreateBotOptions { }
 
 /** Default options for client if non are passed */
 export const defaultConfigOptions = {
@@ -125,7 +125,7 @@ export interface AkumaKodoUtilities {
   /** Deletes a Task */
   destroyTasks(bot: AkumaKodoBotCore, callback?: () => any): any | Promise<any>;
   /** Creates an Embed */
-  createEmbed(options: AkumaKodoEmbedInterface): any;
+  createEmbed(options: AkumaKodoEmbedInterface): AkumaKodoEmbed;
   embed(): AkumaKodoEmbed;
 }
 
