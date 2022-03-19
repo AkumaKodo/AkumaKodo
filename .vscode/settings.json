@@ -13,6 +13,7 @@
     "cooldown",
     "Deno",
     "Discordeno",
+    "fileloader",
     "Greyple",
     "Kodo",
     "upsert"
