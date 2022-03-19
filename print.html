@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="framework/chapter_1/table_of_contents.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Task</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Events</div></li></ol></li><li class="chapter-item expanded "><a href="framework/common_errors.html"><strong aria-hidden="true">3.</strong> Common Errors</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/chapter_1.html"><strong aria-hidden="true">4.</strong> information</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="misc/contributors.html">Contributors</a></li><li class="chapter-item expanded affix "><a href="misc/changelog.html">Change-log</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="framework/chapter_1/table_of_contents.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Task</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Events</div></li></ol></li><li class="chapter-item expanded "><a href="framework/common_errors.html"><strong aria-hidden="true">3.</strong> Common Errors</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/chapter_1.html"><strong aria-hidden="true">4.</strong> information</a></li><li class="chapter-item expanded affix "><li class="part-title">Miscellaneous</li><li class="chapter-item expanded "><a href="misc/seven_steps.html"><strong aria-hidden="true">5.</strong> The Seven steps</a></li><li class="chapter-item expanded "><a href="misc/contributors.html"><strong aria-hidden="true">6.</strong> Contributors</a></li><li class="chapter-item expanded "><a href="misc/changelog.html"><strong aria-hidden="true">7.</strong> Change-log</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -155,6 +155,8 @@ maintaining a high level of <code>performance</code>.</p>
 <p><img src="https://img.shields.io/github/commit-activity/y/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub commit activity" />
 <img src="https://img.shields.io/github/contributors/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub contributors" />
 <img src="https://img.shields.io/github/stars/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub Repo stars" />
+<img src="https://img.shields.io/tokei/lines/github/AkumaKodo/AkumaKodo?style=for-the-badge" alt="Lines of code" />
+<img src="https://img.shields.io/github/repo-size/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub repo size" />
 <img src="https://img.shields.io/discord/837830514130812970?style=for-the-badge" alt="Discord" /></p>
 <p><em>The framework is build on discordeno version <a href="https://deno.land/x/discordeno@13.0.0-rc18">13.0.0-rc18</a></em></p>
 <h3 id="inspiration"><a class="header" href="#inspiration">Inspiration</a></h3>
@@ -167,12 +169,10 @@ maintaining a high level of <code>performance</code>.</p>
 </ul>
 <h2 id="why-use-akumakodo"><a class="header" href="#why-use-akumakodo">Why use AkumaKodo</a></h2>
 <ul>
-<li>Database providers for beginners getting started.</li>
-<li>Built in caching by default for quick data retrieval.</li>
-<li>Built in logging system with multiple log levels and terminal colors.</li>
-<li>Build in inhibitor system for permission handling.</li>
-<li>Built in task for custom scheduled events and actions.</li>
-<li>Function programming or OOP style.</li>
+<li>Command driven framework</li>
+<li>Utilities to make development easier</li>
+<li>Internal framework debug mode</li>
+<li>Pre-built Database providers</li>
 </ul>
 <h2 id="why-not-use-akumakodo"><a class="header" href="#why-not-use-akumakodo">Why not use AkumaKodo</a></h2>
 <ul>
@@ -191,49 +191,46 @@ const TOKEN = env.DISCORD_BOT_TOKEN || &quot;&quot;;
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
-	{
-		botId: BigInt(&quot;954180517908082739&quot;),
-		events: {},
-		intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
-		token: TOKEN,
-	},
-	{
-		optional: {
-			bot_development_server_id: BigInt(&quot;954186846504648706&quot;),
-			bot_debug_mode: true,
-			providers: {
-				type: &quot;disabled&quot;,
-			},
-		},
-	}
+  {
+    botId: BigInt(&quot;954180517908082739&quot;),
+    events: {},
+    intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
+    token: TOKEN,
+  },
+  {
+    optional: {
+      bot_development_server_id: BigInt(&quot;954186846504648706&quot;),
+      bot_debug_mode: true,
+      providers: {
+        type: &quot;disabled&quot;,
+      },
+    },
+  },
 );
 
 // Creates ws connection and starts listening
 await Bot.createBot();
 
 Bot.client.events.ready = (_, payload) =&gt; {
-	Bot.container.logger.create(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
+  Bot.container.logger.create(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
 };
 
 Bot.container.utils.createCommand(Bot, {
-	trigger: &quot;ping&quot;,
-	description: &quot;ping pong me!&quot;,
-	scope: &quot;Development&quot;,
-	run: async (interaction) =&gt; {
-		await Bot.container.utils.createCommandReply(
-			Bot,
-			interaction,
-			{
-				embeds: [
-					Bot.container.utils
-						.embed()
-						.setColor(&quot;random&quot;)
-						.setDescription(&quot;pong!&quot;),
-				],
-			},
-			false
-		);
-	},
+  trigger: &quot;ping&quot;,
+  description: &quot;ping pong me!&quot;,
+  scope: &quot;Development&quot;,
+  run: async (interaction) =&gt; {
+    await Bot.container.utils.createCommandReply(
+      Bot,
+      interaction,
+      {
+        embeds: [
+          Bot.container.utils.embed().setColor(&quot;random&quot;).setDescription(&quot;pong!&quot;),
+        ],
+      },
+      false,
+    );
+  },
 });
 
 // Enables the built in instance events
@@ -249,7 +246,7 @@ Bot.initializeInternalEvents();
 Typescript fundamentals are needed to use and extends this framework to the fullest extent.</p>
 <p>Learn about <a href="https://www.typescriptlang.org/docs/handbook/typescript-from-scratch.html">typescript</a> here.</p>
 <p>If you are new to programming with the discord api I also recommend read the <a href="https://discord.com/developers/docs/intro">discord api documentation</a>.
-You can find a lot of helpful information there.</p>
+You can find a lot of helpful information there. Check out the <a href="framework/chapter_1/../../misc/seven_steps.html">Seven Steps</a> if you have not already 😁!</p>
 <p>You can also learn more about discord bot development on YouTube, in discord servers, and reddit.</p>
 <h2 id="creating-a-bot-application"><a class="header" href="#creating-a-bot-application">Creating a bot application</a></h2>
 <p>Assuming your reading to make your first discord bot, we will start with the basics.</p>
@@ -292,6 +289,19 @@ this scope, kick the bot and reinvite it.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api"><a class="header" href="#api">API</a></h1>
 <p>AkumaKodo is built around <a href="https://github.com/discordeno/discordeno">discordeno</a>, so you can find its api documentation <a href="https://doc.deno.land/https://deno.land/x/discordeno@13.0.0-rc18/mod.ts">here</a>.</p>
 <p><strong>Api</strong> docs for AkumaKodo will be available later.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="the-seven-steps-of-programming"><a class="header" href="#the-seven-steps-of-programming">The Seven Steps of Programming</a></h1>
+<p>Many novice programmers attempt to dive right into writing the code (in the programming language) as the first step. However, writing the code is actually a much later step in the process. A good programmer will plan first and write second, possibly breaking down a large programming task into several smaller tasks in the process. Even when cautioned to plan first and code second, many programming students ignore the advice—after all, why “waste” 30 minutes planning when you are time-crunched from all the work you have to do. This tradeoff, however, presents a false economy—30 minutes planning could save hours of trying to make the code work properly. Well planned code is not only more likely to be correct (or at least closer to correct), but is also easier to understand—and thus fix.</p>
+<p>To try to better understand the importance of planning before you write, imagine an analogy to building a house or sky scraper. If you were tasked with building a sky scraper, would you break ground and start building right away, figuring out how the building is designed as you go? Hopefully not. Instead, you (or an architect) would design blueprints for the building first. These blueprints would be iteratively refined until they meet everyone’s specifications—they must meet the requirements of the building’s owner, as well as be possible to build reasonably. Once the blueprints are completed, they must be approved by the local government. Actual construction only begins once the plans are fully completed. Programming should be done in a similar manner— come up with a complete plan (algorithm) first and build (implement in code) second.</p>
+<p>We said that the heart of programming is to figure out how to solve a class of problems—not just one particular problem. The distinction here is best explained by an example. Consider the task of figuring out if a particular number (e.g., 7) is prime. With sufficient knowledge of math (i.e., the definition of a prime number and the rules of division), one can solve this problem—determining that 7 is in fact prime. However, a programming problem typically looks at a more general class of problems. We would typically not write a program to determine if 7 is prime, but rather a program which, given a number N, determines if N is prime. Once we have an algorithm for this general class of problems, we can have the computer solve any particular instance of the problem for us.</p>
+<p>When we examine a class of problems, we have parameters which tell us which particular problem in the class we are solving. In the previous example, the class of problems is parameterized by N—the number we want to test for primality. To develop an algorithm for this class of problems, we must account for all possible legal values of the parameters. As we will see later, programming languages let us restrict what type of information a parameter can represent, to limit the legal values to those which make sense in the context of the problem. For primality testing, we would want our parameter N to be restricted such that it can only hold integer numbers. It would not make any sense to check if letters, words, or files are prime.</p>
+<p>To write a program which takes any number N and determines if N is prime, we must first figure out the algorithm for this class of problems. As we said before, if we attack the problem by blindly writing code, we will end up with a mess—much like constructing a sky scraper with no plan. Coming up with the appropriate algorithm for a class of problems is a challenging task, and typically requires significant work and thought.</p>
+<p><img src="misc/../images/framework/01_high_level_prog.png" alt="image one" /></p>
+<p>This figure shows a high-level overview of the programming process. A programmer starts by devising the algorithm for the task they are trying to solve. We will split this planning phase into four steps in the process of writing a program, which we will discuss in more detail shortly. At the end of these four steps, the programmer should have a complete plan for the task at hand—and be convinced that the plan is a good one.</p>
+<p>Devising an algorithm takes first four steps: working on an example, writing it down what they did, generalizing those steps and will testing them.</p>
+<p><img src="misc/../images/framework/f_01_steps_new.png" alt="image twu" /></p>
+<p>After devising a proper algorithm, they are ready for Step 5 of the programming process: translating her plan into code in the programming language they are using for her current project. Initially, translation to code will go slowly, as you will be unfamiliar with the syntax, likely needing to look up the specific details often. However, even if slow, it should be fairly straightforward. You already devised the plan, so you should have done all the actual problem-solving tasks already. Your algorithm may have some complex steps, but that is fine. As we will see later, whenever your algorithm calls for a step that is too complicated to be simply translated into a few lines of code, you should turn that step into its own separate programming task and repeat the programming process on it. In the next course, we will discuss translation to code in much more detail, as well as how to turn the code into something that the computer can run.</p>
+<p>Once the algorithm is implemented in code, the programmer must test her code, which is the 6th Step of the programming process. By testing the program, the programmer tries to uncover errors in her algorithm or implementation. If the programmer finds errors in her program, they debug the program (Step 7): finding out the cause of the error, and fixing it. The programmer may need to return to the algorithm design steps (if the error lies in the algorithm) or to translation to code (if the error lies in the implementation) to correct the error. The programmer then repeats all of the later steps.
+At some point, the programmer completes enough test cases with no errors to become convinced that her program is correct. Note that we said the programmer becomes convinced that her program is correct. No amount of testing can guarantee that the program is correct. Instead, more testing increases the programmer's confidence that the code is correct. When the programmer is convinced her code is correct, they've successfully completed the task at hand. We will discuss testing and debugging in much more detail in the next course.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="contributors"><a class="header" href="#contributors">Contributors</a></h1>
 <p>Here is a list of the contributors who have helped to improve AkumaKodo. Big
 shout-out to them!</p>
@@ -299,8 +309,26 @@ shout-out to them!</p>
 <li><a href="https://github.com/ThatGuyJamal">ThatGuyJamal</a></li>
 </ul>
 <p>If you feel you're missing from this list, feel free to add yourself in a PR.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="change-log"><a class="header" href="#change-log">Change Log</a></h1>
-<p>Will be filled when v1 is out.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="akumakodo"><a class="header" href="#akumakodo">AkumaKodo</a></h1>
+<p>All notable changes to this project will be documented in this file.</p>
+<p>The format is based on <a href="http://keepachangelog.com/">Keep a Changelog</a>
+and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>.</p>
+<h2 id="010---2022-03-19"><a class="header" href="#010---2022-03-19">0.1.0 - 2022-03-19</a></h2>
+<p>Initial release of AkumaKodo</p>
+<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>Interaction Command handling</li>
+<li>Lots of util functions</li>
+</ul>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li>Added internal slash command handling using events. You can now enable or disable this.</li>
+<li>Logger Errors to warn on un-stable modes.</li>
+</ul>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<ul>
+<li>For now until slash commands are fully implemented, I will not focus on message based commands. You will have to implement them yourself for now.</li>
+</ul>
 
                     </main>
 

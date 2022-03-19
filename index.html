@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="framework/chapter_1/table_of_contents.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Task</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Events</div></li></ol></li><li class="chapter-item expanded "><a href="framework/common_errors.html"><strong aria-hidden="true">3.</strong> Common Errors</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/chapter_1.html"><strong aria-hidden="true">4.</strong> information</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="misc/contributors.html">Contributors</a></li><li class="chapter-item expanded affix "><a href="misc/changelog.html">Change-log</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="framework/chapter_1/table_of_contents.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Task</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Events</div></li></ol></li><li class="chapter-item expanded "><a href="framework/common_errors.html"><strong aria-hidden="true">3.</strong> Common Errors</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/chapter_1.html"><strong aria-hidden="true">4.</strong> information</a></li><li class="chapter-item expanded affix "><li class="part-title">Miscellaneous</li><li class="chapter-item expanded "><a href="misc/seven_steps.html"><strong aria-hidden="true">5.</strong> The Seven steps</a></li><li class="chapter-item expanded "><a href="misc/contributors.html"><strong aria-hidden="true">6.</strong> Contributors</a></li><li class="chapter-item expanded "><a href="misc/changelog.html"><strong aria-hidden="true">7.</strong> Change-log</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -157,6 +157,8 @@ maintaining a high level of <code>performance</code>.</p>
 <p><img src="https://img.shields.io/github/commit-activity/y/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub commit activity" />
 <img src="https://img.shields.io/github/contributors/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub contributors" />
 <img src="https://img.shields.io/github/stars/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub Repo stars" />
+<img src="https://img.shields.io/tokei/lines/github/AkumaKodo/AkumaKodo?style=for-the-badge" alt="Lines of code" />
+<img src="https://img.shields.io/github/repo-size/AkumaKodo/AkumaKodo?style=for-the-badge" alt="GitHub repo size" />
 <img src="https://img.shields.io/discord/837830514130812970?style=for-the-badge" alt="Discord" /></p>
 <p><em>The framework is build on discordeno version <a href="https://deno.land/x/discordeno@13.0.0-rc18">13.0.0-rc18</a></em></p>
 <h3 id="inspiration"><a class="header" href="#inspiration">Inspiration</a></h3>
@@ -169,12 +171,10 @@ maintaining a high level of <code>performance</code>.</p>
 </ul>
 <h2 id="why-use-akumakodo"><a class="header" href="#why-use-akumakodo">Why use AkumaKodo</a></h2>
 <ul>
-<li>Database providers for beginners getting started.</li>
-<li>Built in caching by default for quick data retrieval.</li>
-<li>Built in logging system with multiple log levels and terminal colors.</li>
-<li>Build in inhibitor system for permission handling.</li>
-<li>Built in task for custom scheduled events and actions.</li>
-<li>Function programming or OOP style.</li>
+<li>Command driven framework</li>
+<li>Utilities to make development easier</li>
+<li>Internal framework debug mode</li>
+<li>Pre-built Database providers</li>
 </ul>
 <h2 id="why-not-use-akumakodo"><a class="header" href="#why-not-use-akumakodo">Why not use AkumaKodo</a></h2>
 <ul>
@@ -193,49 +193,46 @@ const TOKEN = env.DISCORD_BOT_TOKEN || &quot;&quot;;
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
-	{
-		botId: BigInt(&quot;954180517908082739&quot;),
-		events: {},
-		intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
-		token: TOKEN,
-	},
-	{
-		optional: {
-			bot_development_server_id: BigInt(&quot;954186846504648706&quot;),
-			bot_debug_mode: true,
-			providers: {
-				type: &quot;disabled&quot;,
-			},
-		},
-	}
+  {
+    botId: BigInt(&quot;954180517908082739&quot;),
+    events: {},
+    intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
+    token: TOKEN,
+  },
+  {
+    optional: {
+      bot_development_server_id: BigInt(&quot;954186846504648706&quot;),
+      bot_debug_mode: true,
+      providers: {
+        type: &quot;disabled&quot;,
+      },
+    },
+  },
 );
 
 // Creates ws connection and starts listening
 await Bot.createBot();
 
 Bot.client.events.ready = (_, payload) =&gt; {
-	Bot.container.logger.create(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
+  Bot.container.logger.create(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
 };
 
 Bot.container.utils.createCommand(Bot, {
-	trigger: &quot;ping&quot;,
-	description: &quot;ping pong me!&quot;,
-	scope: &quot;Development&quot;,
-	run: async (interaction) =&gt; {
-		await Bot.container.utils.createCommandReply(
-			Bot,
-			interaction,
-			{
-				embeds: [
-					Bot.container.utils
-						.embed()
-						.setColor(&quot;random&quot;)
-						.setDescription(&quot;pong!&quot;),
-				],
-			},
-			false
-		);
-	},
+  trigger: &quot;ping&quot;,
+  description: &quot;ping pong me!&quot;,
+  scope: &quot;Development&quot;,
+  run: async (interaction) =&gt; {
+    await Bot.container.utils.createCommandReply(
+      Bot,
+      interaction,
+      {
+        embeds: [
+          Bot.container.utils.embed().setColor(&quot;random&quot;).setDescription(&quot;pong!&quot;),
+        ],
+      },
+      false,
+    );
+  },
 });
 
 // Enables the built in instance events
