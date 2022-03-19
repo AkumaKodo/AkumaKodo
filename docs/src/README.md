@@ -10,6 +10,7 @@ maintaining a high level of `performance`.
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/AkumaKodo/AkumaKodo?style=for-the-badge)
 ![GitHub contributors](https://img.shields.io/github/contributors/AkumaKodo/AkumaKodo?style=for-the-badge)
 ![GitHub Repo stars](https://img.shields.io/github/stars/AkumaKodo/AkumaKodo?style=for-the-badge)
+![Lines of code](https://img.shields.io/tokei/lines/github/AkumaKodo/AkumaKodo?style=for-the-badge)
 ![Discord](https://img.shields.io/discord/837830514130812970?style=for-the-badge)
 
 _The framework is build on discordeno version [13.0.0-rc18](https://deno.land/x/discordeno@13.0.0-rc18)_
@@ -53,49 +54,46 @@ const TOKEN = env.DISCORD_BOT_TOKEN || "";
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
-  {
-    botId: BigInt("954180517908082739"),
-    events: {},
-    intents: ["Guilds", "GuildMessages", "GuildMembers"],
-    token: TOKEN,
-  },
-  {
-    optional: {
-      bot_development_server_id: BigInt("954186846504648706"),
-      bot_debug_mode: true,
-      providers: {
-        type: "disabled",
-      },
-    },
-  },
+	{
+		botId: BigInt("954180517908082739"),
+		events: {},
+		intents: ["Guilds", "GuildMessages", "GuildMembers"],
+		token: TOKEN,
+	},
+	{
+		optional: {
+			bot_development_server_id: BigInt("954186846504648706"),
+			bot_debug_mode: true,
+			providers: {
+				type: "disabled",
+			},
+		},
+	}
 );
 
 // Creates ws connection and starts listening
 await Bot.createBot();
 
 Bot.client.events.ready = (_, payload) => {
-  Bot.container.logger.create("info", "ready", "Online and ready to work!");
+	Bot.container.logger.create("info", "ready", "Online and ready to work!");
 };
 
 Bot.container.utils.createCommand(Bot, {
-  trigger: "ping",
-  description: "ping pong me!",
-  scope: "Development",
-  run: async (interaction) => {
-    await Bot.container.utils.createCommandReply(
-      Bot,
-      interaction,
-      {
-        embeds: [
-          Bot.container.utils
-            .embed()
-            .setColor("random")
-            .setDescription("pong!"),
-        ],
-      },
-      false,
-    );
-  },
+	trigger: "ping",
+	description: "ping pong me!",
+	scope: "Development",
+	run: async (interaction) => {
+		await Bot.container.utils.createCommandReply(
+			Bot,
+			interaction,
+			{
+				embeds: [
+					Bot.container.utils.embed().setColor("random").setDescription("pong!"),
+				],
+			},
+			false
+		);
+	},
 });
 
 // Enables the built in instance events
