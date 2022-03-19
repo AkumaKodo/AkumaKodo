@@ -9,6 +9,6 @@
     "gh-pages": "^3.2.3"
   },
   "scripts": {
-    "publish:docs": "node github_script.js"
+    "publish:docs": "node ./scripts/github_script.js"
   }
 }
