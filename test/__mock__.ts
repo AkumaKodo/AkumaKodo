@@ -23,9 +23,6 @@ export const Bot = new AkumaKodoBotCore({
   },
 });
 
-// Loads the sub dirs for our bot
-Bot.container.fs.fastLoader(Bot, ["./test/cmd"]);
-
 await Bot.createBot();
 
 Bot.instance.events.messageCreate = async (bot, payload) => {
