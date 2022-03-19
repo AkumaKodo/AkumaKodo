@@ -184,7 +184,7 @@ export class AkumaKodoBotCore {
       command: new AkumaKodoCommandModule(this.instance, this.container, this.configuration),
     };
 
-    this.container.logger.create("info", "AkumaKodo Bot Core", "Core initialized.");
+    this.container.logger.debug("info", "AkumaKodo Bot Core", "Core initialized.");
   }
 
   /**
@@ -194,25 +194,25 @@ export class AkumaKodoBotCore {
   public initializeInternalEvents(scope?: "Global" | "Development") {
     try {
       this.launcher.command.updateApplicationCommands("Development").then(() => {
-        this.container.logger.create("info", "Development Commands", "Application commands updated!");
+        this.container.logger.debug("info", "Development Commands", "Application commands updated!");
       });
 
       // Checks if user wants to init global commands
       if (scope === "Global") {
         if (this.configuration.optional.bot_debug_mode) {
-          this.container.logger.create(
+          this.container.logger.debug(
             "warn",
             "initialize Internal Events",
             "Global scope not recommended while in development mode!",
           );
         }
         this.launcher.command.updateApplicationCommands("Global").then(() => {
-          this.container.logger.create("info", "Global Commands", "Global Application commands updated!");
+          this.container.logger.debug("info", "Global Commands", "Global Application commands updated!");
         });
       }
     } catch (error) {
-      this.container.logger.create("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
-      this.container.logger.create("error", "AkumaKodo Bot Core", error);
+      this.container.logger.debug("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
+      this.container.logger.debug("error", "AkumaKodo Bot Core", error);
       // Only start listening for events after all slash commands are posted!
     } finally {
       // Runs the interactionCreate event for all active slash commands in the bot.
@@ -268,7 +268,7 @@ export class AkumaKodoBotCore {
               }
               return command.run(interaction);
             } catch (e) {
-              this.container.logger.create("error", "Interaction create", `Error while running command: ${e}`);
+              this.container.logger.debug("error", "Interaction create", `Error while running command: ${e}`);
             }
             break;
         }
@@ -286,7 +286,7 @@ export class AkumaKodoBotCore {
       if (payload.shardId + 1 === this.instance.gateway.maxShards) {
         this.launcher.task.initializeTask();
         this.container.fullyReady = true;
-        this.container.logger.create("info", "createBot", "AkumaKodo Connection successful!");
+        this.container.logger.debug("info", "createBot", "AkumaKodo Connection successful!");
       }
     };
   }
@@ -297,6 +297,6 @@ export class AkumaKodoBotCore {
   public async destroyBot() {
     await delay(1000);
     await stopBot(this.instance);
-    this.container.logger.create("info", "destroyBot", "Connection destroy successful!");
+    this.container.logger.debug("info", "destroyBot", "Connection destroy successful!");
   }
 }

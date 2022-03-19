@@ -33,7 +33,7 @@ Bot.instance.events.messageCreate = async (_, payload) => {
       await Bot.instance.helpers.sendMessage(payload.channelId, {
         content: `typescript-spammer #${i}`,
       });
-      Bot.container.logger.create("table", "Spammer v1", `Spamming #${i}`);
+      Bot.container.logger.debug("table", "Spammer v1", `Spamming #${i}`);
       pSpam.push(i);
     }
     await Bot.instance.helpers.sendMessage(payload.channelId, {

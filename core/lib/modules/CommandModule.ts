@@ -114,7 +114,7 @@ export class AkumaKodoCommandModule {
     // Check things before the command is set in cache
     AkumaKodoCommandModule.preCheck(command);
     this.container.commands.set(command.trigger.toLowerCase(), command);
-    this.container.logger.create("info", "create command", `Created command ${command.trigger}`);
+    this.container.logger.debug("info", "create command", `Created command ${command.trigger}`);
     return command;
   }
 
@@ -184,9 +184,9 @@ export class AkumaKodoCommandModule {
             this.instance,
             developmentCommands,
             this.configuration.optional.bot_development_server_id,
-          ).catch((e) => this.container.logger.create("error", "Update development commands Error", e));
+          ).catch((e) => this.container.logger.debug("error", "Update development commands Error", e));
 
-          this.container.logger.create(
+          this.container.logger.debug(
             "info",
             "Update development commands",
             "Updating Development Commands, this will only take a few seconds...",
@@ -206,18 +206,18 @@ export class AkumaKodoCommandModule {
          * Updates the global application commands
          */
         if (globalCommands.length && (scope === "Global" || scope === undefined)) {
-          this.container.logger.create(
+          this.container.logger.debug(
             "info",
             "Update global commands",
             "Updating Global Commands, this takes up to 1 hour to take effect...",
           );
-          this.container.logger.create(
+          this.container.logger.debug(
             "info",
             "Update global commands",
             `Commands added: ${globalCommands.join(", ")}`,
           );
           await this.instance.helpers.upsertApplicationCommands(globalCommands).catch((e) =>
-            this.container.logger.create("error", "Update global commands Error", e)
+            this.container.logger.debug("error", "Update global commands Error", e)
           );
         }
       }

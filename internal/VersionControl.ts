@@ -28,7 +28,7 @@ export class AkumaKodoVersionControl {
       const o = Number(internalVersion[i]);
       const n = Number(userVersion[i]);
       if (o > n) {
-        this.logger.create(
+        this.logger.debug(
           "error",
           "Version Control",
           "The version of the project is less than the required version. Please update to deno " +
@@ -37,7 +37,7 @@ export class AkumaKodoVersionControl {
         return 1;
       }
       if (o < n) {
-        this.logger.create(
+        this.logger.debug(
           "warn",
           "Version Control",
           "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
@@ -46,7 +46,7 @@ export class AkumaKodoVersionControl {
         return -1;
       }
       if (!isNaN(o) && isNaN(n)) {
-        this.logger.create(
+        this.logger.debug(
           "error",
           "Version Control",
           "The version of the project is greater than the recommended version. You can ignore this log. Recommended version: " +
@@ -55,7 +55,7 @@ export class AkumaKodoVersionControl {
         return 1;
       }
       if (isNaN(o) && !isNaN(n)) {
-        this.logger.create(
+        this.logger.debug(
           "info",
           "Version Control",
           "The version of the project is greater than the required version. Please update to deno " +
@@ -65,7 +65,7 @@ export class AkumaKodoVersionControl {
       }
     }
 
-    this.logger.create(
+    this.logger.debug(
       "debug",
       "Version Control",
       "Deno version checks passed! Your version is up to date on deno v" + this.RequiredDenoVersion,

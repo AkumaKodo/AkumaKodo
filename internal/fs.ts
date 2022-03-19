@@ -45,10 +45,10 @@ export class FileSystemModule {
 
             this.uniqueFilePathCounter++;
 
-            if (this._errors < 1) this.container.logger.create("info", "FS import", `Saved ${this.uniqueFilePathCounter} ${this.uniqueFilePathCounter > 1 ? "files" : "file"}!`);
+            if (this._errors < 1) this.container.logger.debug("info", "FS import", `Saved ${this.uniqueFilePathCounter} ${this.uniqueFilePathCounter > 1 ? "files" : "file"}!`);
         } catch (e) {
             this._errors++;
-            this.container.logger.create("error", "FS import", `Failed to import path: ${path}`);
+            this.container.logger.debug("error", "FS import", `Failed to import path: ${path}`);
         }
     }
 
@@ -63,10 +63,10 @@ export class FileSystemModule {
             );
             this.savedPaths = [];
 
-            if (this._errors < 1) this.container.logger.create("info", "FS load", "Loaded all files!");
+            if (this._errors < 1) this.container.logger.debug("info", "FS load", "Loaded all files!");
         } catch (e) {
             this._errors++
-            this.container.logger.create("error", "FS load", `Failed to load fileloader.ts\n ${e}`);
+            this.container.logger.debug("error", "FS load", `Failed to load fileloader.ts\n ${e}`);
         }
     }
 
@@ -99,10 +99,10 @@ export class FileSystemModule {
 
             await this.load();
 
-            if (this._errors < 1) this.container.logger.create("info", "FS fastLoader", "Loaded all files!");
+            if (this._errors < 1) this.container.logger.debug("info", "FS fastLoader", "Loaded all files!");
         } catch (e) {
             this._errors++
-            this.container.logger.create("error", "FS fastLoader", `Failed to load files! ${e}`);
+            this.container.logger.debug("error", "FS fastLoader", `Failed to load files! ${e}`);
         }
     }
 }

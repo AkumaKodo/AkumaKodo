@@ -22,6 +22,6 @@ export class AkumaKodoCustomModule {
   }
 
   protected onLoad(): void {
-    this.container.logger.create("info", "CustomModule", "Custom module loaded!");
+    this.container.logger.debug("info", "CustomModule", "Custom module loaded!");
   }
 }

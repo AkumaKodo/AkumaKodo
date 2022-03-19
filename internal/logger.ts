@@ -178,7 +178,7 @@ export class AkumaKodoLogger {
    * @param event The event to log
    * @param context The context to log
    */
-  public create(level: "debug" | "info" | "warn" | "error" | "fatal" | "table", event: string, context: any) {
+  public debug(level: "debug" | "info" | "warn" | "error" | "fatal" | "table", event: string, context: any) {
     // Check if the user enabled internal logging.
     if (!this.configuration?.optional.bot_debug_mode) return;
     try {

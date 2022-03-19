@@ -11,11 +11,11 @@ export abstract class AkumaKodoProvider {
       if (!options.mongodb_connection_url) {
         throw new Error("MongoDB connection URL is required with this provider.");
       }
-      this.logger.create("info", "Provider", "MongoDB provider loaded!");
+      this.logger.debug("info", "Provider", "MongoDB provider loaded!");
     } else if (options.provider === "postgres") {
-      this.logger.create("info", "Provider", "PostgreSQL provider loaded!");
+      this.logger.debug("info", "Provider", "PostgreSQL provider loaded!");
     } else if (options.provider === "mysql") {
-      this.logger.create("info", "Provider", "MySQL provider loaded!");
+      this.logger.debug("info", "Provider", "MySQL provider loaded!");
     } else {
       throw new Error("Invalid provider type! Please use one of the following: mongodb, postgres, mysql");
     }

@@ -22,9 +22,9 @@ export class AkumaKodoTaskModule {
         setTimeout(async () => {
           try {
             await task.execute();
-            this.container.logger.create("info", "initialize Task", `Task ${task.name} executed`);
+            this.container.logger.debug("info", "initialize Task", `Task ${task.name} executed`);
           } catch (error) {
-            this.container.logger.create("error", "initialize Task", `Task ${task.name} failed to execute.\n ${error}`);
+            this.container.logger.debug("error", "initialize Task", `Task ${task.name} failed to execute.\n ${error}`);
           }
 
           this.container.runningTasks.initialTimeouts.push(
@@ -32,9 +32,9 @@ export class AkumaKodoTaskModule {
               if (!this.container.fullyReady) return;
               try {
                 await task.execute();
-                this.container.logger.create("info", "initialize Task", `Task ${task.name} executed`);
+                this.container.logger.debug("info", "initialize Task", `Task ${task.name} executed`);
               } catch (error) {
-                this.container.logger.create(
+                this.container.logger.debug(
                   "error",
                   "initializeTask",
                   `Task ${task.name} failed to execute.\n ${error}`,
@@ -45,7 +45,7 @@ export class AkumaKodoTaskModule {
         }, task.interval - (Date.now() % task.interval) ?? undefined),
       );
     }
-    this.container.logger.create("info", "initialize Task", `Task module initialized`);
+    this.container.logger.debug("info", "initialize Task", `Task module initialized`);
   }
 
   /**
@@ -58,7 +58,7 @@ export class AkumaKodoTaskModule {
     if (callback) {
       callback();
     }
-    this.container.logger.create("info", "create AkumaKodo Task", `Task ${task.name} created`);
+    this.container.logger.debug("info", "create AkumaKodo Task", `Task ${task.name} created`);
   }
 
   /**
@@ -74,7 +74,7 @@ export class AkumaKodoTaskModule {
     this.container.taskCollection = new AkumaKodoCollection<string, AkumaKodoTask>();
     this.container.runningTasks = { initialTimeouts: [], intervals: [] };
 
-    this.container.logger.create("info", "destroy Task", "All tasks destroyed!");
+    this.container.logger.debug("info", "destroy Task", "All tasks destroyed!");
 
     if (callback) {
       callback();

@@ -55,9 +55,9 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         let url = this.options.mongodb_connection_url;
         if (!url) url = "mongodb://localhost:27017"; // default to localhost if no host is found.
         await MongoFactory.forRoot(url);
-        this.logger.create("info", "Mongo Provider", `Connection success on > ${url}`);
+        this.logger.debug("info", "Mongo Provider", `Connection success on > ${url}`);
       } catch (e) {
-        this.logger.create("error", "Mongodb Provider", `Failed to connect to the database.\n ${e}`);
+        this.logger.debug("error", "Mongodb Provider", `Failed to connect to the database.\n ${e}`);
       }
     }
   }
@@ -74,13 +74,13 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       for (const item of data) {
         this.metadata.set(item.guildId, <schemaInterface> item.settings);
       }
-      this.logger.create(
+      this.logger.debug(
         "info",
         "Mongo Provider initialize",
         `Successfully loaded ${data.length} documents from the database.`,
       );
     } else {
-      this.logger.create(
+      this.logger.debug(
         "error",
         "Mongodb Provider initialize",
         `Failed to initialize the database. Please check your connection.`,
@@ -98,7 +98,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
     const data = this.metadata.get(id);
 
     if (data) {
-      this.logger.create(
+      this.logger.debug(
         "info",
         "Mongo Provider get",
         `Fetched value from cache. Guild: ${id} Key: ${key} Value: ${data.settings[key]}`,
@@ -106,7 +106,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       return data.settings[key];
     }
 
-    this.logger.create("warn", "Mongo Provider get", `Failed to get the value for ${id}. Returning default value.`);
+    this.logger.debug("warn", "Mongo Provider get", `Failed to get the value for ${id}. Returning default value.`);
 
     return defaultValue;
   }
@@ -128,7 +128,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
     // saves the data in the database
     await (await this.instance).updateOne({ guildId: id }, { $set: { settings: { [key]: value } } }, { upsert: true });
 
-    this.logger.create("info", "Mongo Provider set", `Successfully set ${key} to ${value} for guild ${id}`);
+    this.logger.debug("info", "Mongo Provider set", `Successfully set ${key} to ${value} for guild ${id}`);
   }
 
   /**
@@ -147,7 +147,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
     // saves the data in the database
     await (await this.instance).deleteOne({ guildId: id });
 
-    this.logger.create("info", "Mongo Provider delete", `Deleted ${key} from guild ${id}`);
+    this.logger.debug("info", "Mongo Provider delete", `Deleted ${key} from guild ${id}`);
   }
 
   /**
@@ -157,6 +157,6 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
   public async clear(id: bigint) {
     this.metadata.delete(id);
     await (await this.instance).deleteOne({ guildId: id });
-    this.logger.create("info", "Mongo Provider clear", `Cleared all data for guild ${id}`);
+    this.logger.debug("info", "Mongo Provider clear", `Cleared all data for guild ${id}`);
   }
 }
