@@ -8,7 +8,7 @@ if (!TOKEN) {
   throw new Error("Token now found!");
 }
 
-const Bot = new AkumaKodoBotCore({
+export const Bot = new AkumaKodoBotCore({
   botId: BigInt("946398697254703174"),
   events: {},
   intents: ["Guilds", "GuildMessages", "GuildMembers"],
@@ -22,6 +22,9 @@ const Bot = new AkumaKodoBotCore({
     },
   },
 });
+
+// Loads the sub dirs for our bot
+Bot.container.fs.fastLoader(Bot, ["./test/cmd"]);
 
 await Bot.createBot();
 
@@ -52,10 +55,22 @@ Bot.instance.events.ready = (_, _payload) => {
 };
 
 Bot.container.utils.createCommand(Bot, {
-  trigger: "test",
-  description: "test command!",
+  trigger: "ping",
+  description: "ping pong me!",
   scope: "Development",
-  botPermissions: ["ADMINISTRATOR"],
+  run: async (interaction) => {
+    await Bot.container.utils.createCommandReply(Bot, interaction, {
+      embeds: [
+        Bot.container.utils.embed().setColor("random").setDescription("pong!").setTimestamp(),
+      ],
+    }, false);
+  },
+});
+
+Bot.container.utils.createCommand(Bot, {
+  trigger: "test2",
+  description: "test2 command!",
+  scope: "Development",
   run: async (interaction) => {
     await Bot.container.utils.createCommandReply(Bot, interaction, {
       content: "test command ran!",
@@ -63,17 +78,5 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 
-Bot.container.utils.createCommand(Bot, {
-  trigger: "ping",
-  description: "ping pong me!",
-  scope: "Development",
-  run: async (interaction) => {
-    await Bot.container.utils.createCommandReply(Bot, interaction, {
-      embeds: [
-        Bot.container.utils.embed().setColor("random").setDescription("pong!"),
-      ],
-    }, false);
-  },
-});
 
 Bot.initializeInternalEvents();
