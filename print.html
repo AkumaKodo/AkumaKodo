@@ -192,14 +192,14 @@ const TOKEN = env.DISCORD_BOT_TOKEN || &quot;&quot;;
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
   {
-    botId: BigInt(&quot;954180517908082739&quot;),
+    botId: BigInt(&quot;your-bot-id&quot;),
     events: {},
     intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
     token: TOKEN,
   },
   {
     optional: {
-      bot_development_server_id: BigInt(&quot;954186846504648706&quot;),
+      bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
       bot_debug_mode: true,
       providers: {
         type: &quot;disabled&quot;,
@@ -236,7 +236,9 @@ Bot.container.utils.createCommand(Bot, {
 // Enables the built in instance events
 Bot.initializeInternalEvents();
 </code></pre>
-<p>Continue reading!</p>
+<p>Now simply run the script below to start your bot!</p>
+<pre><code>deno run -A &lt;file path to code&gt;
+</code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h1>
 <p>New to programming with discord? <a href="framework/chapter_1/./new_discord_devs.html">Read here</a>.</p>
 <p>Learn about AkumaKodo Framework <a href="framework/chapter_1/./akumakodo_noobs.html">Read here</a>.</p>
@@ -347,20 +349,6 @@ and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
