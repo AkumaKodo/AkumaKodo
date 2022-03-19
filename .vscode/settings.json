@@ -1,23 +1,25 @@
 {
-  "deno.enable": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
-  },
-  "cSpell.words": [
-    "Akuma",
-    "akumakodo",
-    "Blurple",
-    "cooldown",
-    "Deno",
-    "Discordeno",
-    "fileloader",
-    "Greyple",
-    "Kodo",
-    "upsert"
-  ],
-  "deno.lint": true,
-  "deno.unstable": true
+	"deno.enable": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.fixAll": true,
+		"source.organizeImports": true
+	},
+	"cSpell.words": [
+		"Akuma",
+		"akumakodo",
+		"Blurple",
+		"Bson",
+		"cooldown",
+		"Deno",
+		"Discordeno",
+		"fileloader",
+		"Greyple",
+		"Kodo",
+		"primality",
+		"upsert"
+	],
+	"deno.lint": true,
+	"deno.unstable": true
 }
