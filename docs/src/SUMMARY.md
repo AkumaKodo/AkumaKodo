@@ -19,7 +19,8 @@
 
 - [information](api/chapter_1.md)
 
----
+# Miscellaneous
 
-[Contributors](misc/contributors.md)
-[Change-log](misc/changelog.md)
+- [The Seven steps](misc/seven_steps.md)
+- [Contributors](misc/contributors.md)
+- [Change-log](misc/changelog.md)
