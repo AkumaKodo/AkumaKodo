@@ -7,6 +7,8 @@ Remember, you can always ask more questions at our [@discord]() server if nothin
 
 ## Framework Errors
 
+### Authorization token 403
+
 ```
 [403] The Authorization token you passed did not have permission to the resource.
 at Object.runMethod
@@ -17,17 +19,13 @@ at upsertApplicationCommands
 
 If you have seen this error on start-up of your bot it could mean a few things:
 
-1. You don't have permissions to send slash commands in this server. In discord the bot needs to be in the server to upload slash commands.
-   so make sure which ever development guild id you input was correct. [Review](./chapter_1/page_3.md) this page for the first steps.
+1. You don't have permissions to upload slash commands in this server. In discord, a bot needs to be in the server to upload slash commands.
+   So make sure your development guild id in your bot configuration is correct. [Review](./chapter_1/page_3.md) this page for the first steps.
 
-   Also keep in mind that discordeno uses `type bigint` over number so make sure you entered your application id as `BigInt("your-id")`.
+   Also keep in mind that discordeno uses type [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) over number so make sure you entered your application id as `BigInt("your-id")`.
    This goes for your guild id to.
 
 2. Another reason for this error may be your bot was not invited with the `application.commands` scope. Make sure your bots invite url has
    this scope, kick the bot and reinvite it.
 
-   Example url:
-
-   ```
-   https://discord.com/api/oauth2/authorize?client_id=your-id&permissions=0&scope=bot%20applications.commands
-   ```
+   Example url: *https://discord.com/api/oauth2/authorize?client_id=your-id&permissions=0&scope=bot%20`applications.commands`*
