@@ -50,11 +50,7 @@ export class FileSystemModule {
         this.container.logger.debug(
           "info",
           "FS import",
-          `Saved ${this.uniqueFilePathCounter} ${
-            this.uniqueFilePathCounter > 1
-              ? "files"
-              : "file"
-          }!`,
+          `Saved ${this.uniqueFilePathCounter} ${this.uniqueFilePathCounter > 1 ? "files" : "file"}!`,
           "canary",
         );
       }
