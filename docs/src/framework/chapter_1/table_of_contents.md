@@ -1,5 +1,5 @@
 # Table of Contents
 
-New to programming with discord? [Read here](page_2.md).
+New to programming with discord? [Read here](./new_discord_devs.md).
 
-Learn about AkumaKodo Framework [Read here](page_3.md).
+Learn about AkumaKodo Framework [Read here](./akumakodo_noobs.md).

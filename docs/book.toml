@@ -28,13 +28,13 @@ default-theme = "Ayu"
 # Book search configuration (Disabled)
  [output.html.search]
 enable = true
-# limit-results = 20
-# use-boolean-and = true
-# boost-title = 2
-# boost-hierarchy = 2
-# boost-paragraph = 1
-# expand = true
-# heading-split-level = 2
+limit-results = 20
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 2
+boost-paragraph = 1
+expand = true
+heading-split-level = 2
 
 # MD-book linkcheck configuration
 [output.linkcheck]
@@ -68,22 +68,22 @@ warning-policy = "warn"
 # the "Accept: text/html" header
 'crates\.io' = ["Accept: text/html"]
 
-# Morsels Documentation configuration
-[preprocessor.morsels]
-command = "mdbook-morsels"
-renderer = ["html"]
-# Plugin configuration options (optional)
-[output.morsels]
-# See search configuration page
-mode = "target"
-# Relative path to the indexer configuration file from the root project directory
-# This will automatically be created if it doesn't exist.
-config = "morsels_config.json"
-# Don't add the default stylesheet from morsels/search-ui,
-# nor the inline css variables for the default mdbook themes
-#
-# Only needed if you want to use some custom styling
-no-css = false
-# This scales some settings of the indexer according to your collection size
-# (see chapter on "Tradeoffs")
-scaling = true
+# # Morsels Documentation configuration
+# [preprocessor.morsels]
+# command = "mdbook-morsels"
+# renderer = ["html"]
+# # Plugin configuration options (optional)
+# [output.morsels]
+# # See search configuration page
+# mode = "target"
+# # Relative path to the indexer configuration file from the root project directory
+# # This will automatically be created if it doesn't exist.
+# config = "morsels_config.json"
+# # Don't add the default stylesheet from morsels/search-ui,
+# # nor the inline css variables for the default mdbook themes
+# #
+# # Only needed if you want to use some custom styling
+# no-css = false
+# # This scales some settings of the indexer according to your collection size
+# # (see chapter on "Tradeoffs")
+# scaling = true

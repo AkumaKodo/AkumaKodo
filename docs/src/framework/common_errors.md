@@ -20,7 +20,7 @@ at upsertApplicationCommands
 If you have seen this error on start-up of your bot it could mean a few things:
 
 1. You don't have permissions to upload slash commands in this server. In discord, a bot needs to be in the server to upload slash commands.
-   So make sure your development guild id in your bot configuration is correct. [Review](./chapter_1/page_3.md) this page for the first steps.
+   So make sure your development guild id in your bot configuration is correct. [Review](./chapter_1/akumakodo_noobs.md) this page for the first steps.
 
    Also keep in mind that discordeno uses type [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) over number so make sure you entered your application id as `BigInt("your-id")`.
    This goes for your guild id to.
