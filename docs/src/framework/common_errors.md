@@ -28,4 +28,4 @@ If you have seen this error on start-up of your bot it could mean a few things:
 2. Another reason for this error may be your bot was not invited with the `application.commands` scope. Make sure your bots invite url has
    this scope, kick the bot and reinvite it.
 
-   Example url: *https://discord.com/api/oauth2/authorize?client_id=your-id&permissions=0&scope=bot%20`applications.commands`*
+   Example url: _https://discord.com/api/oauth2/authorize?client_id=your-id&permissions=0&scope=bot%20`applications.commands`_
