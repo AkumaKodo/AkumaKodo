@@ -14,3 +14,4 @@ morsels_output/
 # Deno stuff
 registries/
 deps/
+gen/
