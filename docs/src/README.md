@@ -99,4 +99,8 @@ Bot.container.utils.createCommand(Bot, {
 Bot.initializeInternalEvents();
 ```
 
-Continue reading!
+Now simply run the script below to start your bot!
+
+```
+deno run -A <file path to code>
+```
