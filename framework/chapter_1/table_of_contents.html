@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="../../framework/chapter_1/page_1.html" class="active"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../framework/chapter_1/page_2.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="../../framework/chapter_1/page_3.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Inhibitors</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Monitors</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Task</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.4.</strong> Providers</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../../api/chapter_1.html"><strong aria-hidden="true">3.</strong> information</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../../misc/contributors.html">Contributors</a></li><li class="chapter-item expanded affix "><a href="../../misc/changelog.html">Change-log</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="../../framework/chapter_1/table_of_contents.html" class="active"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="../../framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Task</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Events</div></li></ol></li><li class="chapter-item expanded "><a href="../../framework/common_errors.html"><strong aria-hidden="true">3.</strong> Common Errors</a></li><li class="chapter-item expanded affix "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../../api/chapter_1.html"><strong aria-hidden="true">4.</strong> information</a></li><li class="spacer"></li><li class="chapter-item expanded affix "><a href="../../misc/contributors.html">Contributors</a></li><li class="chapter-item expanded affix "><a href="../../misc/changelog.html">Change-log</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -119,7 +119,7 @@
                         <a href="https://github.com/ThatGuyJamal/AkumaKodo" title="Git repository" aria-label="Git repository">
                             <i id="git-repository-button" class="fa fa-github"></i>
                         </a>
-                        <a href="https://github.com/ThatGuyJamal/AkumaKodo/docs/src/framework/chapter_1/page_1.md" title="Suggest an edit" aria-label="Suggest an edit">
+                        <a href="https://github.com/ThatGuyJamal/AkumaKodo/docs/src/framework/chapter_1/table_of_contents.md" title="Suggest an edit" aria-label="Suggest an edit">
                             <i id="git-edit-button" class="fa fa-edit"></i>
                         </a>
 
@@ -148,131 +148,10 @@
 
                 <div id="content" class="content">
                     <main>
-                        <link rel="stylesheet" href="/morsels_assets/search-ui.css">
-<style>
-.morsels-root {
-    --morsels-border: 3px solid var(--table-header-bg);
-    --morsels-fg: var(--fg);
-    --morsels-bg: var(--bg);
-    --morsels-item-border-radius: 10px;
-    --morsels-item-sub-border: 0;
-    --morsels-dropdown-input-separator-bg: var(--table-header-bg);
-    --morsels-title-bg: var(--table-header-bg);
-    --morsels-title-hover-fg: var(--bg);
-    --morsels-title-hover-bg: var(--fg);
-    --morsels-heading-bg: var(--table-alternate-bg);
-    --morsels-heading-hover-bg: var(--table-header-bg);
-    --morsels-body-hover-bg: var(--table-alternate-bg);
-    --morsels-highlight: var(--search-mark-bg);
-    --morsels-error-fg: var(--fg);
-    --morsels-fine-print-fg: var(--fg);
-    --morsels-loading-bg: var(--fg);
-    --morsels-scrollbar-bg: var(--sidebar-bg);
-    --morsels-scrollbar-thumb-bg: var(--sidebar-non-existant);
-    --morsels-fullscreen-box-shadow: none;
-    --morsels-fullscreen-header-bg: var(--sidebar-bg);
-    --morsels-fullscreen-input-border: 2px solid var(--searchbar-border-color);
-    --morsels-fullscreen-input-focus-border: 2px solid var(--searchbar-border-color);
-    --morsels-fullscreen-input-focus-box-shadow: 0 0 5px var(--searchbar-shadow-color);
-    --morsels-fullscreen-header-close-fg: var(--sidebar-fg);
-    --morsels-fullscreen-header-close-bg: var(--sidebar-non-existant);
-    --morsels-fullscreen-header-close-hover-bg: var(--theme-popup-border);
-    --morsels-fullscreen-header-close-hover-fg: var(--sidebar-spacer);
-    --morsels-fullscreen-header-close-active-bg: var(--theme-popup-border);
-    --morsels-fullscreen-header-close-active-fg: var(--sidebar-spacer);
-}
+                        <h1 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h1>
+<p>New to programming with discord? <a href="./new_discord_devs.html">Read here</a>.</p>
+<p>Learn about AkumaKodo Framework <a href="./akumakodo_noobs.html">Read here</a>.</p>
 
-#morsels-search {
-    width: 100%;
-    border-radius: 6px;
-    box-sizing: border-box;
-    font-size: 16px;
-    padding: 0.5em 0.75em;
-    border: 1px solid var(--searchbar-border-color);
-    background: var(--searchbar-bg);
-    color: var(--searchbar-fg);
-    outline: none;
-}
-
-@media print {
-    #morsels-search {
-        display: none;
-    }
-}
-
-#morsels-mdbook-target {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-</style>
-<p><input
-    type="text"
-    id="morsels-search"
-    placeholder="Search"
-/></p>
-<p><span style="font-weight: 600;"><!--preload weight 600--></span></p>
-<ul class="morsels-root" id="morsels-mdbook-target"></ul>
-<h1 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h1>
-<p>New to programming with discord? <a href="page_2.html">Read here</a>.</p>
-<p>Learn about AkumaKodo Framework <a href="page_3.html">Read here</a>.</p>
-<script src="/morsels_assets/search-ui.bundle.js" type="text/javascript" charset="utf-8"></script>
-<script src="/morsels_assets/mark.min.js" type="text/javascript" charset="utf-8"></script>
-<script>
-const base_url = '/';
-const mode = 'target';
-initMorsels({
-  searcherOptions: {
-    url: base_url + 'morsels_output/',
-  },
-  uiOptions: {
-    mode,
-    dropdownAlignment: 'bottom-start',
-    target: document.getElementById('morsels-mdbook-target'),
-    sourceFilesUrl: base_url,
-    resultsRenderOpts: {
-      addSearchedTerms: 'search',
-    },
-  },
-});
-
-document.getElementById('morsels-search').addEventListener('keydown', (ev) => {
-  if (['ArrowLeft', 'ArrowRight'].includes(ev.key)) {
-    ev.stopPropagation(); // used in global listener to change pages
-    return;
-  }
-});
-
-if (window.location.search) {
-  // Adapted from the original searcher.js for mdbook
-  // https://github.com/rust-lang/mdBook/blob/master/src/theme/searcher/searcher.js
-  const target = document.getElementById('content');
-  const marker = new Mark(target);
-
-  function doSearchOrMarkFromUrl() {
-    // Check current URL for search request
-    var url = new URL(window.location.href);
-    var urlParams = new URLSearchParams(url.search);
-
-    if (urlParams.has('search')) {
-      var words = JSON.parse(decodeURIComponent(urlParams.get('search')));
-      marker.mark(words);
-
-      var markers = document.querySelectorAll('mark');
-      function hide() {
-        for (var i = 0; i < markers.length; i++) {
-          markers[i].classList.add('fade-out');
-          window.setTimeout(function () { marker.unmark(); }, 300);
-        }
-      }
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].addEventListener('click', hide);
-      }
-    }
-  }
-  doSearchOrMarkFromUrl();
-}
-</script>
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
@@ -281,7 +160,7 @@ if (window.location.search) {
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../../framework/chapter_1/page_2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../../framework/chapter_1/new_discord_devs.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -295,13 +174,27 @@ if (window.location.search) {
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../../framework/chapter_1/page_2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../../framework/chapter_1/new_discord_devs.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
