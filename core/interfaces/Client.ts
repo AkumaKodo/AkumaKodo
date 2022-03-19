@@ -15,7 +15,7 @@ import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
 
 // deno-lint-ignore no-empty-interface
-export interface AkumaCreateBotOptions extends CreateBotOptions {}
+export interface AkumaCreateBotOptions extends CreateBotOptions { }
 
 /** Default options for client if non are passed */
 export const defaultConfigOptions = {
@@ -74,6 +74,21 @@ export interface AkumaKodoContainerInterface {
     type: "mongodb" | "postgres" | "mysql" | "disabled";
     mongodb?: AkumaKodoMongodbProvider;
   };
+  fs: {
+    import: (bot: AkumaKodoBotCore, path: string) => Promise<void> | void;
+    load: (bot: AkumaKodoBotCore) => Promise<void> | void;
+    fastLoader: (
+      bot: AkumaKodoBotCore,
+      /** An array of directories to import recursively. */
+      paths: string[],
+      /** A function that will run before recursively setting a part of `paths`.
+       * `path` contains the path that will be imported, useful for logging
+       */
+      between?: (path: string, uniqueFilePathCounter: number, paths: string[]) => void,
+      /** A function that runs before **actually** importing all the files. */
+      before?: (uniqueFilePathCounter: number, paths: string[]) => void,
+    ) => Promise<void> | void;
+  }
   utils: AkumaKodoUtilities;
   languageCollection: AkumaKodoCollection<bigint, string>;
   taskCollection: AkumaKodoCollection<string, AkumaKodoTask>;

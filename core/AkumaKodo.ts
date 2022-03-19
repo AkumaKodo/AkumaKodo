@@ -26,6 +26,7 @@ import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
 import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 import { AkumaKodoTaskModule } from "./lib/modules/TaskModule.ts";
 import { AkumaKodoCommandModule } from "./lib/modules/CommandModule.ts";
+import { FileSystemModule } from "../internal/fs.ts";
 
 /**
  * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
@@ -44,6 +45,12 @@ export class AkumaKodoBotCore {
     task: AkumaKodoTaskModule;
     command: AkumaKodoCommandModule;
   };
+
+  /**
+   * Internal file system module
+   * @private
+   */
+  private fs: FileSystemModule
   /**
    * A utility function to check your version of deno for booting the bot.
    * @private
@@ -95,6 +102,8 @@ export class AkumaKodoBotCore {
 
     // Sets the container for the bot
     this.instance = enableCachePlugin(createBot(botOptions));
+
+    this.fs = new FileSystemModule()
 
     // Enables the plugins on the instance of the bot
     // This needs to be done before other setup functions
@@ -157,6 +166,17 @@ export class AkumaKodoBotCore {
           return new AkumaKodoEmbed();
         },
       },
+      fs: {
+        import(bot, path) {
+          bot.fs.import(path);
+        },
+        load(bot) {
+          bot.fs.load();
+        },
+        fastLoader(bot, paths, between, before) {
+          bot.fs.fastLoader(paths, between, before);
+        }
+      }
     } as AkumaKodoContainerInterface;
 
     this.launcher = {
