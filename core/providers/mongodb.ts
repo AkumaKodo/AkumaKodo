@@ -57,8 +57,11 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         if (!url) url = "mongodb://localhost:27017"; // default to localhost if no host is found.
         await MongoFactory.forRoot(url);
         this.logger.debug("info", "Mongo Provider", `Connection success on > ${url}`);
+        // If the connection works, set to true
+        this.connectedStatus = true
       } catch (e) {
         this.logger.debug("error", "Mongodb Provider", `Failed to connect to the database.\n ${e}`);
+        this.connectedStatus = false
       }
     }
   }
@@ -84,7 +87,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
       this.logger.debug(
         "error",
         "Mongodb Provider initialize",
-        `Failed to initialize the database. Please check your connection.`,
+        `You cannot initialize this provider without a connection first. Please run the connect method first!`,
       );
     }
   }
