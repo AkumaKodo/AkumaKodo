@@ -74,7 +74,7 @@ const Bot = new AkumaKodoBotCore(
 await Bot.createBot();
 
 Bot.client.events.ready = (_, payload) => {
-  Bot.container.logger.create("info", "ready", "Online and ready to work!");
+  Bot.container.logger.log("info", "ready", "Online and ready to work!");
 };
 
 Bot.container.utils.createCommand(Bot, {
