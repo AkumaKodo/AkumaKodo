@@ -58,10 +58,10 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
         await MongoFactory.forRoot(url);
         this.logger.debug("info", "Mongo Provider", `Connection success on > ${url}`);
         // If the connection works, set to true
-        this.connectedStatus = true
+        this.connectedStatus = true;
       } catch (e) {
         this.logger.debug("error", "Mongodb Provider", `Failed to connect to the database.\n ${e}`);
-        this.connectedStatus = false
+        this.connectedStatus = false;
       }
     }
   }
