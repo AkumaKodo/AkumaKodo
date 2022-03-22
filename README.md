@@ -8,7 +8,7 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 
 ## Read the [documentation](https://akumakodo.github.io/AkumaKodo/) here!
 
-## Change Log 
+## Change Log
 
 the current can be found [here](https://akumakodo.github.io/AkumaKodo/misc/changelog.html)
 
