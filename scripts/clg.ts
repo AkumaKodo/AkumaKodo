@@ -14,7 +14,11 @@ const changelog = new Changelog("AkumaKodo")
       .removed(
         "For now, until slash commands are fully implemented, I will not focus on message-based commands. You will have to implement them yourself.",
       ),
-  );
+  ).addRelease(
+    new Release("0.1.1", "2022-3-22", "Quality of life improvements")
+    .changed("Exporting only required classes from mod.ts and not everything.")
+    // .added("Added ")
+  )
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");

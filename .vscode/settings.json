@@ -20,5 +20,9 @@
     "upsert"
   ],
   "deno.lint": true,
-  "deno.unstable": true
+  "deno.unstable": true,
+  "deno.codeLens.references": true,
+  "deno.codeLens.implementations": true,
+  "deno.codeLens.referencesAllFunctions": true,
+  "deno.internalDebug": true
 }
