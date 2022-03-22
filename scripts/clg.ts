@@ -15,9 +15,11 @@ const changelog = new Changelog("AkumaKodo")
         "For now, until slash commands are fully implemented, I will not focus on message-based commands. You will have to implement them yourself.",
       ),
   ).addRelease(
-    new Release("0.1.1", "2022-3-22", "Quality of life improvements")
-      .changed("Exporting only required classes from mod.ts and not everything."),
-    // .added("Added ")
+    new Release("0.1.1", "2022-3-22", "Quality of life improvements and documentation changes")
+      .changed("Exporting only required classes from mod.ts and not everything.")
+        .changed("base urls for documentation not start with index.md and not a topic name.")
+        .fixed("A spelling mistake in the documentation.")
+        .added("Yoki section to the docs.")
   );
 
 console.clear();

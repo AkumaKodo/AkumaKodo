@@ -1,4 +1,4 @@
-# Discord development
+# New Discord Bot Developers
 
 ## Programming basics
 
