@@ -6,6 +6,7 @@
     "source.organizeImports": true
   },
   "cSpell.words": [
+    "akairo",
     "Akuma",
     "akumakodo",
     "Blurple",
@@ -16,8 +17,10 @@
     "fileloader",
     "Greyple",
     "Kodo",
+    "Natico",
     "primality",
-    "upsert"
+    "upsert",
+    "Yoki"
   ],
   "deno.lint": true,
   "deno.unstable": true,
