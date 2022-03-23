@@ -26,6 +26,7 @@ const changelog = new Changelog("AkumaKodo")
         "The internal events methods is not becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.",
       )
       .added("Error handling for more modules.")
+      .added("CommandScopeType for command scope options.")
       .fixed("Bug in logger emitting errors for unstable logs.")
       .fixed("The internal event handler was made to accept asynchronous functions.")
       .fixed("framework install url in documentation was incorrect.")
