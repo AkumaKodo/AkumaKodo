@@ -9,7 +9,7 @@ export interface AkumaKodoCommand {
   /**The command description */
   description: string;
   /** The command scope */
-  scope: "Guild" | "Global" | "Development";
+  scope: "Global" | "Development";
   /** A longer description of the command */
   extendedDescription?: string;
   /** The command usage and examples */
