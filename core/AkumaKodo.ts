@@ -27,12 +27,13 @@ import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 import { AkumaKodoTaskModule } from "./lib/modules/TaskModule.ts";
 import { AkumaKodoCommandModule } from "./lib/modules/CommandModule.ts";
 import { FileSystemModule } from "../internal/fs.ts";
+import type { CommandScopeType } from "./interfaces/Command.ts";
 
 /**
  * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
  *
  * @core AkumaKodoBotCore
- * @author ThatGuyJamal
+ * @author ThatGuyJamal ~
  *
  * This is the core of the framework and the gateway to all other modules.
  */
@@ -191,24 +192,28 @@ export class AkumaKodoBotCore {
    * @description - Loads all internal event handlers for the bot client.
    * We handel Development scoped commands only by default. You can call this function again with your scope if you wish to use global commands.
    */
-  public initializeInternalEvents(scope?: "Global" | "Development") {
+  private async initializeInternalEvents(scope?: CommandScopeType) {
     try {
-      this.launcher.command.updateApplicationCommands("Development").then(() => {
-        this.container.logger.debug("info", "Development Commands", "Application commands updated!");
-      });
-
-      // Checks if user wants to init global commands
-      if (scope === "Global") {
-        if (this.configuration.optional.bot_debug_mode) {
-          this.container.logger.debug(
-            "warn",
-            "initialize Internal Events",
-            "Global scope not recommended while in development mode!",
-          );
-        }
-        this.launcher.command.updateApplicationCommands("Global").then(() => {
-          this.container.logger.debug("info", "Global Commands", "Global Application commands updated!");
+      if (this.container.fullyReady) {
+        await this.launcher.command.updateApplicationCommands("Development").then(() => {
+          this.container.logger.debug("info", "Development Commands", "Application commands updated!");
         });
+
+        // Checks if user wants to init global commands
+        if (scope === "Global") {
+          if (this.configuration.optional.bot_debug_mode) {
+            this.container.logger.debug(
+              "warn",
+              "initialize Internal Events",
+              "Global scope not recommended while in development mode!",
+            );
+          }
+          await this.launcher.command.updateApplicationCommands("Global").then(() => {
+            this.container.logger.debug("info", "Global Commands", "Global Application commands updated!");
+          });
+        }
+      } else {
+        this.container.logger.debug("warn", "initialize Internal Events", "Bot is not ready!");
       }
     } catch (error) {
       this.container.logger.debug("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
@@ -281,12 +286,22 @@ export class AkumaKodoBotCore {
    */
   public async createBot() {
     await startBot(this.instance);
-    this.instance.events.ready = (_, payload) => {
+    this.instance.events.ready = async (_, payload) => {
       // Wait till shards are loaded to start the bot
       if (payload.shardId + 1 === this.instance.gateway.maxShards) {
         this.launcher.task.initializeTask();
         this.container.fullyReady = true;
-        this.container.logger.debug("info", "createBot", "AkumaKodo Connection successful!");
+        // Checks if events were enabled by the user or not. This determines if we should initialize the internal events.
+        if (this.configuration.optional.bot_internal_events) {
+          await this.initializeInternalEvents();
+        } else {
+          this.container.logger.debug(
+            "warn",
+            "AkumaKodo Bot Core",
+            "Internal events are disabled! You will have to handle events manually.",
+          );
+        }
+        this.container.logger.debug("info", "create Bot", "AkumaKodo Connection successful!");
       }
     };
   }
@@ -297,6 +312,6 @@ export class AkumaKodoBotCore {
   public async destroyBot() {
     await delay(1000);
     await stopBot(this.instance);
-    this.container.logger.debug("info", "destroyBot", "Connection destroy successful!");
+    this.container.logger.debug("info", "destroy Bot", "Connection destroy successful!");
   }
 }
