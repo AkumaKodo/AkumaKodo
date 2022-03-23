@@ -3,4 +3,4 @@ test:
 lib:
 	deno run -A ./mod.ts
 clg:
-	deno run -A ./scripts/clg.ts
+	deno run -A ./scripts/clg.js
