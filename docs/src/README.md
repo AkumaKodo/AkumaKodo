@@ -40,7 +40,11 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 
 ## Installation
 
-_Coming soon..._
+```
+deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+```
+
+*akumakodo will be installed in your deno cache*
 
 ## Example bot
 
@@ -64,6 +68,8 @@ const Bot = new AkumaKodoBotCore(
       bot_development_server_id: BigInt("your-guild-id"),
        // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
+      // If you want to use the built in event handlers
+      bot_internal_events: true
       providers: {
         type: "disabled",
       },

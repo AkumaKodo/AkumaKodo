@@ -19,7 +19,7 @@ use-default-preprocessors = true
 git-repository-icon = "fa-github"
 git-repository-url = "https://github.com/ThatGuyJamal/AkumaKodo"
 edit-url-template = "https://github.com/ThatGuyJamal/AkumaKodo/docs/{path}"
-default-theme = "Ayu"
+default-theme = "Coal"
 
 ## Playground configuration
 #[output.html.playground]
