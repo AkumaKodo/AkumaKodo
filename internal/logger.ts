@@ -192,7 +192,7 @@ export class AkumaKodoLogger {
         this.log(
           "warn",
           "AkumaKodo Logger",
-          `The event ${event.toLowerCase()} is not status ${status.toLowerCase()} ~ Please keep in mind this method may have unsolved bugs.`,
+          `The event ${event.toLowerCase()} is status type: ${status.toLowerCase()} ~ Please keep in mind this method may have unsolved bugs.`,
         );
       }
       // check if internal logging is enabled, if not return
