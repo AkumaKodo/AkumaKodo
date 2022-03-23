@@ -20,7 +20,11 @@ const changelog = new Changelog("AkumaKodo")
       .changed("base urls for documentation not start with index.md and not a topic name.")
       .fixed("A spelling mistake in the documentation.")
       .added("Yoki section to the docs."),
-  );
+  ).addRelease(
+    new Release("0.1.2", "2022-3-23", "Quality of life improvements")
+    .fixed("Bug in logger emitting errors for unstable logs.")
+    .deprecated("Removed command scope type Guild in favor of type Developments")
+    )
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");
