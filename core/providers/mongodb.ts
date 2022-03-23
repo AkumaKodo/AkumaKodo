@@ -29,7 +29,7 @@ export class AkumaKodoMongodbProvider extends AkumaKodoProvider {
   protected options: ProviderOptions;
   // Typings for our mongo client instance
   protected instance: Promise<Model<InternalMongoSchema>>;
-  private readonly connectedStatus: boolean;
+  private connectedStatus: boolean;
   /**
    * Constructor for the mongodb provider.
    * @param options The options for the provider.
