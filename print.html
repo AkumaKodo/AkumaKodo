@@ -183,7 +183,7 @@ maintaining a high level of <code>performance</code>.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p><em>Coming soon...</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
-<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.0&quot;;
+<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
 
 const env = dotEnvConfig({ export: true });
@@ -200,7 +200,8 @@ const Bot = new AkumaKodoBotCore(
   {
     optional: {
       bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
-      bot_debug_mode: true,
+       // False by default but we recommend using the built in logging system
+      bot_debug_mode: false,
       providers: {
         type: &quot;disabled&quot;,
       },
@@ -208,13 +209,12 @@ const Bot = new AkumaKodoBotCore(
   },
 );
 
-// Creates ws connection and starts listening
-await Bot.createBot();
-
+// Our own custom event handler
 Bot.client.events.ready = (_, payload) =&gt; {
   Bot.container.logger.log(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
 };
 
+// Creates a command
 Bot.container.utils.createCommand(Bot, {
   trigger: &quot;ping&quot;,
   description: &quot;ping pong me!&quot;,
@@ -233,11 +233,12 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 
-// Enables the built in instance events
-Bot.initializeInternalEvents();
+
+// Creates ws connection and starts listening
+await Bot.createBot();
 </code></pre>
 <p>Now simply run the script below to start your bot!</p>
-<pre><code>deno run -A &lt;file path to code&gt;
+<pre><code>deno run -A ./&lt;file&gt;.ts
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="table-of-contents"><a class="header" href="#table-of-contents">Table of Contents</a></h1>
 <p>New to programming with discord? <a href="framework/chapter_1/./new_discord_devs.html">Read here</a>.</p>
@@ -319,24 +320,50 @@ shout-out to them!</p>
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="http://keepachangelog.com/">Keep a Changelog</a>
 and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>.</p>
+<h2 id="012---2022-03-23"><a class="header" href="#012---2022-03-23">0.1.2 - 2022-03-23</a></h2>
+<p>Quality of life improvement and bug fixes</p>
+<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>Error handling for more modules.</li>
+<li>CommandScopeType for command scope options.</li>
+</ul>
+<h3 id="deprecated"><a class="header" href="#deprecated">Deprecated</a></h3>
+<ul>
+<li>Removed command scope type Guild in favor of type Developments</li>
+</ul>
+<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<ul>
+<li>The internal events method is now becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.</li>
+</ul>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<ul>
+<li>Bug in logger emitting errors for unstable logs.</li>
+<li>The internal event handler was made to accept asynchronous functions.</li>
+<li>framework install URL in the documentation was incorrect.</li>
+<li>Bug with file loader import paths</li>
+</ul>
+<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<ul>
+<li>If fs loader throws an error, we will end the bot process and not continue loading the process.</li>
+</ul>
 <h2 id="011---2022-03-22"><a class="header" href="#011---2022-03-22">0.1.1 - 2022-03-22</a></h2>
 <p>Quality of life improvements and documentation changes</p>
-<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>Yoki section to the docs.</li>
 </ul>
 <h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
 <ul>
 <li>Exporting only required classes from mod.ts and not everything.</li>
-<li>base urls for documentation not start with index.md and not a topic name.</li>
+<li>base URLs for documentation do not start with index.md and not a topic name.</li>
 </ul>
-<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
 <ul>
 <li>A spelling mistake in the documentation.</li>
 </ul>
 <h2 id="010---2022-03-19"><a class="header" href="#010---2022-03-19">0.1.0 - 2022-03-19</a></h2>
-<p>Initial release of AkumaKodo</p>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<p>The initial release of AkumaKodo</p>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>Interaction Command handling</li>
 <li>Lots of util functions</li>
@@ -344,9 +371,9 @@ and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>
 <h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
 <ul>
 <li>Added internal slash command handling using events. You can now enable or disable this.</li>
-<li>Logger Errors to warn on unstable modes.</li>
+<li>Logger Errors to warn on un-stable modes.</li>
 </ul>
-<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
 <ul>
 <li>For now, until slash commands are fully implemented, I will not focus on message-based commands. You will have to implement them yourself.</li>
 </ul>
@@ -368,6 +395,20 @@ and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

@@ -185,7 +185,7 @@ maintaining a high level of <code>performance</code>.</p>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
 <p><em>Coming soon...</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
-<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.0&quot;;
+<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
 
 const env = dotEnvConfig({ export: true });
@@ -202,7 +202,8 @@ const Bot = new AkumaKodoBotCore(
   {
     optional: {
       bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
-      bot_debug_mode: true,
+       // False by default but we recommend using the built in logging system
+      bot_debug_mode: false,
       providers: {
         type: &quot;disabled&quot;,
       },
@@ -210,13 +211,12 @@ const Bot = new AkumaKodoBotCore(
   },
 );
 
-// Creates ws connection and starts listening
-await Bot.createBot();
-
+// Our own custom event handler
 Bot.client.events.ready = (_, payload) =&gt; {
   Bot.container.logger.log(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
 };
 
+// Creates a command
 Bot.container.utils.createCommand(Bot, {
   trigger: &quot;ping&quot;,
   description: &quot;ping pong me!&quot;,
@@ -235,11 +235,12 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 
-// Enables the built in instance events
-Bot.initializeInternalEvents();
+
+// Creates ws connection and starts listening
+await Bot.createBot();
 </code></pre>
 <p>Now simply run the script below to start your bot!</p>
-<pre><code>deno run -A &lt;file path to code&gt;
+<pre><code>deno run -A ./&lt;file&gt;.ts
 </code></pre>
 
                     </main>
@@ -265,6 +266,20 @@ Bot.initializeInternalEvents();
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
