@@ -4,7 +4,11 @@
 
 A blazing fast discord bot framework built on top of [discordeno](https://github.com/discordeno/discordeno) and [typescript](https://www.typescriptlang.org/)!
 
-**Status: Alpha**
+# Install
+
+```
+deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+```
 
 ## Read the [documentation](https://akumakodo.github.io/AkumaKodo/) here!
 
