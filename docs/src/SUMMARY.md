@@ -11,9 +11,11 @@
   - [Event handling]()
   - [Common Errors](framework/chapter_1/common_errors.md)
 - [AkumaKodo Advanced]()
-  - [Task]()
+  - [Extended Types]()
+  - [SubCommands]()
   - [Providers]()
-  - [Events]()
+  - [Modules]()
+  - [Task]()
 
 # API
 
