@@ -32,6 +32,7 @@ export const defaultConfigOptions = {
     providers: {
       type: "disabled",
     },
+    bot_internal_events: true,
   },
 } as AkumaKodoConfigurationInterface;
 
@@ -46,7 +47,7 @@ export interface AkumaKodoConfigurationInterface {
     bot_staff_ids?: bigint[];
     /** The bot default prefix */
     bot_default_prefix?: AkumaKodoPrefix | undefined;
-    /** The development server for your bot */
+    /** The development server for your bot. This is required for development scoped commands. */
     bot_development_server_id?: bigint;
     /** Users who can bypass the bots cool-downs for commands*/
     bot_cooldown_bypass_ids?: bigint[];
@@ -62,6 +63,10 @@ export interface AkumaKodoConfigurationInterface {
       type: "mongodb" | "postgres" | "mysql" | "disabled";
       mongodb_connection_url?: string;
     };
+    /** If the internal events are enabled or not...
+     * Defaults to true
+     */
+    bot_internal_events?: boolean;
   };
 }
 
@@ -143,6 +148,7 @@ export interface AkumaKodoUtilities {
   destroyTasks(bot: AkumaKodoBotCore, callback?: () => any): any | Promise<any>;
   /** Creates an Embed */
   createEmbed(options: AkumaKodoEmbedInterface): AkumaKodoEmbed;
+  /** Access the AkumaKodoEmbed Method */
   embed(): AkumaKodoEmbed;
 }
 
