@@ -20,14 +20,14 @@ Quality of life improvement and bug fixes
 
 ### Removed
 
-- The internal events methods is not becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.
+- The internal events method is now becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.
 
 ### Fixed
 
 - Bug in logger emitting errors for unstable logs.
 - The internal event handler was made to accept asynchronous functions.
-- framework install url in documentation was incorrect.
-- Bug with fileloader import paths
+- framework install URL in the documentation was incorrect.
+- Bug with file loader import paths
 
 ### Security
 
@@ -44,7 +44,7 @@ Quality of life improvements and documentation changes
 ### Changed
 
 - Exporting only required classes from mod.ts and not everything.
-- base urls for documentation not start with index.md and not a topic name.
+- base URLs for documentation do not start with index.md and not a topic name.
 
 ### Fixed
 
@@ -52,7 +52,7 @@ Quality of life improvements and documentation changes
 
 ## 0.1.0 - 2022-03-19
 
-Initial release of AkumaKodo
+The initial release of AkumaKodo
 
 ### Added
 

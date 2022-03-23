@@ -23,7 +23,7 @@ const changelog = new Changelog("AkumaKodo")
   ).addRelease(
     new Release("0.1.2", "2022-3-23", "Quality of life improvement and bug fixes")
       .removed(
-        "The internal events methods is not becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.",
+        "The internal events method is now becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.",
       )
       .added("Error handling for more modules.")
       .added("CommandScopeType for command scope options.")
