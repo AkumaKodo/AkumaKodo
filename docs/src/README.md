@@ -62,7 +62,8 @@ const Bot = new AkumaKodoBotCore(
   {
     optional: {
       bot_development_server_id: BigInt("your-guild-id"),
-      bot_debug_mode: true,
+       // False by default but we recommend using the built in logging system
+      bot_debug_mode: false,
       providers: {
         type: "disabled",
       },
@@ -70,13 +71,12 @@ const Bot = new AkumaKodoBotCore(
   },
 );
 
-// Creates ws connection and starts listening
-await Bot.createBot();
-
+// Our own custom event handler
 Bot.client.events.ready = (_, payload) => {
   Bot.container.logger.log("info", "ready", "Online and ready to work!");
 };
 
+// Creates a command
 Bot.container.utils.createCommand(Bot, {
   trigger: "ping",
   description: "ping pong me!",
@@ -95,8 +95,9 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 
-// Enables the built in instance events
-Bot.initializeInternalEvents();
+
+// Creates ws connection and starts listening
+await Bot.createBot();
 ```
 
 Now simply run the script below to start your bot!
