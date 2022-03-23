@@ -9,7 +9,7 @@ export interface AkumaKodoCommand {
   /**The command description */
   description: string;
   /** The command scope */
-  scope: "Global" | "Development";
+  scope: CommandScopeType;
   /** A longer description of the command */
   extendedDescription?: string;
   /** The command usage and examples */
@@ -75,3 +75,5 @@ export interface cooldownInterface {
   seconds: number;
   allowedUses: number;
 }
+
+export type CommandScopeType = "Global" | "Development";
