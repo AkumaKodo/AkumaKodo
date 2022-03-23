@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js ayu">
+<html lang="en" class="sidebar-visible no-js coal">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -37,7 +37,7 @@
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "coal";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -63,7 +63,7 @@
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
             html.classList.remove('no-js')
-            html.classList.remove('ayu')
+            html.classList.remove('coal')
             html.classList.add(theme);
             html.classList.add('js');
         </script>
@@ -102,9 +102,9 @@
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal (default)</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
@@ -181,7 +181,9 @@ maintaining a high level of <code>performance</code>.</p>
 <li>You like functional programming only.</li>
 </ul>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p><em>Coming soon...</em></p>
+<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+</code></pre>
+<p><em>akumakodo will be installed in your deno cache</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
 <pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
@@ -202,6 +204,8 @@ const Bot = new AkumaKodoBotCore(
       bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
        // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
+      // If you want to use the built in event handlers
+      bot_internal_events: true
       providers: {
         type: &quot;disabled&quot;,
       },
@@ -262,7 +266,113 @@ You can find a lot of helpful information there. Check out the <a href="framewor
 <p>Make sure to copy and paste your token for later than you will need this to authenticate with the discord api.</p>
 <p>Now that you have a bot application, you can connect to the AkumaKodo framework and start creating your bot! Keep reading in the next chapter.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="akumakodo---chapter-1-the-basics"><a class="header" href="#akumakodo---chapter-1-the-basics">AkumaKodo - Chapter 1: The Basics</a></h1>
-<p>Coming soon...</p>
+<p>Now that you have your bot application from discord, we can get started creating your bot.</p>
+<h2 id="exported-classes"><a class="header" href="#exported-classes">Exported Classes</a></h2>
+<p>In AkumaKodo, everything is an extension of the <code>Bot</code> class. The bot class is exported from the <code>mod.ts</code> file in our repository as
+<code>AkumaKodoBotCore</code>.</p>
+<p>Exported classes:</p>
+<ul>
+<li>AkumaKodoBotCore</li>
+<li>AkumaKodoMongodbProvider</li>
+<li>AkumaKodoProvider</li>
+<li>AkumaKodoCollection</li>
+<li>AkumaKodoEmbed</li>
+</ul>
+<p>Which call can be exported from the <code>mod.ts</code> file.</p>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
+<p>The only thing you need to install AkumaKodo is the framework installed on your computer. All its dependency's will be installed automatically from deno.land</p>
+<p><em>Run in your terminal</em></p>
+<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+</code></pre>
+<p>You should see <code>✅ Successfully installed akumakodo</code> when finished!</p>
+<h2 id="creating-a-modts-file"><a class="header" href="#creating-a-modts-file">Creating a <code>mod.ts</code> file</a></h2>
+<p>Now create a file on your computer called <code>mod.ts</code> or whatever you like, this file will be your main program file for your bot. This file will container all the
+startup functions, loaders, and any configurations you need.</p>
+<p>The AkumaKodoBotClient is an extension of <a href="https://deno.land/x/discordeno@13.0.0-rc18/src/bot.ts">Bot</a> from <a href="https://github.com/discordeno/discordeno">discordeno</a> so all methods are available in the bot instance as well.</p>
+<p><em>mod.ts</em></p>
+<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
+
+const Bot = new AkumaKodoBotCore(
+	// Required deno Options to start the bot
+	{
+		botId: BigInt(&quot;your-bot-id&quot;),
+		events: {},
+		intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
+		token: &quot;your-bot-token&quot;,
+	},
+	// AkumaKodo options
+	{
+		optional: {
+			bot_development_server_id: BigInt(&quot;your-dev-guild-id&quot;),
+			bot_debug_mode: true,
+			providers: {
+				type: &quot;disabled&quot;,
+			},
+		},
+	}
+);
+
+Bot.createBot()
+</code></pre>
+<p>And with that your bot will login to the discord api and be online!</p>
+<h3 id="creating-commands"><a class="header" href="#creating-commands">Creating commands</a></h3>
+<p>Creating your first command in AkumaKodo is simple. On your <code>Bot</code> variable, simply access the <code>createCommand</code> function.</p>
+<pre><code class="language-ts">Bot.container.utils.createCommand()
+</code></pre>
+<p>This is a utility function to help you create slash commands using the discord api. Under the hood it uses discordeno's rest api to POST to 
+commands. You can read all the available options for a command <a href="https://github.com/AkumaKodo/AkumaKodo/blob/alpha/core/interfaces/Command.ts">here</a></p>
+<p>The base options are here:</p>
+<pre><code class="language-ts">// the command trigger that runs the command
+  trigger: string;
+// The command description
+  description: string;
+// The command scope
+  scope: CommandScopeType;
+// Runs the command callback
+  run: (data: DiscordenoInteraction) =&gt; unknown;
+</code></pre>
+<p>Using this interface we can build our command below.</p>
+<pre><code class="language-ts">Bot.container.utils.createCommand(Bot, {
+  // The command name
+  trigger: &quot;ping&quot;,
+  // The command description
+  description: &quot;Ping me!&quot;,
+  // The scope - sets the slash command to global or guild only
+  scope: &quot;Development&quot;,
+  // Command callback to run when called
+  run: async (interaction) =&gt; {
+    return await Bot.container.utils.createCommandReply(
+      Bot,
+      interaction,
+      {
+        embeds: [
+          Bot.container.utils.embed().setColor(&quot;random&quot;).setDescription(
+            `🏓Pong!`,
+          ),
+        ],
+      },
+      false,
+    );
+  },
+});
+</code></pre>
+<h3 id="simple-command-explained"><a class="header" href="#simple-command-explained">Simple Command explained</a></h3>
+<p>The first thing need to make a command is a <code>trigger</code>. You can think of this as a keyword AkumaKodo will use when creating your slash command.</p>
+<p>The second param is the command description and it should be short and to the point. If you want a longer one, you can use the <code>extendedDescription</code>.</p>
+<p>The third param is the <code>scope</code>. This controls if the command should be published as a global command or development only. As of version <strong>0.1.2</strong> this is required by default 
+but in the future we may enabled development by default for scopes.</p>
+<p>The forth and most fun param is <code>run</code>! This function takes a type of <strong><a href="https://doc.deno.land/https://deno.land/x/discordeno@13.0.0-rc18/mod.ts/%7E/DiscordenoInteraction">DiscordenoInteraction</a></strong> We use this interaction data to execute and respond to the command.</p>
+<p>The framework has a built in utility function for responding to slash commands and its called <code>createCommandReply</code>. Simply fill out the options and send your response!</p>
+<p>Keep in mind all the params above are required to run create any command, more addons can be found <a href="https://github.com/AkumaKodo/AkumaKodo/blob/alpha/core/interfaces/Command.ts">here</a>.</p>
+<h2 id="creating-events"><a class="header" href="#creating-events">Creating events</a></h2>
+<p>Events are simply to create. We simply use Discordeno's internal event handler. You can access it using:</p>
+<pre><code class="language-ts">Bot.instance.events.ready = (_, payload) =&gt; {
+    // Do something...
+}
+</code></pre>
+<h2 id="template-bot"><a class="header" href="#template-bot">Template Bot</a></h2>
+<p>FYI - If you want to have a simple starter project out of the box, use our <a href="https://github.com/AkumaKodo/templates">template</a>!</p>
+<p>On the next page we will cover command handling and how you can create a more complex file structure for application.</p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="common-errors"><a class="header" href="#common-errors">Common Errors</a></h1>
 <p>When developing in any technology we often come across some hardships, well here is a list of possible errors you may see in our framework
 when developing and how you can possibly fix them.</p>

@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html lang="en" class="sidebar-visible no-js ayu">
+<html lang="en" class="sidebar-visible no-js coal">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
@@ -36,7 +36,7 @@
         <!-- Provide site root to javascript -->
         <script type="text/javascript">
             var path_to_root = "";
-            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "ayu";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "coal";
         </script>
 
         <!-- Work around some values being stored in localStorage wrapped in quotes -->
@@ -62,7 +62,7 @@
             if (theme === null || theme === undefined) { theme = default_theme; }
             var html = document.querySelector('html');
             html.classList.remove('no-js')
-            html.classList.remove('ayu')
+            html.classList.remove('coal')
             html.classList.add(theme);
             html.classList.add('js');
         </script>
@@ -101,9 +101,9 @@
                         <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
                             <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal (default)</button></li>
                             <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
-                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
                         </ul>
                         <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
                             <i class="fa fa-search"></i>
@@ -183,7 +183,9 @@ maintaining a high level of <code>performance</code>.</p>
 <li>You like functional programming only.</li>
 </ul>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p><em>Coming soon...</em></p>
+<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+</code></pre>
+<p><em>akumakodo will be installed in your deno cache</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
 <pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
@@ -204,6 +206,8 @@ const Bot = new AkumaKodoBotCore(
       bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
        // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
+      // If you want to use the built in event handlers
+      bot_internal_events: true
       providers: {
         type: &quot;disabled&quot;,
       },
