@@ -45,7 +45,7 @@ _Coming soon..._
 ## Example bot
 
 ```typescript
-import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.0";
+import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.2/mod.ts";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
 
 const env = dotEnvConfig({ export: true });
@@ -102,5 +102,5 @@ Bot.initializeInternalEvents();
 Now simply run the script below to start your bot!
 
 ```
-deno run -A <file path to code>
+deno run -A ./<file>.ts
 ```
