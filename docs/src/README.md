@@ -44,7 +44,7 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
 ```
 
-*akumakodo will be installed in your deno cache*
+_akumakodo will be installed in your deno cache_
 
 ## Example bot
 

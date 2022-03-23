@@ -35,8 +35,8 @@ const changelog = new Changelog("AkumaKodo")
       .security("If fs loader throws an error, we will end the bot process and not continue loading the process."),
   ).addRelease(
     new Release("0.1.3", "2022-3-25", "Major revamp fixes for library and modules")
-    .added("Documentation page for new users.")
-    )
+      .added("Documentation page for new users."),
+  );
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");

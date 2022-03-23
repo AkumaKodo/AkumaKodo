@@ -42,26 +42,26 @@ _mod.ts_
 import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.2/mod.ts";
 
 const Bot = new AkumaKodoBotCore(
-	// Required deno Options to start the bot
-	{
-		botId: BigInt("your-bot-id"),
-		events: {},
-		intents: ["Guilds", "GuildMessages", "GuildMembers"],
-		token: "your-bot-token",
-	},
-	// AkumaKodo options
-	{
-		optional: {
-			bot_development_server_id: BigInt("your-dev-guild-id"),
-			bot_debug_mode: true,
-			providers: {
-				type: "disabled",
-			},
-		},
-	}
+  // Required deno Options to start the bot
+  {
+    botId: BigInt("your-bot-id"),
+    events: {},
+    intents: ["Guilds", "GuildMessages", "GuildMembers"],
+    token: "your-bot-token",
+  },
+  // AkumaKodo options
+  {
+    optional: {
+      bot_development_server_id: BigInt("your-dev-guild-id"),
+      bot_debug_mode: true,
+      providers: {
+        type: "disabled",
+      },
+    },
+  },
 );
 
-Bot.createBot()
+Bot.createBot();
 ```
 
 And with that your bot will login to the discord api and be online!
@@ -69,23 +69,29 @@ And with that your bot will login to the discord api and be online!
 ### Creating commands
 
 Creating your first command in AkumaKodo is simple. On your `Bot` variable, simply access the `createCommand` function.
+
 ```ts
-Bot.container.utils.createCommand()
+Bot.container.utils.createCommand();
 ```
 
-This is a utility function to help you create slash commands using the discord api. Under the hood it uses discordeno's rest api to POST to 
+This is a utility function to help you create slash commands using the discord api. Under the hood it uses discordeno's rest api to POST to
 commands. You can read all the available options for a command [here](https://github.com/AkumaKodo/AkumaKodo/blob/alpha/core/interfaces/Command.ts)
 
 The base options are here:
+
 ```ts
 // the command trigger that runs the command
-  trigger: string;
+trigger:
+string;
 // The command description
-  description: string;
+description:
+string;
 // The command scope
-  scope: CommandScopeType;
+scope:
+CommandScopeType;
 // Runs the command callback
-  run: (data: DiscordenoInteraction) => unknown;
+run:
+((data: DiscordenoInteraction) => unknown);
 ```
 
 Using this interface we can build our command below.
@@ -115,13 +121,14 @@ Bot.container.utils.createCommand(Bot, {
   },
 });
 ```
+
 ### Simple Command explained
 
 The first thing need to make a command is a `trigger`. You can think of this as a keyword AkumaKodo will use when creating your slash command.
 
 The second param is the command description and it should be short and to the point. If you want a longer one, you can use the `extendedDescription`.
 
-The third param is the `scope`. This controls if the command should be published as a global command or development only. As of version **0.1.2** this is required by default 
+The third param is the `scope`. This controls if the command should be published as a global command or development only. As of version **0.1.2** this is required by default
 but in the future we may enabled development by default for scopes.
 
 The forth and most fun param is `run`! This function takes a type of **[DiscordenoInteraction](https://doc.deno.land/https://deno.land/x/discordeno@13.0.0-rc18/mod.ts/~/DiscordenoInteraction)** We use this interaction data to execute and respond to the command.
@@ -136,8 +143,8 @@ Events are simply to create. We simply use Discordeno's internal event handler. 
 
 ```ts
 Bot.instance.events.ready = (_, payload) => {
-    // Do something...
-}
+  // Do something...
+};
 ```
 
 ## Template Bot
