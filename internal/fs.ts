@@ -51,7 +51,6 @@ export class FileSystemModule {
           "info",
           "FS import",
           `Saved ${this.uniqueFilePathCounter} ${this.uniqueFilePathCounter > 1 ? "files" : "file"}!`,
-          "canary",
         );
       }
     } catch (e) {
@@ -70,8 +69,9 @@ export class FileSystemModule {
         `${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/fileloader.ts#${this.uniqueFilePathCounter}`
       );
       this.savedPaths = [];
+      this.container.logger.debug("debug", "FS load", `Loaded paths: ${Array.from(this.savedPaths)}`);
 
-      if (this._errors < 1) this.container.logger.debug("info", "FS load", "Loaded all files!", "canary");
+      if (this._errors < 1) this.container.logger.debug("info", "FS load", "Loaded all files!");
     } catch (e) {
       this._errors++;
       this.container.logger.debug("error", "FS load", `Failed to load fileloader.ts\n ${e}`);
@@ -107,10 +107,12 @@ export class FileSystemModule {
 
       await this.load();
 
-      if (this._errors < 1) this.container.logger.debug("info", "FS fastLoader", "Loaded all files!", "canary");
+      if (this._errors < 1) this.container.logger.debug("info", "FS fastLoader", "Loaded all files!");
     } catch (e) {
       this._errors++;
       this.container.logger.debug("error", "FS fastLoader", `Failed to load files! ${e}`);
+      // Make the bot shutdown if there is an error here...
+      Deno.exit();
     }
   }
 }
