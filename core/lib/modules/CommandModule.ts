@@ -1,14 +1,12 @@
 import { AkumaKodoConfigurationInterface, AkumaKodoContainerInterface } from "../../interfaces/Client.ts";
-import { AkumaKodoCommand } from "../../interfaces/Command.ts";
+import { AkumaKodoCommand, CommandScopeType } from "../../interfaces/Command.ts";
 import {
   BotWithCache,
-  CreateMessage,
   DiscordenoInteraction,
   EditGlobalApplicationCommand,
   InteractionApplicationCommandCallbackData,
   InteractionResponseTypes,
   MakeRequired,
-  sendMessage,
   upsertApplicationCommands,
 } from "../../../deps.ts";
 
@@ -45,63 +43,67 @@ export class AkumaKodoCommandModule {
       | "ApplicationCommandAutocompleteResult"
       | "Modal",
   ) {
-    switch (type) {
-      case "Pong":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.Pong,
-          private: hidden,
-          data: context,
-        });
-        break;
-      case "ChannelMessageWithSource":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.ChannelMessageWithSource,
-          private: hidden,
-          data: context,
-        });
-        break;
-      case "DeferredChannelMessageWithSource":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.DeferredChannelMessageWithSource,
-          private: hidden,
-          data: context,
-        });
-        break;
-      case "DeferredUpdateMessage":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.DeferredUpdateMessage,
-          private: hidden,
-          data: context,
-        });
-        break;
-      case "UpdateMessage":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.UpdateMessage,
-          private: hidden,
-          data: context,
-        });
-        break;
-      case "ApplicationCommandAutocompleteResult":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
-          private: hidden,
-          data: context,
-        });
-        break;
-      case "Modal":
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.Modal,
-          private: hidden,
-          data: context,
-        });
-        break;
-      default:
-        await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
-          type: InteractionResponseTypes.ChannelMessageWithSource,
-          private: hidden,
-          data: context,
-        });
-        break;
+    try {
+      switch (type) {
+        case "Pong":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.Pong,
+            private: hidden,
+            data: context,
+          });
+          break;
+        case "ChannelMessageWithSource":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            private: hidden,
+            data: context,
+          });
+          break;
+        case "DeferredChannelMessageWithSource":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.DeferredChannelMessageWithSource,
+            private: hidden,
+            data: context,
+          });
+          break;
+        case "DeferredUpdateMessage":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.DeferredUpdateMessage,
+            private: hidden,
+            data: context,
+          });
+          break;
+        case "UpdateMessage":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.UpdateMessage,
+            private: hidden,
+            data: context,
+          });
+          break;
+        case "ApplicationCommandAutocompleteResult":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.ApplicationCommandAutocompleteResult,
+            private: hidden,
+            data: context,
+          });
+          break;
+        case "Modal":
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.Modal,
+            private: hidden,
+            data: context,
+          });
+          break;
+        default:
+          await this.instance.helpers.sendInteractionResponse(interaction.id, interaction.token, {
+            type: InteractionResponseTypes.ChannelMessageWithSource,
+            private: hidden,
+            data: context,
+          });
+          break;
+      }
+    } catch (e) {
+      this.container.logger.debug("fatal", "Command Reply Failed", e);
     }
   }
 
@@ -159,7 +161,7 @@ export class AkumaKodoCommandModule {
    * Sends the discord api an event to update all slash commands.
    * @param scope The scope of commands to upgrade
    */
-  public async updateApplicationCommands(scope?: "Global" | "Development") {
+  public async updateApplicationCommands(scope?: CommandScopeType) {
     const globalCommands: MakeRequired<EditGlobalApplicationCommand, "name">[] = [];
     const developmentCommands: MakeRequired<EditGlobalApplicationCommand, "name">[] = [];
 
@@ -180,7 +182,7 @@ export class AkumaKodoCommandModule {
           if (!this.configuration.optional.bot_development_server_id) {
             throw new Error("Development server id is not set in config options!");
           }
-          upsertApplicationCommands(
+          await upsertApplicationCommands(
             this.instance,
             developmentCommands,
             this.configuration.optional.bot_development_server_id,
@@ -218,7 +220,7 @@ export class AkumaKodoCommandModule {
           );
           await this.instance.helpers.upsertApplicationCommands(globalCommands).catch((e) =>
             this.container.logger.debug("error", "Update global commands Error", e)
-          );
+          ).catch((e) => this.container.logger.debug("error", "Update global commands Error", e));
         }
       }
     }
