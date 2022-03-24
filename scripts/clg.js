@@ -21,7 +21,7 @@ const changelog = new Changelog("AkumaKodo")
       .fixed("A spelling mistake in the documentation.")
       .added("Yoki section to the docs."),
   ).addRelease(
-    new Release("0.1.2", "2022-3-23", "Quality of life improvement and bug fixes")
+    new Release("0.1.2", "2022-3-24", "Quality of life improvement and bug fixes")
       .removed(
         "The internal events method is now becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.",
       )
@@ -35,7 +35,13 @@ const changelog = new Changelog("AkumaKodo")
       .security("If fs loader throws an error, we will end the bot process and not continue loading the process."),
   ).addRelease(
     new Release("0.1.3", "2022-3-25", "Major revamp fixes for library and modules")
-      .added("Documentation page for new users."),
+      .added("Documentation page for begging users.")
+      .changed(
+        "Configuration object added 'required' to props. This will make it more clear to the end user which options are required or optional.",
+      )
+      .changed("Bot configuration options have not been given an option to enable and disable built in events")
+      .changed("Version control function name from validate to validateDenoVersion.")
+      .fixed("Permission handling for event handler. Events are enabled by default and the user can disable them if needed.")
   );
 
 console.clear();
