@@ -25,8 +25,6 @@ The AkumaKodoBotClient is an extension of [Bot](https://deno.land/x/discordeno@1
 _mod.ts_
 
 ```typescript
-import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.2/mod.ts";
-
 const Bot = new AkumaKodoBotCore(
   // Required deno Options to start the bot
   {
