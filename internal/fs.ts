@@ -69,7 +69,7 @@ export class FileSystemModule {
         `${Deno.mainModule.substring(0, Deno.mainModule.lastIndexOf("/"))}/fileloader.ts#${this.uniqueFilePathCounter}`
       );
       this.savedPaths = [];
-      this.container.logger.debug("debug", "FS load", `Loaded paths: ${Array.from(this.savedPaths)}`);
+      // this.container.logger.debug("debug", "FS load", `Loaded paths: ${Array.from(this.savedPaths)}`);
 
       if (this._errors < 1) this.container.logger.debug("info", "FS load", "Loaded all files!");
     } catch (e) {
