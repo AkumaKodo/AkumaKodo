@@ -87,15 +87,6 @@ export class AkumaKodoBotCore {
       Deno.exit(0);
     }
 
-    // If no optional values were passed
-    config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
-    config.optional.bot_mention_with_prefix = config.optional.bot_mention_with_prefix || false;
-    config.optional.bot_default_prefix = config.optional.bot_default_prefix || undefined;
-    config.required.bot_development_server_id = config.required.bot_development_server_id || undefined;
-    config.optional.bot_ratelimit_bypass_ids = config.optional.bot_ratelimit_bypass_ids || [];
-    config.optional.bot_debug_mode = config.optional.bot_debug_mode || false;
-    config.optional.bot_supporters_ids = config.optional.bot_supporters_ids || [];
-
     // Sets the configuration settings
     this.configuration = config;
 
