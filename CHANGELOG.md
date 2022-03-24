@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.1.3 - 2022-03-25
+## 0.1.3 - 2022-03-24
 
 Major revamp fixes for library and modules with more permission handling.
 
