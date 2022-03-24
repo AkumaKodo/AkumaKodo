@@ -120,11 +120,11 @@ export class AkumaKodoBotCore {
           }, { ...config })
           : undefined,
       },
-      defaultCooldown: {
+      defaultRateLimit: {
         seconds: Milliseconds.Second * 5,
         allowedUses: 1,
       },
-      ignoreCooldown: config.optional.bot_cooldown_bypass_ids,
+      ignoreRateLimit: config.optional.bot_cooldown_bypass_ids,
       prefix: config.optional.bot_default_prefix,
       runningTasks: {
         intervals: [],
@@ -190,17 +190,21 @@ export class AkumaKodoBotCore {
   /**
    * Creates the bot process and starts the bot.
    */
-  public async createBot() {
+  public async createBot(): Promise<void> {
     await startBot(this.instance);
     this.instance.events.ready = async (_, payload) => {
       // Wait till shards are loaded to start the bot
       if (payload.shardId + 1 === this.instance.gateway.maxShards) {
         this.launcher.task.initializeTask();
         this.container.fullyReady = true;
-        if(this.configuration.optional.bot_internal_events) {
-          await this.handleInternalEvents()
+        if (this.configuration.optional.bot_internal_events) {
+          await this.handleInternalEvents();
         } else {
-          this.container.logger.debug("warn", "createBot", "No internal events were enabled. All handlers will have to be created manually.");
+          this.container.logger.debug(
+            "warn",
+            "createBot",
+            "No internal events were enabled. All handlers will have to be created manually.",
+          );
         }
         this.container.logger.debug("info", "create Bot", "AkumaKodo Connection successful!");
       }
@@ -210,7 +214,7 @@ export class AkumaKodoBotCore {
   /**
    * Kills the bot process
    */
-  public async destroyBot() {
+  public async destroyBot(): Promise<void> {
     this.instance.gateway.shards.forEach((shard: DiscordenoShard) => {
       clearInterval(shard.heartbeat.intervalId);
       this.instance.gateway.closeWS(shard.ws, 3061, "Logging off! Do Not RESUME!");
@@ -221,13 +225,9 @@ export class AkumaKodoBotCore {
   }
 
   /** handles the internal events */
-  private async handleInternalEvents() {
-    if(this.configuration.optional.bot_internal_events?.interactionCreate) {
-     await this.launcher.event.interactionCreateHandler()
-    }
-    if (this.configuration.optional.bot_internal_events?.ready) {
-      // TODO(#1) - Add ready event
-      // this.launcher.event.readyHandler()
+  private async handleInternalEvents(): Promise<void> {
+    if (this.configuration.optional.bot_internal_events?.interactionCreate) {
+      await this.launcher.event.interactionCreateHandler();
     }
   }
 }

@@ -1,7 +1,6 @@
 import { PermissionStrings } from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/permissions/permissionStrings.ts";
 import { ApplicationCommandOption, ApplicationCommandTypes, DiscordenoInteraction } from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 
 export interface AkumaKodoCommand {
   /**The command trigger that runs the command */
@@ -17,12 +16,7 @@ export interface AkumaKodoCommand {
   /**The category that can be used to organize commands*/
   category?: string;
   /** Rate limit for the command */
-  rateLimit?: {
-    /** The amount of time in seconds (ms) to wait before the user can run the command again */
-    duration: number;
-    /** The amount of times the user can run the command in the duration */
-    limit: number;
-  };
+  rateLimit?: rateLimitInterface;
   /**Whether the command is allowed to run in non-nsfw channels*/
   nsfw?: boolean;
   /**Whether the command can only be used by the bots owners*/
@@ -34,7 +28,7 @@ export interface AkumaKodoCommand {
   /**If the command can only be used in dms*/
   dmOnly?: false;
   /**A list of member and role ids that can bypass the command cooldown*/
-  ignoreCooldowns?: bigint[];
+  ignoreRateLimit?: bigint[];
   /**The bot permissions needed by the bot to execute the command*/
   botPermissions?: PermissionStrings[];
   /**The user permissions needed by the user to execute the command*/
@@ -71,9 +65,10 @@ export interface AkumaKodoSubcommand extends AkumaKodoCommand {
   SubcommandType?: "subcommand";
 }
 
-export interface cooldownInterface {
-  seconds: number;
-  allowedUses: number;
+export interface rateLimitInterface {
+  /** The amount of time in seconds (ms) to wait before the user can run the command again */
+  duration: number;
+  /** The amount of times the user can run the command in the duration */
+  limit: number;
 }
-
 export type CommandScopeType = "Global" | "Development";

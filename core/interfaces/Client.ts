@@ -6,7 +6,7 @@ import {
   InteractionApplicationCommandCallbackData,
 } from "../../deps.ts";
 import { AkumaKodoCollection } from "../lib/utils/Collection.ts";
-import { AkumaKodoCommand, cooldownInterface } from "./Command.ts";
+import { AkumaKodoCommand, rateLimitInterface } from "./Command.ts";
 import { _runningTaskInterface, AkumaKodoTask } from "./Task.ts";
 import { AkumaKodoLogger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
@@ -65,7 +65,6 @@ export interface AkumaKodoConfigurationInterface {
      */
     bot_internal_events?: {
       interactionCreate?: boolean;
-      ready?: boolean;
     };
     /** Optional providers for the bot client */
     providers: {
@@ -113,8 +112,8 @@ export interface AkumaKodoContainerInterface {
   monitorCollection: AkumaKodoCollection<string, AkumaKodoMonitor>;
   runningTasks: _runningTaskInterface;
   commands: AkumaKodoCollection<string, AkumaKodoCommand>;
-  defaultCooldown: cooldownInterface;
-  ignoreCooldown: bigint[];
+  defaultRateLimit: rateLimitInterface;
+  ignoreRateLimit: bigint[];
   logger: AkumaKodoLogger;
   fullyReady: boolean;
   prefix?: AkumaKodoPrefix;
