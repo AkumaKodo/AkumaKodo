@@ -183,11 +183,11 @@ maintaining a high level of <code>performance</code>.</p>
 <li>You like functional programming only.</li>
 </ul>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+<pre><code>deno install https://deno.land/x/akumakodo@0.1.3/mod.ts
 </code></pre>
 <p><em>akumakodo will be installed in your deno cache</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
-<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
+<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.3/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
 
 const env = dotEnvConfig({ export: true });
@@ -203,14 +203,14 @@ const Bot = new AkumaKodoBotCore(
   },
   {
     optional: {
-      bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
-       // False by default but we recommend using the built in logging system
+      // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
-      // If you want to use the built in event handlers
-      bot_internal_events: true
       providers: {
         type: &quot;disabled&quot;,
       },
+    },
+    required: {
+      bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
     },
   },
 );
@@ -238,7 +238,6 @@ Bot.container.utils.createCommand(Bot, {
     );
   },
 });
-
 
 // Creates ws connection and starts listening
 await Bot.createBot();
@@ -270,20 +269,6 @@ await Bot.createBot();
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

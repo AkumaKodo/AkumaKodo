@@ -153,21 +153,14 @@
 <h2 id="exported-classes"><a class="header" href="#exported-classes">Exported Classes</a></h2>
 <p>In AkumaKodo, everything is an extension of the <code>Bot</code> class. The bot class is exported from the <code>mod.ts</code> file in our repository as
 <code>AkumaKodoBotCore</code>.</p>
-<p>Exported classes:</p>
+<p>Exported AkuamKodo classes:</p>
 <ul>
-<li>AkumaKodoBotCore</li>
-<li>AkumaKodoMongodbProvider</li>
-<li>AkumaKodoProvider</li>
-<li>AkumaKodoCollection</li>
-<li>AkumaKodoEmbed</li>
+<li><ins>AkumaKodoBotCore</ins> - The bot client and main access point of your application.</li>
+<li><ins>AkumaKodoMongodbProvider</ins> - The mongodb functional controller class that handlers your database.</li>
+<li><ins>AkumaKodoProvider</ins> - The base provider class if you wish to extend and make your own custom one.</li>
+<li><ins>AkumaKodoCollection</ins> - The main cache system extended from the js Map class.</li>
+<li><ins>AkumaKodoEmbed</ins> - The embed class.</li>
 </ul>
-<p>Which call can be exported from the <code>mod.ts</code> file.</p>
-<h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<p>The only thing you need to install AkumaKodo is the framework installed on your computer. All its dependency's will be installed automatically from deno.land</p>
-<p><em>Run in your terminal</em></p>
-<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
-</code></pre>
-<p>You should see <code>✅ Successfully installed akumakodo</code> when finished!</p>
 <h2 id="creating-a-modts-file"><a class="header" href="#creating-a-modts-file">Creating a <code>mod.ts</code> file</a></h2>
 <p>Now create a file on your computer called <code>mod.ts</code> or whatever you like, this file will be your main program file for your bot. This file will container all the
 startup functions, loaders, and any configurations you need.</p>
@@ -186,11 +179,13 @@ const Bot = new AkumaKodoBotCore(
   // AkumaKodo options
   {
     optional: {
-      bot_development_server_id: BigInt(&quot;your-dev-guild-id&quot;),
       bot_debug_mode: true,
       providers: {
         type: &quot;disabled&quot;,
       },
+    },
+    required: {
+      bot_development_server_id: BigInt(&quot;your-dev-guild-id&quot;),
     },
   },
 );
@@ -290,20 +285,6 @@ but in the future we may enabled development by default for scopes.</p>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 

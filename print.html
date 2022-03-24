@@ -181,11 +181,11 @@ maintaining a high level of <code>performance</code>.</p>
 <li>You like functional programming only.</li>
 </ul>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+<pre><code>deno install https://deno.land/x/akumakodo@0.1.3/mod.ts
 </code></pre>
 <p><em>akumakodo will be installed in your deno cache</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
-<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.2/mod.ts&quot;;
+<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.3/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
 
 const env = dotEnvConfig({ export: true });
@@ -201,14 +201,14 @@ const Bot = new AkumaKodoBotCore(
   },
   {
     optional: {
-      bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
-       // False by default but we recommend using the built in logging system
+      // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
-      // If you want to use the built in event handlers
-      bot_internal_events: true
       providers: {
         type: &quot;disabled&quot;,
       },
+    },
+    required: {
+      bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
     },
   },
 );
@@ -236,7 +236,6 @@ Bot.container.utils.createCommand(Bot, {
     );
   },
 });
-
 
 // Creates ws connection and starts listening
 await Bot.createBot();
@@ -270,21 +269,14 @@ You can find a lot of helpful information there. Check out the <a href="framewor
 <h2 id="exported-classes"><a class="header" href="#exported-classes">Exported Classes</a></h2>
 <p>In AkumaKodo, everything is an extension of the <code>Bot</code> class. The bot class is exported from the <code>mod.ts</code> file in our repository as
 <code>AkumaKodoBotCore</code>.</p>
-<p>Exported classes:</p>
+<p>Exported AkuamKodo classes:</p>
 <ul>
-<li>AkumaKodoBotCore</li>
-<li>AkumaKodoMongodbProvider</li>
-<li>AkumaKodoProvider</li>
-<li>AkumaKodoCollection</li>
-<li>AkumaKodoEmbed</li>
+<li><ins>AkumaKodoBotCore</ins> - The bot client and main access point of your application.</li>
+<li><ins>AkumaKodoMongodbProvider</ins> - The mongodb functional controller class that handlers your database.</li>
+<li><ins>AkumaKodoProvider</ins> - The base provider class if you wish to extend and make your own custom one.</li>
+<li><ins>AkumaKodoCollection</ins> - The main cache system extended from the js Map class.</li>
+<li><ins>AkumaKodoEmbed</ins> - The embed class.</li>
 </ul>
-<p>Which call can be exported from the <code>mod.ts</code> file.</p>
-<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
-<p>The only thing you need to install AkumaKodo is the framework installed on your computer. All its dependency's will be installed automatically from deno.land</p>
-<p><em>Run in your terminal</em></p>
-<pre><code>deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
-</code></pre>
-<p>You should see <code>✅ Successfully installed akumakodo</code> when finished!</p>
 <h2 id="creating-a-modts-file"><a class="header" href="#creating-a-modts-file">Creating a <code>mod.ts</code> file</a></h2>
 <p>Now create a file on your computer called <code>mod.ts</code> or whatever you like, this file will be your main program file for your bot. This file will container all the
 startup functions, loaders, and any configurations you need.</p>
@@ -303,11 +295,13 @@ const Bot = new AkumaKodoBotCore(
   // AkumaKodo options
   {
     optional: {
-      bot_development_server_id: BigInt(&quot;your-dev-guild-id&quot;),
       bot_debug_mode: true,
       providers: {
         type: &quot;disabled&quot;,
       },
+    },
+    required: {
+      bot_development_server_id: BigInt(&quot;your-dev-guild-id&quot;),
     },
   },
 );
@@ -403,6 +397,13 @@ this scope, kick the bot and reinvite it.</p>
 <p>Example url: <em>https://discord.com/api/oauth2/authorize?client_id=your-id&amp;permissions=0&amp;scope=bot%20<code>applications.commands</code></em></p>
 </li>
 </ol>
+<h3 id="owner-only-commands"><a class="header" href="#owner-only-commands">Owner Only Commands</a></h3>
+<!--
+This error is when the developer sets a command to type ownerOnly = true but does not enable the owner fetch function.
+
+They can either fetch the owner themselves or enable this.
+ -->
+<p><em>coming soon</em></p>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="api"><a class="header" href="#api">API</a></h1>
 <p>AkumaKodo is built around <a href="https://github.com/discordeno/discordeno">discordeno</a>, so you can find its api documentation <a href="https://doc.deno.land/https://deno.land/x/discordeno@13.0.0-rc18/mod.ts">here</a>.</p>
 <p><strong>Api</strong> docs for AkumaKodo will be available later.</p>
@@ -434,9 +435,35 @@ shout-out to them!</p>
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="http://keepachangelog.com/">Keep a Changelog</a>
 and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>.</p>
-<h2 id="012---2022-03-23"><a class="header" href="#012---2022-03-23">0.1.2 - 2022-03-23</a></h2>
-<p>Quality of life improvement and bug fixes</p>
+<h2 id="013---2022-03-24"><a class="header" href="#013---2022-03-24">0.1.3 - 2022-03-24</a></h2>
+<p>Major revamp fixes for library and modules with more permission handling.</p>
 <h3 id="added"><a class="header" href="#added">Added</a></h3>
+<ul>
+<li>NSFW Command checks</li>
+<li>Owner Only command checks</li>
+<li>development server only checks</li>
+<li>Documentation page for begging users.</li>
+<li>Rate limit handling for commands.</li>
+</ul>
+<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<ul>
+<li>Configuration object added 'required' to props. This will make it more clear to the end user which options are required or optional.</li>
+<li>Bot configuration options have not been given an option to enable and disable built in events</li>
+<li>Version control function name from validate to validateDenoVersion.</li>
+</ul>
+<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<ul>
+<li>Bot will fetch application owners on start up and cache them.</li>
+<li>Permission handling for event handler. Events are enabled by default and the user can disable them if needed.</li>
+<li>Converted cooldown type names to rate limit for convenience, and understanding.</li>
+</ul>
+<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<ul>
+<li>Added more permission checks and caching of the bot owner so we dont hit discord api ratelimit fetch request.</li>
+</ul>
+<h2 id="012---2022-03-24"><a class="header" href="#012---2022-03-24">0.1.2 - 2022-03-24</a></h2>
+<p>Quality of life improvement and bug fixes</p>
+<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
 <ul>
 <li>Error handling for more modules.</li>
 <li>CommandScopeType for command scope options.</li>
@@ -449,40 +476,40 @@ and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>
 <ul>
 <li>The internal events method is now becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.</li>
 </ul>
-<h3 id="fixed"><a class="header" href="#fixed">Fixed</a></h3>
+<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
 <ul>
 <li>Bug in logger emitting errors for unstable logs.</li>
 <li>The internal event handler was made to accept asynchronous functions.</li>
-<li>framework install URL in the documentation was incorrect.</li>
-<li>Bug with file loader import paths</li>
+<li>framework install url in documentation was incorrect.</li>
+<li>Bug with fileloader import paths</li>
 </ul>
-<h3 id="security"><a class="header" href="#security">Security</a></h3>
+<h3 id="security-1"><a class="header" href="#security-1">Security</a></h3>
 <ul>
 <li>If fs loader throws an error, we will end the bot process and not continue loading the process.</li>
 </ul>
 <h2 id="011---2022-03-22"><a class="header" href="#011---2022-03-22">0.1.1 - 2022-03-22</a></h2>
 <p>Quality of life improvements and documentation changes</p>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
 <ul>
 <li>Yoki section to the docs.</li>
 </ul>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
 <ul>
 <li>Exporting only required classes from mod.ts and not everything.</li>
-<li>base URLs for documentation do not start with index.md and not a topic name.</li>
+<li>base urls for documentation not start with index.md and not a topic name.</li>
 </ul>
-<h3 id="fixed-1"><a class="header" href="#fixed-1">Fixed</a></h3>
+<h3 id="fixed-2"><a class="header" href="#fixed-2">Fixed</a></h3>
 <ul>
 <li>A spelling mistake in the documentation.</li>
 </ul>
 <h2 id="010---2022-03-19"><a class="header" href="#010---2022-03-19">0.1.0 - 2022-03-19</a></h2>
-<p>The initial release of AkumaKodo</p>
-<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<p>Initial release of AkumaKodo</p>
+<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
 <ul>
 <li>Interaction Command handling</li>
 <li>Lots of util functions</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
 <ul>
 <li>Added internal slash command handling using events. You can now enable or disable this.</li>
 <li>Logger Errors to warn on un-stable modes.</li>
@@ -509,20 +536,6 @@ and this project adheres to <a href="http://semver.org/">Semantic Versioning</a>
 
         </div>
 
-        <!-- Livereload script (if served using the cli tool) -->
-        <script type="text/javascript">
-            var socket = new WebSocket("ws://localhost:3000/__livereload");
-            socket.onmessage = function (event) {
-                if (event.data === "reload") {
-                    socket.close();
-                    location.reload();
-                }
-            };
-
-            window.onbeforeunload = function() {
-                socket.close();
-            }
-        </script>
 
 
 
