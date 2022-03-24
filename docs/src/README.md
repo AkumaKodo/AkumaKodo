@@ -67,8 +67,6 @@ const Bot = new AkumaKodoBotCore(
     optional: {
        // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
-      // If you want to use the built in event handlers
-      bot_internal_events: true
       providers: {
         type: "disabled",
       },
