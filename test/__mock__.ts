@@ -15,11 +15,13 @@ export const Bot = new AkumaKodoBotCore({
   token: TOKEN,
 }, {
   optional: {
-    bot_development_server_id: BigInt("946461976408764476"),
     bot_debug_mode: true,
     providers: {
       type: "disabled",
     },
+  },
+  required: {
+    bot_development_server_id: BigInt("946461976408764476"),
   },
 });
 
@@ -74,5 +76,3 @@ Bot.container.utils.createCommand(Bot, {
     }, true);
   },
 });
-
-Bot.initializeInternalEvents();

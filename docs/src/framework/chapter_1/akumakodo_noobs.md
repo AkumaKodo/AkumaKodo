@@ -52,11 +52,13 @@ const Bot = new AkumaKodoBotCore(
   // AkumaKodo options
   {
     optional: {
-      bot_development_server_id: BigInt("your-dev-guild-id"),
       bot_debug_mode: true,
       providers: {
         type: "disabled",
       },
+    },
+    required: {
+      bot_development_server_id: BigInt("your-dev-guild-id"),
     },
   },
 );

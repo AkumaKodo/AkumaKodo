@@ -179,13 +179,13 @@ export class AkumaKodoCommandModule {
          * Update the development commands
          */
         if (developmentCommands.length && (scope === "Development" || scope === undefined)) {
-          if (!this.configuration.optional.bot_development_server_id) {
+          if (!this.configuration.required.bot_development_server_id) {
             throw new Error("Development server id is not set in config options!");
           }
           await upsertApplicationCommands(
             this.instance,
             developmentCommands,
-            this.configuration.optional.bot_development_server_id,
+            this.configuration.required.bot_development_server_id,
           ).catch((e) => this.container.logger.debug("error", "Update development commands Error", e));
 
           this.container.logger.debug(

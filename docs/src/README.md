@@ -65,7 +65,6 @@ const Bot = new AkumaKodoBotCore(
   },
   {
     optional: {
-      bot_development_server_id: BigInt("your-guild-id"),
        // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
       // If you want to use the built in event handlers
@@ -74,6 +73,9 @@ const Bot = new AkumaKodoBotCore(
         type: "disabled",
       },
     },
+    required: {
+      bot_development_server_id: BigInt("your-guild-id"),
+    }
   },
 );
 
