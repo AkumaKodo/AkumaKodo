@@ -15,7 +15,7 @@ export class AkumaKodoVersionControl {
    *
    * This function will parse your deno version and compare it to the required version.
    */
-  public validate() {
+  public validateDenoVersion() {
     const internalVersion = this.RequiredDenoVersion.split(".");
     const _ = AkumaKodoVersionControl.getInternalVersion();
     const userVersion = _.split(".");
