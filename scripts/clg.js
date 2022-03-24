@@ -36,12 +36,16 @@ const changelog = new Changelog("AkumaKodo")
   ).addRelease(
     new Release("0.1.3", "2022-3-25", "Major revamp fixes for library and modules")
       .added("Documentation page for begging users.")
+      .added("Rate limit handling for commands.")
       .changed(
         "Configuration object added 'required' to props. This will make it more clear to the end user which options are required or optional.",
       )
       .changed("Bot configuration options have not been given an option to enable and disable built in events")
       .changed("Version control function name from validate to validateDenoVersion.")
-      .fixed("Permission handling for event handler. Events are enabled by default and the user can disable them if needed.")
+      .fixed(
+        "Permission handling for event handler. Events are enabled by default and the user can disable them if needed.",
+      )
+      .fixed("Converted cooldown type names to rate limit for convenience, and understanding."),
   );
 
 console.clear();
