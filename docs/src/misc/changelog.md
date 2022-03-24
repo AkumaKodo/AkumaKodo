@@ -5,7 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.1.2 - 2022-03-23
+## 0.1.3 - 2022-03-25
+
+Major revamp fixes for library and modules with more permission handling.
+
+### Added
+
+- NSFW Command checks
+- Owner Only command checks
+- development server only checks
+- Documentation page for begging users.
+- Rate limit handling for commands.
+
+### Changed
+
+- Configuration object added 'required' to props. This will make it more clear to the end user which options are required or optional.
+- Bot configuration options have not been given an option to enable and disable built in events
+- Version control function name from validate to validateDenoVersion.
+
+### Fixed
+
+- Bot will fetch application owners on start up and cache them.
+- Permission handling for event handler. Events are enabled by default and the user can disable them if needed.
+- Converted cooldown type names to rate limit for convenience, and understanding.
+
+### Security
+
+- Added more permission checks and caching of the bot owner so we dont hit discord api ratelimit fetch request.
+
+## 0.1.2 - 2022-03-24
 
 Quality of life improvement and bug fixes
 
@@ -26,8 +54,8 @@ Quality of life improvement and bug fixes
 
 - Bug in logger emitting errors for unstable logs.
 - The internal event handler was made to accept asynchronous functions.
-- framework install URL in the documentation was incorrect.
-- Bug with file loader import paths
+- framework install url in documentation was incorrect.
+- Bug with fileloader import paths
 
 ### Security
 
@@ -44,7 +72,7 @@ Quality of life improvements and documentation changes
 ### Changed
 
 - Exporting only required classes from mod.ts and not everything.
-- base URLs for documentation do not start with index.md and not a topic name.
+- base urls for documentation not start with index.md and not a topic name.
 
 ### Fixed
 
@@ -52,7 +80,7 @@ Quality of life improvements and documentation changes
 
 ## 0.1.0 - 2022-03-19
 
-The initial release of AkumaKodo
+Initial release of AkumaKodo
 
 ### Added
 

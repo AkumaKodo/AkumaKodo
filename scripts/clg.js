@@ -9,18 +9,28 @@ const changelog = new Changelog("AkumaKodo")
     new Release("0.1.0", "2022-3-19", "Initial release of AkumaKodo")
       .added("Interaction Command handling")
       .added("Lots of util functions")
-      .changed("Added internal slash command handling using events. You can now enable or disable this.")
+      .changed(
+        "Added internal slash command handling using events. You can now enable or disable this.",
+      )
       .changed("Logger Errors to warn on un-stable modes.")
       .removed(
         "For now, until slash commands are fully implemented, I will not focus on message-based commands. You will have to implement them yourself.",
       ),
-  ).addRelease(
-    new Release("0.1.1", "2022-3-22", "Quality of life improvements and documentation changes")
+  )
+  .addRelease(
+    new Release(
+      "0.1.1",
+      "2022-3-22",
+      "Quality of life improvements and documentation changes",
+    )
       .changed("Exporting only required classes from mod.ts and not everything.")
-      .changed("base urls for documentation not start with index.md and not a topic name.")
+      .changed(
+        "base urls for documentation not start with index.md and not a topic name.",
+      )
       .fixed("A spelling mistake in the documentation.")
       .added("Yoki section to the docs."),
-  ).addRelease(
+  )
+  .addRelease(
     new Release("0.1.2", "2022-3-24", "Quality of life improvement and bug fixes")
       .removed(
         "The internal events method is now becoming private. To avoid file import bugs, we will load it internally if the user wants to use it. If not they can disable it in the config settings.",
@@ -28,24 +38,46 @@ const changelog = new Changelog("AkumaKodo")
       .added("Error handling for more modules.")
       .added("CommandScopeType for command scope options.")
       .fixed("Bug in logger emitting errors for unstable logs.")
-      .fixed("The internal event handler was made to accept asynchronous functions.")
+      .fixed(
+        "The internal event handler was made to accept asynchronous functions.",
+      )
       .fixed("framework install url in documentation was incorrect.")
       .fixed("Bug with fileloader import paths")
       .deprecated("Removed command scope type Guild in favor of type Developments")
-      .security("If fs loader throws an error, we will end the bot process and not continue loading the process."),
-  ).addRelease(
-    new Release("0.1.3", "2022-3-25", "Major revamp fixes for library and modules")
+      .security(
+        "If fs loader throws an error, we will end the bot process and not continue loading the process.",
+      ),
+  )
+  .addRelease(
+    new Release(
+      "0.1.3",
+      "2022-3-25",
+      "Major revamp fixes for library and modules with more permission handling.",
+    )
+      .added("NSFW Command checks")
+      .fixed("Bot will fetch application owners on start up and cache them.")
+      .added("Owner Only command checks")
+      .added("development server only checks")
       .added("Documentation page for begging users.")
       .added("Rate limit handling for commands.")
       .changed(
         "Configuration object added 'required' to props. This will make it more clear to the end user which options are required or optional.",
       )
-      .changed("Bot configuration options have not been given an option to enable and disable built in events")
-      .changed("Version control function name from validate to validateDenoVersion.")
+      .changed(
+        "Bot configuration options have not been given an option to enable and disable built in events",
+      )
+      .changed(
+        "Version control function name from validate to validateDenoVersion.",
+      )
       .fixed(
         "Permission handling for event handler. Events are enabled by default and the user can disable them if needed.",
       )
-      .fixed("Converted cooldown type names to rate limit for convenience, and understanding."),
+      .fixed(
+        "Converted cooldown type names to rate limit for convenience, and understanding.",
+      )
+      .security(
+        "Added more permission checks and caching of  the bot owner so we dont hit discord api ratelimit fetch request.",
+      ),
   );
 
 console.clear();

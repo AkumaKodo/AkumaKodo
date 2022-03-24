@@ -65,7 +65,7 @@ const Bot = new AkumaKodoBotCore(
   },
   {
     optional: {
-       // False by default but we recommend using the built in logging system
+      // False by default but we recommend using the built in logging system
       bot_debug_mode: false,
       providers: {
         type: "disabled",
@@ -73,7 +73,7 @@ const Bot = new AkumaKodoBotCore(
     },
     required: {
       bot_development_server_id: BigInt("your-guild-id"),
-    }
+    },
   },
 );
 
@@ -100,7 +100,6 @@ Bot.container.utils.createCommand(Bot, {
     );
   },
 });
-
 
 // Creates ws connection and starts listening
 await Bot.createBot();

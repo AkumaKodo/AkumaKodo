@@ -3,11 +3,13 @@ import { AkumaKodoCommand, CommandScopeType } from "../../interfaces/Command.ts"
 import {
   BotWithCache,
   DiscordenoInteraction,
+  DiscordenoMember,
   EditGlobalApplicationCommand,
   InteractionApplicationCommandCallbackData,
   InteractionResponseTypes,
   MakeRequired,
   upsertApplicationCommands,
+  validatePermissions,
 } from "../../../deps.ts";
 
 export class AkumaKodoCommandModule {
@@ -23,6 +25,25 @@ export class AkumaKodoCommandModule {
     this.container = container;
     this.configuration = config;
     this.instance = bot;
+  }
+
+  /**
+   * Creates a new command in the cache. This is used to preload commands
+   * @param command The command to create
+   * @returns The created command
+   */
+  public createCommand(command: AkumaKodoCommand): AkumaKodoCommand {
+    // Check things before the command is set in cache
+    AkumaKodoCommandModule.preCheck(command);
+
+    if (!command.rateLimit) command.rateLimit = this.container.defaultRateLimit;
+    if (!command.description) command.description = "No description provided";
+    if (!command.category) command.category = "undefined";
+    if (!command.nsfw) command.nsfw = false;
+
+    this.container.commands.set(command.trigger.toLowerCase(), command);
+    this.container.logger.debug("info", "create command", `Created command ${command.trigger}`);
+    return command;
   }
 
   /**
@@ -105,23 +126,6 @@ export class AkumaKodoCommandModule {
     } catch (e) {
       this.container.logger.debug("fatal", "Command Reply Failed", e);
     }
-  }
-
-  /**
-   * Creates a new command in the cache. This is used to preload commands
-   * @param command The command to create
-   * @returns The created command
-   */
-  public createCommand(command: AkumaKodoCommand): AkumaKodoCommand {
-    // Check things before the command is set in cache
-    AkumaKodoCommandModule.preCheck(command);
-
-    if (!command.rateLimit) command.rateLimit = this.container.defaultRateLimit;
-    if (!command.description) command.description = "No description provided";
-
-    this.container.commands.set(command.trigger.toLowerCase(), command);
-    this.container.logger.debug("info", "create command", `Created command ${command.trigger}`);
-    return command;
   }
 
   /**
@@ -228,5 +232,21 @@ export class AkumaKodoCommandModule {
         }
       }
     }
+    this.PermissionLevelsHandlers().Admin;
+  }
+
+  /**
+   * Checks if the guild member has x permission
+   * @returns {boolean} If the member has access to these permissions
+   */
+  public PermissionLevelsHandlers() {
+    return {
+      Admin: (data: DiscordenoMember) =>
+        Boolean(data.permissions) && validatePermissions(data.permissions!, ["ADMINISTRATOR"]),
+      GuildOwner: (
+        data: DiscordenoMember,
+      ) => (data.guildId ? this.instance.guilds.get(data.guildId)?.ownerId === data.id : false),
+      BotOwner: (data: DiscordenoMember) => this.container.bot_owners_cache.has(data.id),
+    };
   }
 }

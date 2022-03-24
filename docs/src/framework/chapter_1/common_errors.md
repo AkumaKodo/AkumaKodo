@@ -29,3 +29,13 @@ If you have seen this error on start-up of your bot it could mean a few things:
    this scope, kick the bot and reinvite it.
 
    Example url: _https://discord.com/api/oauth2/authorize?client_id=your-id&permissions=0&scope=bot%20`applications.commands`_
+
+### Owner Only Commands
+
+<!--
+This error is when the developer sets a command to type ownerOnly = true but does not enable the owner fetch function.
+
+They can either fetch the owner themselves or enable this.
+ -->
+
+_coming soon_

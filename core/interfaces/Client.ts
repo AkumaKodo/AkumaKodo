@@ -24,10 +24,11 @@ export const defaultConfigOptions = {
     bot_supporters_ids: [],
     bot_staff_ids: [],
     bot_default_prefix: "",
-    bot_cooldown_bypass_ids: [],
+    bot_ratelimit_bypass_ids: [],
     bot_debug_mode: false,
     bot_mention_with_prefix: false,
     bot_log_command_reply: false,
+    bot_fetch_owners: false,
     providers: {
       type: "disabled",
     },
@@ -45,7 +46,7 @@ export interface AkumaKodoConfigurationInterface {
   /** Optional options for client */
   optional: {
     /** The ID's of the bot owners */
-    bot_owners_ids?: (bigint | string)[];
+    bot_owners_ids?: (bigint)[];
     /** The ID's of the bot supporters */
     bot_supporters_ids?: bigint[];
     /** The ID's of the bot staff */
@@ -53,7 +54,7 @@ export interface AkumaKodoConfigurationInterface {
     /** The bot default prefix */
     bot_default_prefix?: AkumaKodoPrefix | undefined;
     /** Users who can bypass the bots cool-downs for commands*/
-    bot_cooldown_bypass_ids?: bigint[];
+    bot_ratelimit_bypass_ids?: bigint[];
     /** The framework logs things to the console for internal testing. You can enable this if you wish for more developer logs. */
     bot_debug_mode?: boolean;
     /** If mentions act as a bot prefix */
@@ -66,6 +67,9 @@ export interface AkumaKodoConfigurationInterface {
     bot_internal_events?: {
       interactionCreate?: boolean;
     };
+
+    /** If the bot should fetch all the bot owners on startup */
+    bot_fetch_owners?: boolean;
     /** Optional providers for the bot client */
     providers: {
       /** The type of provider client */
@@ -115,6 +119,7 @@ export interface AkumaKodoContainerInterface {
   defaultRateLimit: rateLimitInterface;
   ignoreRateLimit: bigint[];
   logger: AkumaKodoLogger;
+  bot_owners_cache: Set<bigint>;
   fullyReady: boolean;
   prefix?: AkumaKodoPrefix;
   mentionWithPrefix: boolean;

@@ -9,11 +9,11 @@ In AkumaKodo, everything is an extension of the `Bot` class. The bot class is ex
 
 Exported classes:
 
-- AkumaKodoBotCore
-- AkumaKodoMongodbProvider
-- AkumaKodoProvider
-- AkumaKodoCollection
-- AkumaKodoEmbed
+- <ins>AkumaKodoBotCore</ins> - The bot client and main access point of your application.
+- <ins>AkumaKodoMongodbProvider</ins> - The mongodb functional controller class that handlers your database.
+- <ins>AkumaKodoProvider</ins> - The base provider class if you wish to extend and make your own custom one.
+- <ins>AkumaKodoCollection</ins> - The main cache system extended from the js Map class.
+- <ins>AkumaKodoEmbed</ins> - The embed class.
 
 Which call can be exported from the `mod.ts` file.
 

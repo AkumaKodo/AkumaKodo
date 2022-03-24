@@ -92,7 +92,7 @@ export class AkumaKodoBotCore {
     config.optional.bot_mention_with_prefix = config.optional.bot_mention_with_prefix || false;
     config.optional.bot_default_prefix = config.optional.bot_default_prefix || undefined;
     config.required.bot_development_server_id = config.required.bot_development_server_id || undefined;
-    config.optional.bot_cooldown_bypass_ids = config.optional.bot_cooldown_bypass_ids || [];
+    config.optional.bot_ratelimit_bypass_ids = config.optional.bot_ratelimit_bypass_ids || [];
     config.optional.bot_debug_mode = config.optional.bot_debug_mode || false;
     config.optional.bot_supporters_ids = config.optional.bot_supporters_ids || [];
 
@@ -124,7 +124,7 @@ export class AkumaKodoBotCore {
         duration: Milliseconds.Second * 5,
         limit: 1,
       },
-      ignoreRateLimit: config.optional.bot_cooldown_bypass_ids,
+      ignoreRateLimit: config.optional.bot_ratelimit_bypass_ids,
       prefix: config.optional.bot_default_prefix,
       runningTasks: {
         intervals: [],
@@ -134,6 +134,7 @@ export class AkumaKodoBotCore {
       taskCollection: new AkumaKodoCollection(),
       monitorCollection: new AkumaKodoCollection(),
       languageCollection: new AkumaKodoCollection(),
+      bot_owners_cache: new Set(),
       fullyReady: false,
       logger: new AkumaKodoLogger(this.configuration),
       mentionWithPrefix: true,
@@ -196,7 +197,6 @@ export class AkumaKodoBotCore {
       // Wait till shards are loaded to start the bot
       if (payload.shardId + 1 === this.instance.gateway.maxShards) {
         this.launcher.task.initializeTask();
-        this.container.fullyReady = true;
         if (this.configuration.optional.bot_internal_events) {
           await this.handleInternalEvents();
         } else {
@@ -206,6 +206,8 @@ export class AkumaKodoBotCore {
             "No internal events were enabled. All handlers will have to be created manually.",
           );
         }
+        if (this.configuration.optional.bot_fetch_owners) await this.fetchBotOwnersFromDiscordApi();
+        this.container.fullyReady = true;
         this.container.logger.debug("info", "create Bot", "AkumaKodo Connection successful!");
       }
     };
@@ -227,7 +229,43 @@ export class AkumaKodoBotCore {
   /** handles the internal events */
   private async handleInternalEvents(): Promise<void> {
     if (this.configuration.optional.bot_internal_events?.interactionCreate) {
+      this.container.logger.debug("info", "handle Internal Events", "Creating interactionCreate event.");
       await this.launcher.event.interactionCreateHandler();
+    }
+  }
+
+  private async fetchBotOwnersFromDiscordApi() {
+    // Check if this was enabled
+    if (!this.configuration.optional.bot_fetch_owners) {
+      return this.container.logger.debug(
+        "warn",
+        "Bot API Owner Fetch",
+        "Fetch bot owners disabled. Skipping fetch...",
+      );
+    } else {
+      this.container.logger.debug("info", "Bot API Owner Fetch", "Fetching bot owners from Discord API.");
+      const data = await this.instance.helpers.getApplicationInfo().catch((err) => {
+        this.container.logger.debug("error", "Bot API Owner Fetch", err);
+        return undefined;
+      });
+
+      if (data) {
+        // If there are more than one bot owners we need to cache them all from the array
+        if (data.team) {
+          data.team.members.forEach((t) => {
+            if (!t.user.id) return;
+            this.container.bot_owners_cache.add(t.user.id);
+            this.configuration.optional.bot_owners_ids?.push(t.user.id);
+          });
+        } else {
+          const ownerId = data.owner?.id!;
+          this.container.bot_owners_cache.add(ownerId);
+          this.configuration.optional.bot_owners_ids?.push(ownerId);
+        }
+      } else {
+        this.container.logger.debug("warn", "Bot API Owner Fetch", "No data was returned from Discord API.");
+      }
+      this.container.logger.debug("info", "Bot API Owner Fetch", "Bot owners fetched.");
     }
   }
 }

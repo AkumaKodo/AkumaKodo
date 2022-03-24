@@ -39,8 +39,8 @@ export class AkumaKodoEventModule {
     this.launcher = {
       command: new AkumaKodoCommandModule(this.instance, this.container, this.configuration),
     };
-    this.commandCachePool = new Map();
 
+    this.commandCachePool = new Map();
     // Clear the rate-limit pool to save memory
     setInterval(() => {
       this.commandCachePool.forEach((ratelimit, key) => {
@@ -58,33 +58,33 @@ export class AkumaKodoEventModule {
    */
   public async interactionCreateHandler(scope?: CommandScopeType) {
     try {
-      if (this.container.fullyReady) {
-        await this.launcher.command.updateApplicationCommands("Development").then(() => {
-          this.container.logger.debug("info", "Development Commands", "Application commands updated!");
-        });
+      // if (this.container.fullyReady) {
+      await this.launcher.command.updateApplicationCommands("Development").then(() => {
+        this.container.logger.debug("info", "Development Commands", "Application commands updated!");
+      });
 
-        // Checks if user wants to init global commands
-        if (scope === "Global") {
-          if (this.configuration.optional.bot_debug_mode) {
-            this.container.logger.debug(
-              "warn",
-              "initialize Internal Events",
-              "Global scope not recommended while in development mode!",
-            );
-          }
-          await this.launcher.command.updateApplicationCommands("Global").then(() => {
-            this.container.logger.debug("info", "Global Commands", "Global Application commands updated!");
-          });
-        }
-      } else {
-        if (this.configuration.optional.bot_internal_events) {
+      // Checks if user wants to init global commands
+      if (scope === "Global") {
+        if (this.configuration.optional.bot_debug_mode) {
           this.container.logger.debug(
             "warn",
-            "interaction Create Handler",
-            "The bot was not ready when the event handler was called! No new slash commands were uploaded!",
+            "initialize Internal Events",
+            "Global scope not recommended while in development mode!",
           );
         }
+        await this.launcher.command.updateApplicationCommands("Global").then(() => {
+          this.container.logger.debug("info", "Global Commands", "Global Application commands updated!");
+        });
       }
+      // } else {
+      // if (this.configuration.optional.bot_internal_events) {
+      //   this.container.logger.debug(
+      //     "warn",
+      //     "interaction Create Handler",
+      //     "The bot was not ready when the event handler was called! No new slash commands were uploaded!",
+      //   );
+      // }
+      // }
     } catch (error) {
       this.container.logger.debug("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
       this.container.logger.debug("error", "AkumaKodo Bot Core", error);
@@ -129,6 +129,35 @@ export class AkumaKodoEventModule {
    * @returns
    */
   private interactionCreateChecks(command: AkumaKodoCommand, interaction: DiscordenoInteraction) {
+    // Owner only check\
+    if (command.ownerOnly && !this.configuration.optional.bot_owners_ids?.includes(interaction.user.id)) {
+      if (!this.configuration.optional.bot_fetch_owners) {
+        this.container.logger.debug(
+          "warn",
+          "Owner Only Command",
+          "You do not have fetch bot owners enabled but you set a command as owner only. Make sure to enable this or fetch the owner Id yourself and save it.",
+        );
+      }
+      return this.launcher.command.createCommandReply(interaction, {
+        content: `Only the bot owner can use this command!`,
+      }, true);
+    }
+
+    // Dev only command check
+    if (command.devOnly && this.configuration.required.bot_development_server_id !== interaction.guildId) {
+      return this.launcher.command.createCommandReply(interaction, {
+        content: `This command is only available on the development server!`,
+      }, true);
+    }
+
+    // nsfw check
+    const nsfw_channel_check = this.instance.channels.get(interaction.channelId!);
+    if (command.nsfw && !nsfw_channel_check?.nsfw) {
+      return this.launcher.command.createCommandReply(interaction, {
+        content: `This command is only available in NSFW channels!`,
+      }, true);
+    }
+
     // check if the user has the permission to run this command
     if (command.userPermissions) {
       const validUserPermissions = validatePermissions(
