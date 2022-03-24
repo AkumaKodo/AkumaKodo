@@ -115,6 +115,10 @@ export class AkumaKodoCommandModule {
   public createCommand(command: AkumaKodoCommand): AkumaKodoCommand {
     // Check things before the command is set in cache
     AkumaKodoCommandModule.preCheck(command);
+
+    if (!command.rateLimit) command.rateLimit = this.container.defaultRateLimit;
+    if (!command.description) command.description = "No description provided";
+
     this.container.commands.set(command.trigger.toLowerCase(), command);
     this.container.logger.debug("info", "create command", `Created command ${command.trigger}`);
     return command;
@@ -170,7 +174,7 @@ export class AkumaKodoCommandModule {
         if (command.scope === "Development") {
           developmentCommands.push({
             name: command.trigger,
-            description: command.description || "No description provided",
+            description: command.description,
             type: command.type,
             options: command.options ? command.options : undefined,
           });
@@ -198,7 +202,7 @@ export class AkumaKodoCommandModule {
         if (command.scope === "Global") {
           globalCommands.push({
             name: command.trigger,
-            description: command.description || "No description provided",
+            description: command.description,
             type: command.type,
             options: command.options ? command.options : undefined,
           });
