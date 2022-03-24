@@ -76,7 +76,7 @@ export class AkumaKodoBotCore {
     }
 
     this.versionControl = new AkumaKodoVersionControl(config);
-    const validation = this.versionControl.validate();
+    const validation = this.versionControl.validateDenoVersion();
     // Stop the progress if the version is not valid.
     // We will only warn on debug for other options as they will not break the bot.
     if (validation === 1) {
@@ -93,7 +93,7 @@ export class AkumaKodoBotCore {
     config.optional.bot_owners_ids = config.optional.bot_owners_ids || [];
     config.optional.bot_mention_with_prefix = config.optional.bot_mention_with_prefix || false;
     config.optional.bot_default_prefix = config.optional.bot_default_prefix || undefined;
-    config.optional.bot_development_server_id = config.optional.bot_development_server_id || undefined;
+    config.required.bot_development_server_id = config.required.bot_development_server_id || undefined;
     config.optional.bot_cooldown_bypass_ids = config.optional.bot_cooldown_bypass_ids || [];
     config.optional.bot_debug_mode = config.optional.bot_debug_mode || false;
     config.optional.bot_supporters_ids = config.optional.bot_supporters_ids || [];
@@ -213,7 +213,13 @@ export class AkumaKodoBotCore {
           });
         }
       } else {
-        this.container.logger.debug("warn", "initialize Internal Events", "Bot is not ready!");
+        if (this.configuration.optional.bot_internal_events) {
+          this.container.logger.debug(
+            "warn",
+            "initialize Internal Events",
+            "Bot is not ready! Internal events will not be loaded.",
+          );
+        }
       }
     } catch (error) {
       this.container.logger.debug("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
