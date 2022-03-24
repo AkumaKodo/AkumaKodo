@@ -1,15 +1,12 @@
 import {
-  botHasGuildPermissions,
   BotWithCache,
   createBot,
+  DiscordenoShard,
   enableCachePlugin,
   enableCacheSweepers,
   enableHelpersPlugin,
   enablePermissionsPlugin,
-  InteractionTypes,
   startBot,
-  stopBot,
-  validatePermissions,
 } from "../deps.ts";
 import {
   AkumaCreateBotOptions,
@@ -27,7 +24,7 @@ import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 import { AkumaKodoTaskModule } from "./lib/modules/TaskModule.ts";
 import { AkumaKodoCommandModule } from "./lib/modules/CommandModule.ts";
 import { FileSystemModule } from "../internal/fs.ts";
-import type { CommandScopeType } from "./interfaces/Command.ts";
+import { AkumaKodoEventModule } from "./lib/modules/EventModule.ts";
 
 /**
  * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
@@ -45,6 +42,7 @@ export class AkumaKodoBotCore {
   private launcher: {
     task: AkumaKodoTaskModule;
     command: AkumaKodoCommandModule;
+    event: AkumaKodoEventModule;
   };
 
   /**
@@ -183,112 +181,14 @@ export class AkumaKodoBotCore {
     this.launcher = {
       task: new AkumaKodoTaskModule(this.container),
       command: new AkumaKodoCommandModule(this.instance, this.container, this.configuration),
+      event: new AkumaKodoEventModule(this.instance, this.container, this.configuration),
     };
 
     this.container.logger.debug("info", "AkumaKodo Bot Core", "Core initialized.");
   }
 
   /**
-   * @description - Loads all internal event handlers for the bot client.
-   * We handel Development scoped commands only by default. You can call this function again with your scope if you wish to use global commands.
-   */
-  private async initializeInternalEvents(scope?: CommandScopeType) {
-    try {
-      if (this.container.fullyReady) {
-        await this.launcher.command.updateApplicationCommands("Development").then(() => {
-          this.container.logger.debug("info", "Development Commands", "Application commands updated!");
-        });
-
-        // Checks if user wants to init global commands
-        if (scope === "Global") {
-          if (this.configuration.optional.bot_debug_mode) {
-            this.container.logger.debug(
-              "warn",
-              "initialize Internal Events",
-              "Global scope not recommended while in development mode!",
-            );
-          }
-          await this.launcher.command.updateApplicationCommands("Global").then(() => {
-            this.container.logger.debug("info", "Global Commands", "Global Application commands updated!");
-          });
-        }
-      } else {
-        if (this.configuration.optional.bot_internal_events) {
-          this.container.logger.debug(
-            "warn",
-            "initialize Internal Events",
-            "Bot is not ready! Internal events will not be loaded.",
-          );
-        }
-      }
-    } catch (error) {
-      this.container.logger.debug("error", "AkumaKodo Bot Core", "Failed to initialize application commands events.");
-      this.container.logger.debug("error", "AkumaKodo Bot Core", error);
-      // Only start listening for events after all slash commands are posted!
-    } finally {
-      // Runs the interactionCreate event for all active slash commands in the bot.
-      this.instance.events.interactionCreate = (_, interaction) => {
-        if (!interaction.data) return;
-
-        switch (interaction.type) {
-          case InteractionTypes.ApplicationCommand:
-            try {
-              // get the command then run out checks before execution
-              const command = this.container.commands.get(interaction.data.name!);
-              if (!command) return;
-
-              // check if the user has the permission to run this command
-              if (command.userPermissions) {
-                const validUserPermissions = validatePermissions(
-                  interaction.member?.permissions!,
-                  command.userPermissions,
-                );
-
-                // If the permission check returns false, we cancel the command.
-                if (!validUserPermissions) {
-                  if (this.configuration.optional.bot_log_command_reply) {
-                    return this.launcher.command.createCommandReply(interaction, {
-                      content: `You do not have the required permissions to run this command! Missing: ${
-                        command.userPermissions.join(", ")
-                      }`,
-                    }, true);
-                  }
-                  return;
-                } else {
-                  return command.run(interaction);
-                }
-              } else if (command.botPermissions) {
-                const validBotPermissions = botHasGuildPermissions(
-                  this.instance,
-                  this.instance.id,
-                  command.botPermissions,
-                );
-
-                if (!validBotPermissions) {
-                  if (this.configuration.optional.bot_log_command_reply) {
-                    return this.launcher.command.createCommandReply(interaction, {
-                      content: `I do not have the required permissions to run this command! Missing: ${
-                        command.botPermissions?.join(", ")
-                      }`,
-                    }, true);
-                  }
-                  return;
-                } else {
-                  return command.run(interaction);
-                }
-              }
-              return command.run(interaction);
-            } catch (e) {
-              this.container.logger.debug("error", "Interaction create", `Error while running command: ${e}`);
-            }
-            break;
-        }
-      };
-    }
-  }
-
-  /**
-   * Creates the bot process and starts the bot
+   * Creates the bot process and starts the bot.
    */
   public async createBot() {
     await startBot(this.instance);
@@ -297,15 +197,10 @@ export class AkumaKodoBotCore {
       if (payload.shardId + 1 === this.instance.gateway.maxShards) {
         this.launcher.task.initializeTask();
         this.container.fullyReady = true;
-        // Checks if events were enabled by the user or not. This determines if we should initialize the internal events.
-        if (this.configuration.optional.bot_internal_events) {
-          await this.initializeInternalEvents();
+        if(this.configuration.optional.bot_internal_events) {
+          await this.handleInternalEvents()
         } else {
-          this.container.logger.debug(
-            "warn",
-            "AkumaKodo Bot Core",
-            "Internal events are disabled! You will have to handle events manually.",
-          );
+          this.container.logger.debug("warn", "createBot", "No internal events were enabled. All handlers will have to be created manually.");
         }
         this.container.logger.debug("info", "create Bot", "AkumaKodo Connection successful!");
       }
@@ -313,11 +208,26 @@ export class AkumaKodoBotCore {
   }
 
   /**
-   * KIlls the bot process
+   * Kills the bot process
    */
   public async destroyBot() {
-    await delay(1000);
-    await stopBot(this.instance);
+    this.instance.gateway.shards.forEach((shard: DiscordenoShard) => {
+      clearInterval(shard.heartbeat.intervalId);
+      this.instance.gateway.closeWS(shard.ws, 3061, "Logging off! Do Not RESUME!");
+    });
+
+    await delay(5000);
     this.container.logger.debug("info", "destroy Bot", "Connection destroy successful!");
+  }
+
+  /** handles the internal events */
+  private async handleInternalEvents() {
+    if(this.configuration.optional.bot_internal_events?.interactionCreate) {
+     await this.launcher.event.interactionCreateHandler()
+    }
+    if (this.configuration.optional.bot_internal_events?.ready) {
+      // TODO(#1) - Add ready event
+      // this.launcher.event.readyHandler()
+    }
   }
 }
