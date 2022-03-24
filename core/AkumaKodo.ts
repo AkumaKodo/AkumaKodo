@@ -121,8 +121,8 @@ export class AkumaKodoBotCore {
           : undefined,
       },
       defaultRateLimit: {
-        seconds: Milliseconds.Second * 5,
-        allowedUses: 1,
+        duration: Milliseconds.Second * 5,
+        limit: 1,
       },
       ignoreRateLimit: config.optional.bot_cooldown_bypass_ids,
       prefix: config.optional.bot_default_prefix,
