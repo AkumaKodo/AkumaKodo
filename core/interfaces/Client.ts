@@ -31,7 +31,10 @@ export const defaultConfigOptions = {
     providers: {
       type: "disabled",
     },
-    bot_internal_events: true,
+    bot_internal_events: {
+      interactionCreate: true,
+      ready: true,
+    },
   },
   required: {
     bot_development_server_id: BigInt("0"),
@@ -60,7 +63,10 @@ export interface AkumaKodoConfigurationInterface {
     /** If the internal events are enabled or not...
      * Defaults to true
      */
-    bot_internal_events?: boolean;
+    bot_internal_events?: {
+      interactionCreate?: boolean;
+      ready?: boolean;
+    };
     /** Optional providers for the bot client */
     providers: {
       /** The type of provider client */
