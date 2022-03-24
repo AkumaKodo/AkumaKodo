@@ -136,10 +136,10 @@ export class AkumaKodoCommandModule {
       throw new Error("Command trigger cannot contain spaces!" + `For command ${command.trigger}`);
     }
     if (command.trigger.includes("@")) {
-      throw new Error("Command trigger cannot contain @!" + `For command ${command.trigger}`);
+      throw new Error("Command trigger cannot contain the @ symbol" + `For command ${command.trigger}`);
     }
     if (command.trigger.includes("#")) {
-      throw new Error("Command trigger cannot contain #!" + `For command ${command.trigger}`);
+      throw new Error("Command trigger cannot contain the ! symbol" + `For command ${command.trigger}`);
     }
   }
 
