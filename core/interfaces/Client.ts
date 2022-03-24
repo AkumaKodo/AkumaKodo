@@ -24,7 +24,6 @@ export const defaultConfigOptions = {
     bot_supporters_ids: [],
     bot_staff_ids: [],
     bot_default_prefix: "",
-    bot_development_server_id: undefined,
     bot_cooldown_bypass_ids: [],
     bot_debug_mode: false,
     bot_mention_with_prefix: false,
@@ -33,6 +32,9 @@ export const defaultConfigOptions = {
       type: "disabled",
     },
     bot_internal_events: true,
+  },
+  required: {
+    bot_development_server_id: BigInt("0"),
   },
 } as AkumaKodoConfigurationInterface;
 
@@ -47,8 +49,6 @@ export interface AkumaKodoConfigurationInterface {
     bot_staff_ids?: bigint[];
     /** The bot default prefix */
     bot_default_prefix?: AkumaKodoPrefix | undefined;
-    /** The development server for your bot. This is required for development scoped commands. */
-    bot_development_server_id?: bigint;
     /** Users who can bypass the bots cool-downs for commands*/
     bot_cooldown_bypass_ids?: bigint[];
     /** The framework logs things to the console for internal testing. You can enable this if you wish for more developer logs. */
@@ -57,16 +57,21 @@ export interface AkumaKodoConfigurationInterface {
     bot_mention_with_prefix?: boolean;
     /** Enables command error replays such as command not found and more logging... */
     bot_log_command_reply?: boolean;
+    /** If the internal events are enabled or not...
+     * Defaults to true
+     */
+    bot_internal_events?: boolean;
     /** Optional providers for the bot client */
     providers: {
       /** The type of provider client */
       type: "mongodb" | "postgres" | "mysql" | "disabled";
       mongodb_connection_url?: string;
     };
-    /** If the internal events are enabled or not...
-     * Defaults to true
-     */
-    bot_internal_events?: boolean;
+  };
+  /** Required for the config */
+  required: {
+    /** The development server for your bot. This is required for development scoped commands. */
+    bot_development_server_id?: bigint;
   };
 }
 
