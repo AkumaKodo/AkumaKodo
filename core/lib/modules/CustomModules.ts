@@ -10,7 +10,7 @@ export class AkumaKodoCustomModule {
   public configuration: AkumaKodoConfigurationInterface;
   private readonly instance: BotWithCache;
 
-  private _module_name: string
+  private _module_name: string;
 
   /**
    * @param bot - The AkumaKodo client instance
@@ -22,7 +22,7 @@ export class AkumaKodoCustomModule {
     bot: BotWithCache,
     container: AkumaKodoContainerInterface,
     config: AkumaKodoConfigurationInterface,
-    name?: string
+    name?: string,
   ) {
     this.container = container;
     this.configuration = config;
@@ -33,9 +33,9 @@ export class AkumaKodoCustomModule {
 
   /**
    * The name of the custom module
-   * @param eventName 
+   * @param eventName
    */
   protected onLoad(): void {
-    this.container.logger.debug("info", "AkumaKodo Module" , `${this._module_name} loaded!`);
+    this.container.logger.debug("info", "AkumaKodo Module", `${this._module_name} loaded!`);
   }
 }

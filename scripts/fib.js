@@ -11,7 +11,8 @@
       z = x + y;
       x = y;
       y = z;
-    } while (x < 255) {
+    } while (x < 255);
+    {
       loopCount.push(x);
     }
 
