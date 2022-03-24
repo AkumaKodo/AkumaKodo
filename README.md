@@ -7,7 +7,7 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 # Install
 
 ```
-deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
+deno install https://deno.land/x/akumakodo@0.1.3/mod.ts
 ```
 
 ## Read the [documentation](https://akumakodo.github.io/AkumaKodo/) here!

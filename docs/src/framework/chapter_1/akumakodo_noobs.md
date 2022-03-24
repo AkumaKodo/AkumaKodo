@@ -7,27 +7,13 @@ Now that you have your bot application from discord, we can get started creating
 In AkumaKodo, everything is an extension of the `Bot` class. The bot class is exported from the `mod.ts` file in our repository as
 `AkumaKodoBotCore`.
 
-Exported classes:
+Exported AkuamKodo classes:
 
 - <ins>AkumaKodoBotCore</ins> - The bot client and main access point of your application.
 - <ins>AkumaKodoMongodbProvider</ins> - The mongodb functional controller class that handlers your database.
 - <ins>AkumaKodoProvider</ins> - The base provider class if you wish to extend and make your own custom one.
 - <ins>AkumaKodoCollection</ins> - The main cache system extended from the js Map class.
 - <ins>AkumaKodoEmbed</ins> - The embed class.
-
-Which call can be exported from the `mod.ts` file.
-
-## Installation
-
-The only thing you need to install AkumaKodo is the framework installed on your computer. All its dependency's will be installed automatically from deno.land
-
-_Run in your terminal_
-
-```
-deno install https://deno.land/x/akumakodo@0.1.2/mod.ts
-```
-
-You should see `✅ Successfully installed akumakodo` when finished!
 
 ## Creating a `mod.ts` file
 
