@@ -1,6 +1,13 @@
-import { botHasGuildPermissions, BotWithCache, InteractionTypes, validatePermissions } from "../../../deps.ts";
+import {
+  botHasGuildPermissions,
+  BotWithCache,
+  DiscordenoInteraction,
+  InteractionTypes,
+  validatePermissions,
+} from "../../../deps.ts";
 import { AkumaKodoConfigurationInterface, AkumaKodoContainerInterface } from "../../interfaces/Client.ts";
-import { CommandScopeType } from "../../interfaces/Command.ts";
+import { AkumaKodoCommand, CommandScopeType } from "../../interfaces/Command.ts";
+import { Milliseconds } from "../utils/helpers.ts";
 import { AkumaKodoCommandModule } from "./CommandModule.ts";
 
 /**
@@ -14,6 +21,13 @@ export class AkumaKodoEventModule {
   public configuration: AkumaKodoConfigurationInterface;
   private readonly instance: BotWithCache;
 
+  private commandCachePool: Map<string, {
+    /** The number of executions the command can take before we enable the ratelimit */
+    hits: number;
+    /** Time of the ratelimit */
+    timestamp: number;
+  }>;
+
   public constructor(
     bot: BotWithCache,
     container: AkumaKodoContainerInterface,
@@ -25,6 +39,16 @@ export class AkumaKodoEventModule {
     this.launcher = {
       command: new AkumaKodoCommandModule(this.instance, this.container, this.configuration),
     };
+    this.commandCachePool = new Map();
+
+    // Clear the rate-limit pool to save memory
+    setInterval(() => {
+      this.commandCachePool.forEach((ratelimit, key) => {
+        if (ratelimit.timestamp < Date.now()) {
+          this.commandCachePool.delete(key);
+        }
+      });
+    }, Milliseconds.Minute * 10);
   }
 
   /**
@@ -56,8 +80,8 @@ export class AkumaKodoEventModule {
         if (this.configuration.optional.bot_internal_events) {
           this.container.logger.debug(
             "warn",
-            "initialize Internal Events",
-            "Bot is not ready! Internal events will not be loaded.",
+            "interaction Create Handler",
+            "The bot was not ready when the event handler was called! No new slash commands were uploaded!",
           );
         }
       }
@@ -75,56 +99,120 @@ export class AkumaKodoEventModule {
             try {
               // get the command then run out checks before execution
               const command = this.container.commands.get(interaction.data.name!);
-              if (!command) return;
-
-              // check if the user has the permission to run this command
-              if (command.userPermissions) {
-                const validUserPermissions = validatePermissions(
-                  interaction.member?.permissions!,
-                  command.userPermissions,
-                );
-
-                // If the permission check returns false, we cancel the command.
-                if (!validUserPermissions) {
-                  if (this.configuration.optional.bot_log_command_reply) {
-                    return this.launcher.command.createCommandReply(interaction, {
-                      content: `You do not have the required permissions to run this command! Missing: ${
-                        command.userPermissions.join(", ")
-                      }`,
-                    }, true);
-                  }
-                  return;
-                } else {
-                  return command.run(interaction);
-                }
+              if (!command) {
+                return this.launcher.command.createCommandReply(interaction, {
+                  content: `Command ${interaction.data.name} not found! Please check the name and try again.`,
+                }, true);
               }
-              if (command.botPermissions) {
-                const validBotPermissions = botHasGuildPermissions(
-                  this.instance,
-                  this.instance.id,
-                  command.botPermissions,
-                );
 
-                if (!validBotPermissions) {
-                  if (this.configuration.optional.bot_log_command_reply) {
-                    return this.launcher.command.createCommandReply(interaction, {
-                      content: `I do not have the required permissions to run this command! Missing: ${
-                        command.botPermissions?.join(", ")
-                      }`,
-                    }, true);
-                  }
-                  return;
-                } else {
-                  return command.run(interaction);
-                }
-              }
-              return command.run(interaction);
+              // make sure the checks return true before running the command.
+              this.interactionCreateChecks(command, interaction);
+
+              this.container.logger.debug(
+                "info",
+                "Command Log",
+                `Command ${command.trigger} was executed by ${interaction.user.username}#${interaction.user.discriminator}`,
+              );
             } catch (e) {
-              this.container.logger.debug("error", "Interaction create", `Error while running command: ${e}`);
+              this.container.logger.debug("error", "Interaction create", `Error while running command. \n${e}`);
             }
             break;
         }
       };
     }
+  }
+
+  /**
+   * Handlers the check system for the slash command handler.
+   * @param command - The command to be run
+   * @param interaction - The interaction to be run
+   * @returns
+   */
+  private interactionCreateChecks(command: AkumaKodoCommand, interaction: DiscordenoInteraction) {
+    // check if the user has the permission to run this command
+    if (command.userPermissions) {
+      const validUserPermissions = validatePermissions(
+        interaction.member?.permissions!,
+        command.userPermissions,
+      );
+
+      // If the permission check returns false, we cancel the command.
+      if (!validUserPermissions) {
+        if (this.configuration.optional.bot_log_command_reply) {
+          return this.launcher.command.createCommandReply(interaction, {
+            content: `You do not have the required permissions to run this command! Missing: ${
+              command.userPermissions.join(", ")
+            }`,
+          }, true);
+        }
+      }
+    }
+    // Checks if the bot has permissions to run the command.
+    if (command.botPermissions) {
+      const validBotPermissions = botHasGuildPermissions(
+        this.instance,
+        this.instance.id,
+        command.botPermissions,
+      );
+
+      if (!validBotPermissions) {
+        if (this.configuration.optional.bot_log_command_reply) {
+          return this.launcher.command.createCommandReply(interaction, {
+            content: `I do not have the required permissions to run this command! Missing: ${
+              command.botPermissions?.join(", ")
+            }`,
+          }, true);
+        }
+      }
+    }
+    // handle rate limits
+
+    const commandRateLimits = command.rateLimit || this.container.defaultRateLimit;
+    const memberId = interaction.member?.id;
+
+    if (
+      !commandRateLimits ||
+      (memberId &&
+        (this.container.ignoreRateLimit?.includes(memberId) ||
+          command.ignoreRateLimit?.includes(memberId)))
+    ) {
+      return true;
+    }
+
+    const key = `${interaction.guildId}-${memberId}-${command.trigger}`;
+    const limit_check = this.commandCachePool.get(key);
+
+    if (limit_check) {
+      // Check if the user has used all their allowed limits for this command
+      if (limit_check.hits >= (commandRateLimits.limit)) {
+        if (limit_check.timestamp > Date.now()) {
+          return this.launcher.command.createCommandReply(interaction, {
+            content: `This command can only be used __${commandRateLimits.limit}__ ${
+              commandRateLimits.limit > 1 ? "times" : "time"
+            } per ${commandRateLimits.duration / 1000} seconds! Please try again in ${
+              (limit_check.timestamp - Date.now()) / 1000
+            } seconds.`,
+          }, true);
+        } else {
+          limit_check.hits = 0;
+        }
+      }
+
+      this.commandCachePool.set(key, {
+        hits: limit_check.hits++,
+        timestamp: Date.now() + commandRateLimits.duration,
+      });
+      // TODO(#2) - Add a way to reply to ratelimit hits
+      // return this.launcher.command.createCommandReply(interaction, {
+      //   content: `You hit a rate-limit! Please try again in ${(limit_check.timestamp - Date.now()) / 1000} seconds.`,
+      // }, true);
+    }
+
+    this.commandCachePool.set(key, {
+      hits: 1,
+      timestamp: Date.now() + commandRateLimits.duration,
+    });
+
+    return command.run(interaction);
   }
 }
