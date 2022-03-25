@@ -1,8 +1,8 @@
 # Todo list for framework
 
 - [x] Split internal events so users can have a more custom handler
-- [ ] Allow Mongodb provider schema option to be extended as a param. This way users can get custom typings if they need / want to.
 - [x] Add more permission checks to our command handler (ratelimit, ownerOnly, etc)
+- [ ] Add component support (buttons, etc)
 
 # Current big problems
 

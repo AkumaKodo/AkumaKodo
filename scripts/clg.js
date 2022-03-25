@@ -98,7 +98,8 @@ const changelog = new Changelog("AkumaKodo")
     )
     .added("Command guild only protection.").added(
         "Command DM only protection.",
-    );
+    ).added("Components for commands: Button, TextInput, SelectMenu.")
+    .added("More utility helpers");
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");

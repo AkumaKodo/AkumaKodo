@@ -215,3 +215,79 @@ export function snowflakeToBigint(snowflake: string) {
 export function bigintToSnowflake(snowflake: bigint) {
     return snowflake === 0n ? "" : snowflake.toString();
 }
+
+// Length starts from the index
+export function shortenArray<T>(
+    array: T[],
+    length: number,
+    startIndex = 0,
+): T[] {
+    return array.slice(startIndex, startIndex + length);
+}
+export function getEnumKeyFromEnumValue<T>(
+    enumx: T,
+    value: T[keyof T],
+): keyof T | undefined {
+    const foundKey = Object.keys(enumx).find((e) =>
+        enumx[e as keyof T] == value
+    );
+    return foundKey as keyof T | undefined;
+}
+/** Allows easy way to add a prop to a base object when needing to use complicated getters solution. */
+// deno-lint-ignore no-explicit-any
+export function createNewProp(value: any): PropertyDescriptor {
+    // Source: 2021 Discordeno - https://github.com/discordeno/discordeno/blob/37d63133dccd83f46a375192dbc779ce36a379db/src/util/utils.ts#L27
+    return { configurable: true, enumerable: true, writable: true, value };
+}
+// Length starts from the index
+export function shortenString(
+    text: string,
+    length: number,
+    startIndex = 0,
+): string {
+    if (startIndex + text.length < length) return text;
+    return text.substring(startIndex, startIndex + length);
+}
+
+/* Separates an array into parts */
+export function separateArray<T>(
+    array: T[],
+    chunkSize: number,
+    affectOriginalArray = false,
+): T[][] {
+    // Clone the array to not affect the original one
+    if (!affectOriginalArray) array = array.slice();
+    const results: T[][] = [];
+    while (array.length > 0) {
+        results.push([...array.splice(0, chunkSize)]);
+    }
+    return results;
+}
+export function createMentionString(
+    id: string | bigint,
+    type: "channel" | "user",
+) {
+    return type === "channel" ? `<#${id}>` : `<@!${id}>`;
+}
+export type caseConvertingTypes = "lowercase" | "capitalize" | "uppercase";
+/** Convert word cases.
+ *
+ * **lowercase** - `hello world`
+ *
+ * **capitalize** - `Hello World`
+ *
+ * **uppercase** - `HELLO WORLD`
+ */
+export function convertCase(str: string, type: caseConvertingTypes): string {
+    return type === "lowercase"
+        ? str.toLowerCase()
+        : type === "uppercase"
+        ? str.toUpperCase()
+        : str
+            .split(" ")
+            .map((word) => (!word[0]
+                ? word
+                : `${word[0].toUpperCase()}${word.substring(1).toLowerCase()}`)
+            )
+            .join(" ");
+}

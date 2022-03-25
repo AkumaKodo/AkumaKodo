@@ -11,10 +11,12 @@ export {
     type BotWithHelpersPlugin,
     enableHelpersPlugin,
 } from "https://deno.land/x/discordeno_helpers_plugin@0.0.8/mod.ts";
+export { TextStyles } from "https://deno.land/x/discordeno@13.0.0-rc18/src/types/messages/components/textStyles.ts";
 
 // utils
 export * from "https://deno.land/std@0.117.0/fmt/colors.ts";
 export { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
+export { nanoid } from "https://deno.land/x/nanoid@v3.0.0/mod.ts";
 
 // providers
 
