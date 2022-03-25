@@ -129,6 +129,20 @@ export class AkumaKodoEventModule {
    * @returns
    */
   private interactionCreateChecks(command: AkumaKodoCommand, interaction: DiscordenoInteraction) {
+    // guild only check
+    if (command.guildOnly && !interaction.guildId) {
+      return this.launcher.command.createCommandReply(interaction, {
+        content: `This command can only be used in a server!`,
+      }, true);
+    }
+
+    // dm only check
+    if (command.dmOnly && interaction.guildId) {
+      return this.launcher.command.createCommandReply(interaction, {
+        content: `This command can only be used in a DM!`,
+      }, true);
+    }
+
     // Owner only check\
     if (command.ownerOnly && !this.configuration.optional.bot_owners_ids?.includes(interaction.user.id)) {
       if (!this.configuration.optional.bot_fetch_owners) {
