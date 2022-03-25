@@ -78,7 +78,8 @@ const changelog = new Changelog("AkumaKodo")
       .security(
         "Added more permission checks and caching of  the bot owner so we dont hit discord api ratelimit fetch request.",
       ),
-  );
+  ).addRelease("0.1.4", "2022-3-26", "Finishing up basic framework features, and making it stable for production.")
+  .added("Command guild only protection.").added("Command DM only protection.")
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");
