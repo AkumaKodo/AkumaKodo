@@ -9,6 +9,7 @@ import {
 import {
     AtLeastOne,
     BotWithCache,
+    ButtonStyles,
     DiscordenoInteraction,
     DiscordenoMember,
     EditGlobalApplicationCommand,
@@ -22,11 +23,8 @@ import {
     upsertApplicationCommands,
     validatePermissions,
 } from "../../../deps.ts";
-import { Button } from "../utils/Components/Button.ts";
-import { InputText } from "../utils/Components/InputText.ts";
 import { Components } from "../utils/Components/mod.ts";
-import { AkumaKodoEmbed } from "../utils/Embed.ts";
-import { createComponentCollector } from "../utils/collectors/mod.ts";
+import { Button } from "../utils/Components/Button.ts";
 
 export class AkumaKodoCommandModule {
     public container: AkumaKodoContainerInterface;
@@ -363,5 +361,35 @@ export class AkumaKodoCommandModule {
             BotOwner: (data: DiscordenoMember) =>
                 this.container.bot_owners_cache.has(data.id),
         };
+    }
+
+    /**
+     * Create a button on your interaction
+     * @param label The text to show on the button. Max is 80 chars
+     * @param optional Other settings you may want on the button.
+     * @returns {Components} The Button Component
+     */
+    public createButtonComponent(label: string, optional: {
+        url?: string
+        setEnabled?: boolean
+        setCustomId?: string
+        setEmoji?: string
+        setStyle?: keyof Omit<typeof ButtonStyles, "Link">
+    }): Components {
+        const btn = new Button().setLabel(label);
+
+        // Check if any options were passed and add them
+        if (optional.url) btn.setUrl(optional.url)
+        if (optional.setCustomId) btn.setCustomId(optional.setCustomId)
+        if (optional.setEmoji) btn.setEmoji(optional.setEmoji)
+        if (optional.setStyle) btn.setStyle(optional.setStyle)
+        if (optional.setEnabled) btn.setEnabled(optional.setEnabled)
+ 
+        return new Components().addComponent(btn);
+    }
+
+    // TODO(#2) - Add multi button option later
+    private createButtonComponents() {
+        // const _component = new Components().addComponents();
     }
 }
