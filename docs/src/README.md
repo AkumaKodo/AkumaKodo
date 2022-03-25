@@ -57,48 +57,49 @@ const TOKEN = env.DISCORD_BOT_TOKEN || "";
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
-  {
-    botId: BigInt("your-bot-id"),
-    events: {},
-    intents: ["Guilds", "GuildMessages", "GuildMembers"],
-    token: TOKEN,
-  },
-  {
-    optional: {
-      // False by default but we recommend using the built in logging system
-      bot_debug_mode: false,
-      providers: {
-        type: "disabled",
-      },
+    {
+        botId: BigInt("your-bot-id"),
+        events: {},
+        intents: ["Guilds", "GuildMessages", "GuildMembers"],
+        token: TOKEN,
     },
-    required: {
-      bot_development_server_id: BigInt("your-guild-id"),
+    {
+        optional: {
+            // False by default but we recommend using the built in logging system
+            bot_debug_mode: false,
+            providers: {
+                type: "disabled",
+            },
+        },
+        required: {
+            bot_development_server_id: BigInt("your-guild-id"),
+        },
     },
-  },
 );
 
 // Our own custom event handler
 Bot.client.events.ready = (_, payload) => {
-  Bot.container.logger.log("info", "ready", "Online and ready to work!");
+    Bot.container.logger.log("info", "ready", "Online and ready to work!");
 };
 
 // Creates a command
 Bot.container.utils.createCommand(Bot, {
-  trigger: "ping",
-  description: "ping pong me!",
-  scope: "Development",
-  run: async (interaction) => {
-    await Bot.container.utils.createCommandReply(
-      Bot,
-      interaction,
-      {
-        embeds: [
-          Bot.container.utils.embed().setColor("random").setDescription("pong!"),
-        ],
-      },
-      false,
-    );
-  },
+    trigger: "ping",
+    description: "ping pong me!",
+    scope: "Development",
+    run: async (interaction) => {
+        await Bot.container.utils.createCommandReply(
+            Bot,
+            interaction,
+            {
+                embeds: [
+                    Bot.container.utils.embed().setColor("random")
+                        .setDescription("pong!"),
+                ],
+            },
+            false,
+        );
+    },
 });
 
 // Creates ws connection and starts listening

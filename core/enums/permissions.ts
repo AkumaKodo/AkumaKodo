@@ -1,5 +1,5 @@
 export enum PermissionLevels {
-  Admin,
-  ServerOwner,
-  BotOwner,
+    Admin,
+    ServerOwner,
+    BotOwner,
 }

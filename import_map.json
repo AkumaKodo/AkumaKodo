@@ -1,9 +1,9 @@
 {
-  "imports": {
-    "/": "./",
-    "./": "./",
-    "@deps": "./deps.ts",
-    "@mongodb": "https://deno.land/x/mongo@v0.29.0/mod.ts",
-    "@core": "./core/lib/AkumaKodo.ts"
-  }
+    "imports": {
+        "/": "./",
+        "./": "./",
+        "@deps": "./deps.ts",
+        "@mongodb": "https://deno.land/x/mongo@v0.29.0/mod.ts",
+        "@core": "./core/lib/AkumaKodo.ts"
+    }
 }

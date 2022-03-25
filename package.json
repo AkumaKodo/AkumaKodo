@@ -1,14 +1,14 @@
 {
-  "name": "akumakodo",
-  "version": "0.1.0",
-  "main": "index.js",
-  "repository": "https://github.com/AkumaKodo/AkumaKodo.git",
-  "author": "ThatGuyJamal",
-  "license": "MIT",
-  "devDependencies": {
-    "gh-pages": "^3.2.3"
-  },
-  "scripts": {
-    "publish:docs": "node ./scripts/github_script.js"
-  }
+    "name": "akumakodo",
+    "version": "0.1.0",
+    "main": "index.js",
+    "repository": "https://github.com/AkumaKodo/AkumaKodo.git",
+    "author": "ThatGuyJamal",
+    "license": "MIT",
+    "devDependencies": {
+        "gh-pages": "^3.2.3"
+    },
+    "scripts": {
+        "publish:docs": "node ./scripts/github_script.js"
+    }
 }

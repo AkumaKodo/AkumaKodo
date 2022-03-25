@@ -26,25 +26,25 @@ _mod.ts_
 
 ```typescript
 const Bot = new AkumaKodoBotCore(
-  // Required deno Options to start the bot
-  {
-    botId: BigInt("your-bot-id"),
-    events: {},
-    intents: ["Guilds", "GuildMessages", "GuildMembers"],
-    token: "your-bot-token",
-  },
-  // AkumaKodo options
-  {
-    optional: {
-      bot_debug_mode: true,
-      providers: {
-        type: "disabled",
-      },
+    // Required deno Options to start the bot
+    {
+        botId: BigInt("your-bot-id"),
+        events: {},
+        intents: ["Guilds", "GuildMessages", "GuildMembers"],
+        token: "your-bot-token",
     },
-    required: {
-      bot_development_server_id: BigInt("your-dev-guild-id"),
+    // AkumaKodo options
+    {
+        optional: {
+            bot_debug_mode: true,
+            providers: {
+                type: "disabled",
+            },
+        },
+        required: {
+            bot_development_server_id: BigInt("your-dev-guild-id"),
+        },
     },
-  },
 );
 
 Bot.createBot();
@@ -84,27 +84,28 @@ Using this interface we can build our command below.
 
 ```ts
 Bot.container.utils.createCommand(Bot, {
-  // The command name
-  trigger: "ping",
-  // The command description
-  description: "Ping me!",
-  // The scope - sets the slash command to global or guild only
-  scope: "Development",
-  // Command callback to run when called
-  run: async (interaction) => {
-    return await Bot.container.utils.createCommandReply(
-      Bot,
-      interaction,
-      {
-        embeds: [
-          Bot.container.utils.embed().setColor("random").setDescription(
-            `🏓Pong!`,
-          ),
-        ],
-      },
-      false,
-    );
-  },
+    // The command name
+    trigger: "ping",
+    // The command description
+    description: "Ping me!",
+    // The scope - sets the slash command to global or guild only
+    scope: "Development",
+    // Command callback to run when called
+    run: async (interaction) => {
+        return await Bot.container.utils.createCommandReply(
+            Bot,
+            interaction,
+            {
+                embeds: [
+                    Bot.container.utils.embed().setColor("random")
+                        .setDescription(
+                            `🏓Pong!`,
+                        ),
+                ],
+            },
+            false,
+        );
+    },
 });
 ```
 
@@ -129,7 +130,7 @@ Events are simply to create. We simply use Discordeno's internal event handler. 
 
 ```ts
 Bot.instance.events.ready = (_, payload) => {
-  // Do something...
+    // Do something...
 };
 ```
 
