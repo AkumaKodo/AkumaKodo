@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import {
+    ButtonStyles,
     CreateBotOptions,
     DiscordenoInteraction,
     DiscordenoMessage,
@@ -13,6 +14,7 @@ import { AkumaKodoMonitor } from "./Monitor.ts";
 import { AkumaKodoEmbed, AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
 import { AkumaKodoBotCore } from "../AkumaKodo.ts";
 import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
+import { Components } from "../lib/utils/Components/mod.ts";
 
 // deno-lint-ignore no-empty-interface
 export interface AkumaCreateBotOptions extends CreateBotOptions {}
@@ -71,7 +73,7 @@ export interface AkumaKodoConfigurationInterface {
         /** If the bot should fetch all the bot owners on startup */
         bot_fetch_owners?: boolean;
         /** Optional providers for the bot client */
-        providers: {
+        providers?: {
             /** The type of provider client */
             type: "mongodb" | "postgres" | "mysql" | "disabled";
             mongodb_connection_url?: string;
@@ -93,10 +95,13 @@ export interface AkumaKodoContainerInterface {
         type: "mongodb" | "postgres" | "mysql" | "disabled";
         mongodb?: AkumaKodoMongodbProvider;
     };
+    /** zc
+     * The internal file system for AkumaKodo - used to load commands, handlers, and more in sub folders.
+     */
     fs: {
         import: (bot: AkumaKodoBotCore, path: string) => Promise<void> | void;
         load: (bot: AkumaKodoBotCore) => Promise<void> | void;
-        /** Load your sub directory's using this function.
+        /** Load your subdirectories using this function.
          *  Keep in mind it uses your absolute path in your project. */
         fastLoader: (
             bot: AkumaKodoBotCore,
@@ -133,11 +138,24 @@ export interface AkumaKodoContainerInterface {
  * Utility interface for the bot.
  */
 export interface AkumaKodoUtilities {
-    /** Creates a command */
+    /**
+     * Creates a new command in the cache. This is used to preload commands
+     * @param bot The bot object
+     * @param command The command to create
+     * @returns The created command
+     */
     createCommand(
         bot: AkumaKodoBotCore,
         command: AkumaKodoCommand,
     ): any | Promise<any>;
+    /**
+     * A quick util for a developer to send interaction command messages
+     * @param bot The bot object
+     * @param interaction An interaction
+     * @param context The interaction reply options
+     * @param hidden Whether the interaction should be hidden
+     * @param type The type of interaction
+     */
     createCommandReply(
         bot: AkumaKodoBotCore,
         interaction: DiscordenoInteraction,
@@ -152,6 +170,20 @@ export interface AkumaKodoUtilities {
             | "ApplicationCommandAutocompleteResult"
             | "Modal",
     ): any | Promise<any>;
+    /**
+     * Create a button on your interaction
+     * @param bot The bot object
+     * @param label The text to show on the button. Max is 80 chars
+     * @param optional Other settings you may want on the button.
+     * @returns {Components} The Button Component
+     */
+    createCommandButton(bot: AkumaKodoBotCore, label: string, optional?: {
+        setLink?: string;
+        setEnabled?: boolean;
+        setCustomId?: string;
+        setEmoji?: string;
+        setStyle?: keyof Omit<typeof ButtonStyles, "Link">;
+    }): Components;
     // createSlashSubcommandGroup(
     //   bot: AkumaKodoBotInterface,
     //   command: string,

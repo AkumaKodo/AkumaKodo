@@ -25,6 +25,7 @@ import { AkumaKodoTaskModule } from "./lib/modules/TaskModule.ts";
 import { AkumaKodoCommandModule } from "./lib/modules/CommandModule.ts";
 import { FileSystemModule } from "../internal/fs.ts";
 import { AkumaKodoEventModule } from "./lib/modules/EventModule.ts";
+import { Components } from "./lib/utils/Components/mod.ts";
 
 /**
  * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
@@ -105,7 +106,7 @@ export class AkumaKodoBotCore {
 
         this.container = {
             providers: {
-                type: config.optional.providers.type,
+                type: config.optional.providers?.type,
                 // Checks if the provider was enabled or disabled by user
                 mongodb: config.optional.providers?.type === "mongodb" ||
                         config.optional.providers?.type !== "disabled"
@@ -141,12 +142,18 @@ export class AkumaKodoBotCore {
                 createCommand(bot, command) {
                     bot.launcher.command.createCommand(command);
                 },
-                createCommandReply(bot, interaction, hidden, ctx, type) {
-                    bot.launcher.command.createCommandReply(
+                async createCommandReply(bot, interaction, hidden, ctx, type) {
+                    await bot.launcher.command.createCommandReply(
                         interaction,
                         hidden,
                         ctx,
                         type,
+                    );
+                },
+                createCommandButton(bot, label, optional): Components {
+                    return bot.launcher.command.createButtonComponent(
+                        label,
+                        optional,
                     );
                 },
                 // createSlashSubcommand(bot, command, subcommandGroup, options) {
@@ -205,31 +212,49 @@ export class AkumaKodoBotCore {
      * Creates the bot process and starts the bot.
      */
     public async createBot(): Promise<void> {
-        await startBot(this.instance);
-        this.instance.events.ready = async (_, payload) => {
-            // Wait till shards are loaded to start the bot
-            if (payload.shardId + 1 === this.instance.gateway.maxShards) {
-                this.launcher.task.initializeTask();
-                if (this.configuration.optional.bot_internal_events) {
-                    await this.handleInternalEvents();
-                } else {
+        try {
+            await startBot(this.instance);
+            this.instance.events.ready = async (_, payload) => {
+                // Wait till shards are loaded to start the bot
+                if (payload.shardId + 1 === this.instance.gateway.maxShards) {
+                    this.launcher.task.initializeTask();
+                    // If the user provided users in the option, we save them to cache
+                    for (
+                        const owners in this.configuration.optional
+                            .bot_owners_ids
+                            ?.values()
+                    ) {
+                        this.container.bot_owners_cache.add(BigInt(owners));
+                    }
+                    // if the internal events are enabled run this code:
+                    if (this.configuration.optional.bot_internal_events) {
+                        await this.handleInternalEvents();
+                    } else {
+                        this.container.logger.debug(
+                            "warn",
+                            "createBot",
+                            "No internal events were enabled. All handlers will have to be created manually.",
+                        );
+                    }
+                    if (this.configuration.optional.bot_fetch_owners) {
+                        await this.fetchBotOwnersFromDiscordApi();
+                    }
+                    this.container.fullyReady = true;
                     this.container.logger.debug(
-                        "warn",
-                        "createBot",
-                        "No internal events were enabled. All handlers will have to be created manually.",
+                        "info",
+                        "create Bot",
+                        "AkumaKodo Connection successful!",
                     );
                 }
-                if (this.configuration.optional.bot_fetch_owners) {
-                    await this.fetchBotOwnersFromDiscordApi();
-                }
-                this.container.fullyReady = true;
-                this.container.logger.debug(
-                    "info",
-                    "create Bot",
-                    "AkumaKodo Connection successful!",
-                );
-            }
-        };
+            };
+        } catch (err) {
+            this.container.logger.debug(
+                "fatal",
+                "AkumaKodo Bot Core",
+                `An error occurred while starting the bot.\n${err}`,
+            );
+            Deno.exit(1);
+        }
     }
 
     /**
@@ -245,7 +270,7 @@ export class AkumaKodoBotCore {
             );
         });
 
-        await delay(5000);
+        await delay(3000);
         this.container.logger.debug(
             "info",
             "destroy Bot",
@@ -297,15 +322,22 @@ export class AkumaKodoBotCore {
                 if (data.team) {
                     data.team.members.forEach((t) => {
                         if (!t.user.id) return;
-                        this.container.bot_owners_cache.add(t.user.id);
-                        this.configuration.optional.bot_owners_ids?.push(
-                            t.user.id,
+                        this.container.logger.debug(
+                            "info",
+                            "Bot API Owner Fetch",
+                            `Adding bot owner ${t.user.username}#${t.user.discriminator} to the cache.`,
                         );
+                        this.container.bot_owners_cache.add(t.user.id);
                     });
                 } else {
                     const ownerId = data.owner?.id!;
+                    this.container.logger.debug(
+                        "info",
+                        "Bot API Owner Fetch",
+                        `Adding bot owner ${data.owner?.username}#${data.owner
+                            ?.discriminator} | ID: ${ownerId} - to the cache.`,
+                    );
                     this.container.bot_owners_cache.add(ownerId);
-                    this.configuration.optional.bot_owners_ids?.push(ownerId);
                 }
             } else {
                 this.container.logger.debug(

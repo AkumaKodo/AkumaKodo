@@ -96,15 +96,6 @@ export class AkumaKodoEventModule {
                         );
                     });
             }
-            // } else {
-            // if (this.configuration.optional.bot_internal_events) {
-            //   this.container.logger.debug(
-            //     "warn",
-            //     "interaction Create Handler",
-            //     "The bot was not ready when the event handler was called! No new slash commands were uploaded!",
-            //   );
-            // }
-            // }
         } catch (error) {
             this.container.logger.debug(
                 "error",
@@ -184,9 +175,7 @@ export class AkumaKodoEventModule {
         // Owner only check\
         if (
             command.ownerOnly &&
-            !this.configuration.optional.bot_owners_ids?.includes(
-                interaction.user.id,
-            )
+            !this.container.bot_owners_cache.has(interaction.user.id)
         ) {
             if (!this.configuration.optional.bot_fetch_owners) {
                 this.container.logger.debug(

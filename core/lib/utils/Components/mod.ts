@@ -2,11 +2,11 @@ import { ActionRow, MessageComponentTypes } from "../../../../deps.ts";
 import { ComponentInterfaceOptions } from "../../../interfaces/Component.ts";
 
 export class Components extends Array<ActionRow> {
-    constructor(...args: ActionRow[]) {
+    public constructor(...args: ActionRow[]) {
         super(...args);
         return this;
     }
-    addActionRow() {
+    private addActionRow() {
         if (this.length == 5) return this;
         this.push({
             type: 1,
@@ -14,7 +14,7 @@ export class Components extends Array<ActionRow> {
         });
         return this;
     }
-    addComponent(component: ComponentInterfaceOptions) {
+    public addComponent(component: ComponentInterfaceOptions) {
         if (!this.length) this.addActionRow();
         // Get the last Action Row
         let row = this[this.length - 1];
@@ -54,7 +54,7 @@ export class Components extends Array<ActionRow> {
         row.components.push(component);
         return this;
     }
-    addComponents(
+    public addComponents(
         components: ComponentInterfaceOptions[] | ComponentInterfaceOptions,
     ) {
         if (!Array.isArray(components)) components = [components];

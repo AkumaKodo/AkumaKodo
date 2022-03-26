@@ -5,30 +5,38 @@ import { AkumaKodoConfigurationInterface } from "../interfaces/Client.ts";
  */
 export abstract class AkumaKodoProvider {
     protected logger: AkumaKodoLogger;
+    protected configuration: AkumaKodoConfigurationInterface;
     protected constructor(
         options: ProviderOptions,
         config: AkumaKodoConfigurationInterface,
     ) {
-        this.logger = new AkumaKodoLogger(config);
-        if (options.provider === "mongodb") {
+        this.configuration = config;
+
+        this.logger = new AkumaKodoLogger();
+        if (
+            this.configuration.optional.providers &&
+            options.provider === "mongodb"
+        ) {
             if (!options.mongodb_connection_url) {
                 throw new Error(
                     "MongoDB connection URL is required with this provider.",
                 );
             }
             this.logger.debug("info", "Provider", "MongoDB provider loaded!");
-        } else if (options.provider === "postgres") {
+        } else if (
+            this.configuration.optional.providers &&
+            options.provider === "postgres"
+        ) {
             this.logger.debug(
                 "info",
                 "Provider",
                 "PostgreSQL provider loaded!",
             );
-        } else if (options.provider === "mysql") {
+        } else if (
+            this.configuration.optional.providers &&
+            options.provider === "mysql"
+        ) {
             this.logger.debug("info", "Provider", "MySQL provider loaded!");
-        } else {
-            throw new Error(
-                "Invalid provider type! Please use one of the following: mongodb, postgres, mysql",
-            );
         }
     }
 }

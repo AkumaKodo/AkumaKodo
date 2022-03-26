@@ -41,7 +41,7 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 ## Installation
 
 ```
-deno install https://deno.land/x/akumakodo@0.1.3/mod.ts
+deno install https://deno.land/x/akumakodo@0.1.4/mod.ts
 ```
 
 _akumakodo will be installed in your deno cache_
@@ -49,7 +49,7 @@ _akumakodo will be installed in your deno cache_
 ## Example bot
 
 ```typescript
-import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.3/mod.ts";
+import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@<VERSION_HERE>/mod.ts";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
 
 const env = dotEnvConfig({ export: true });
@@ -65,13 +65,12 @@ const Bot = new AkumaKodoBotCore(
     },
     {
         optional: {
-            // False by default but we recommend using the built in logging system
-            bot_debug_mode: false,
-            providers: {
-                type: "disabled",
-            },
+            // False by default but we recommend using the built
+            // in logging system until your app hits production.
+            bot_debug_mode: true,
         },
         required: {
+            // needed if you wish to use test slash commands.
             bot_development_server_id: BigInt("your-guild-id"),
         },
     },

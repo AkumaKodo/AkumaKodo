@@ -72,6 +72,8 @@ export class AkumaKodoCommandModule {
      * A quick util for a developer to send interaction command messages
      * @param interaction An interaction
      * @param context The interaction reply options
+     * @param hidden Whether the interaction should be hidden
+     * @param type The type of interaction
      */
     public async createCommandReply(
         interaction: DiscordenoInteraction,
@@ -369,22 +371,24 @@ export class AkumaKodoCommandModule {
      * @param optional Other settings you may want on the button.
      * @returns {Components} The Button Component
      */
-    public createButtonComponent(label: string, optional: {
-        url?: string
-        setEnabled?: boolean
-        setCustomId?: string
-        setEmoji?: string
-        setStyle?: keyof Omit<typeof ButtonStyles, "Link">
+    public createButtonComponent(label: string, optional?: {
+        setLink?: string;
+        setEnabled?: boolean;
+        setCustomId?: string;
+        setEmoji?: string;
+        setStyle?: keyof Omit<typeof ButtonStyles, "Link">;
     }): Components {
         const btn = new Button().setLabel(label);
 
         // Check if any options were passed and add them
-        if (optional.url) btn.setUrl(optional.url)
-        if (optional.setCustomId) btn.setCustomId(optional.setCustomId)
-        if (optional.setEmoji) btn.setEmoji(optional.setEmoji)
-        if (optional.setStyle) btn.setStyle(optional.setStyle)
-        if (optional.setEnabled) btn.setEnabled(optional.setEnabled)
- 
+        if (optional?.setLink) {
+            btn.setUrl(optional.setLink);
+        }
+        if (optional?.setCustomId) btn.setCustomId(optional.setCustomId);
+        if (optional?.setEmoji) btn.setEmoji(optional.setEmoji);
+        if (optional?.setStyle) btn.setStyle(optional.setStyle);
+        if (optional?.setEnabled) btn.setEnabled(optional.setEnabled);
+
         return new Components().addComponent(btn);
     }
 

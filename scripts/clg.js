@@ -99,7 +99,14 @@ const changelog = new Changelog("AkumaKodo")
     .added("Command guild only protection.").added(
         "Command DM only protection.",
     ).added("Components for commands: Button, TextInput, SelectMenu.")
-    .added("More utility helpers");
+    .added("More utility helper functions")
+    .added("Added createButton Utility for commands")
+    .fixed(
+        "Owner Only command checks not caching owners from configuration or api.",
+    ).changed("Added error handling to createBot function.")
+    .changed("Provider object no longer needed in config by default.")
+    .fixed("Provider checking for provider object before launching bot.")
+    .security("Upgraded required pkg version to deno v1.20.3");
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");

@@ -11,6 +11,7 @@
   - [Event handling]()
   - [Common Errors](framework/chapter_1/common_errors.md)
 - [AkumaKodo Advanced]()
+  - [Configuration Settings]()
   - [Extended Types]()
   - [SubCommands]()
   - [Providers]()
