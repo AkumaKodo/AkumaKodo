@@ -5,7 +5,8 @@
             "deno.window"
         ],
         "strict": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "checkJs": true
     },
     "lint": {
         "rules": {

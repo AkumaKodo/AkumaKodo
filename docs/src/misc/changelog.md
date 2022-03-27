@@ -5,7 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## 0.1.3 - 2022-03-24
+## 0.1.4 - 2022-03-27
+
+Finishing up basic framework features, and making it stable for production.
+
+### Added
+
+- Command guild only protection.
+- Command DM only protection.
+- Components for commands: Button, TextInput, SelectMenu.
+- More utility helper functions
+- Application component handler
+
+### Changed
+
+- Added error handling to createBot function.
+- Provider object no longer needed in config by default.
+- Providers no longer automatically register using the bot configuration.
+
+### Deprecated
+
+- Removed provider configurations from the bot object. From now on users will have to import and manage their own providers.
+
+### Removed
+
+- Button creation utility.
+- Task initialization on bot startup by default.
+- Mongodb provider until i fix it.
+
+### Fixed
+
+- Owner Only command checks not caching owners from configuration or api.
+- Provider checking for provider object before launching bot.
+- Owner Only function working!
+
+### Security
+
+- Upgraded required deno version to deno v1.20.3
+
+## 0.1.3 - 2022-03-25
 
 Major revamp fixes for library and modules with more permission handling.
 
