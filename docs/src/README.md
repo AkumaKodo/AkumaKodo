@@ -49,7 +49,7 @@ _akumakodo will be installed in your deno cache_
 ## Example bot
 
 ```typescript
-import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@<VERSION_HERE>/mod.ts";
+import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.4/mod.ts";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
 
 const env = dotEnvConfig({ export: true });

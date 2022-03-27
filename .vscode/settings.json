@@ -27,9 +27,7 @@
   ],
   "deno.lint": true,
   "deno.unstable": true,
-  "deno.codeLens.references": true,
-  "deno.codeLens.implementations": true,
-  "deno.codeLens.referencesAllFunctions": true,
   "deno.internalDebug": true,
-  "deno.cache": ""
+  "deno.cache": "",
+  "deno.codeLens.test": false
 }

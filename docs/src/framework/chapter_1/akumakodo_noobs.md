@@ -2,19 +2,6 @@
 
 Now that you have your bot application from discord, we can get started creating your bot.
 
-## Exported Classes
-
-In AkumaKodo, everything is an extension of the `Bot` class. The bot class is exported from the `mod.ts` file in our repository as
-`AkumaKodoBotCore`.
-
-Exported AkuamKodo classes:
-
-- <ins>AkumaKodoBotCore</ins> - The bot client and main access point of your application.
-- <ins>AkumaKodoMongodbProvider</ins> - The mongodb functional controller class that handlers your database.
-- <ins>AkumaKodoProvider</ins> - The base provider class if you wish to extend and make your own custom one.
-- <ins>AkumaKodoCollection</ins> - The main cache system extended from the js Map class.
-- <ins>AkumaKodoEmbed</ins> - The embed class.
-
 ## Creating a `mod.ts` file
 
 Now create a file on your computer called `mod.ts` or whatever you like, this file will be your main program file for your bot. This file will container all the
@@ -37,9 +24,6 @@ const Bot = new AkumaKodoBotCore(
     {
         optional: {
             bot_debug_mode: true,
-            providers: {
-                type: "disabled",
-            },
         },
         required: {
             bot_development_server_id: BigInt("your-dev-guild-id"),

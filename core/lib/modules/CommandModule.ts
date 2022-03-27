@@ -31,6 +31,11 @@ export class AkumaKodoCommandModule {
     public configuration: AkumaKodoConfigurationInterface;
     private readonly instance: BotWithCache;
 
+    /**
+     * @param bot The bot instance
+     * @param container The container instance
+     * @param config The configuration instance
+     */
     public constructor(
         bot: BotWithCache,
         container: AkumaKodoContainerInterface,
@@ -231,6 +236,7 @@ export class AkumaKodoCommandModule {
      * Gets a command by trigger and return its data.
      * You can use this to get command information such as category, description, usage, etc.
      * @param trigger
+     * @returns The command data or undefined if not found
      */
     public getCommand(trigger: string): AkumaKodoCommand | undefined {
         const command: AkumaKodoCommand | undefined = this.container.commands
@@ -363,37 +369,5 @@ export class AkumaKodoCommandModule {
             BotOwner: (data: DiscordenoMember) =>
                 this.container.bot_owners_cache.has(data.id),
         };
-    }
-
-    /**
-     * Create a button on your interaction
-     * @param label The text to show on the button. Max is 80 chars
-     * @param optional Other settings you may want on the button.
-     * @returns {Components} The Button Component
-     */
-    public createButtonComponent(label: string, optional?: {
-        setLink?: string;
-        setEnabled?: boolean;
-        setCustomId?: string;
-        setEmoji?: string;
-        setStyle?: keyof Omit<typeof ButtonStyles, "Link">;
-    }): Components {
-        const btn = new Button().setLabel(label);
-
-        // Check if any options were passed and add them
-        if (optional?.setLink) {
-            btn.setUrl(optional.setLink);
-        }
-        if (optional?.setCustomId) btn.setCustomId(optional.setCustomId);
-        if (optional?.setEmoji) btn.setEmoji(optional.setEmoji);
-        if (optional?.setStyle) btn.setStyle(optional.setStyle);
-        if (optional?.setEnabled) btn.setEnabled(optional.setEnabled);
-
-        return new Components().addComponent(btn);
-    }
-
-    // TODO(#2) - Add multi button option later
-    private createButtonComponents() {
-        // const _component = new Components().addComponents();
     }
 }

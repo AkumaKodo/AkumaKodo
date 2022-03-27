@@ -1,5 +1,9 @@
 import { AtLeastOne } from "../../../../deps.ts";
 import { collector, collectorStorage } from "../../../interfaces/Collector.ts";
+import { AkumaKodoCollection } from "../Collection.ts";
+
+// I dont know the types
+export const componentCollectors = new AkumaKodoCollection<bigint, any>();
 
 /**
  * The collector controller for components

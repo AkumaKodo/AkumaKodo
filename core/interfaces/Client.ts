@@ -22,18 +22,15 @@ export interface AkumaCreateBotOptions extends CreateBotOptions {}
 /** Default options for client if non are passed */
 export const defaultConfigOptions = {
     optional: {
-        bot_owners_ids: [],
-        bot_supporters_ids: [],
-        bot_staff_ids: [],
-        bot_default_prefix: "",
-        bot_ratelimit_bypass_ids: [],
+        bot_owners_ids: undefined,
+        bot_supporters_ids: undefined,
+        bot_staff_ids: undefined,
+        bot_default_prefix: undefined,
+        bot_ratelimit_bypass_ids: undefined,
         bot_debug_mode: false,
         bot_mention_with_prefix: false,
         bot_log_command_reply: false,
         bot_fetch_owners: false,
-        providers: {
-            type: "disabled",
-        },
         bot_internal_events: {
             interactionCreate: true,
             ready: true,
@@ -48,7 +45,7 @@ export interface AkumaKodoConfigurationInterface {
     /** Optional options for client */
     optional: {
         /** The ID's of the bot owners */
-        bot_owners_ids?: (bigint)[];
+        bot_owners_ids?: bigint[];
         /** The ID's of the bot supporters */
         bot_supporters_ids?: bigint[];
         /** The ID's of the bot staff */
@@ -72,12 +69,6 @@ export interface AkumaKodoConfigurationInterface {
 
         /** If the bot should fetch all the bot owners on startup */
         bot_fetch_owners?: boolean;
-        /** Optional providers for the bot client */
-        providers?: {
-            /** The type of provider client */
-            type: "mongodb" | "postgres" | "mysql" | "disabled";
-            mongodb_connection_url?: string;
-        };
     };
     /** Required for the config */
     required: {
@@ -91,10 +82,6 @@ export interface AkumaKodoConfigurationInterface {
  * All options are invoked on the main bot object for easy access.
  */
 export interface AkumaKodoContainerInterface {
-    providers?: {
-        type: "mongodb" | "postgres" | "mysql" | "disabled";
-        mongodb?: AkumaKodoMongodbProvider;
-    };
     /** zc
      * The internal file system for AkumaKodo - used to load commands, handlers, and more in sub folders.
      */
@@ -170,20 +157,6 @@ export interface AkumaKodoUtilities {
             | "ApplicationCommandAutocompleteResult"
             | "Modal",
     ): any | Promise<any>;
-    /**
-     * Create a button on your interaction
-     * @param bot The bot object
-     * @param label The text to show on the button. Max is 80 chars
-     * @param optional Other settings you may want on the button.
-     * @returns {Components} The Button Component
-     */
-    createCommandButton(bot: AkumaKodoBotCore, label: string, optional?: {
-        setLink?: string;
-        setEnabled?: boolean;
-        setCustomId?: string;
-        setEmoji?: string;
-        setStyle?: keyof Omit<typeof ButtonStyles, "Link">;
-    }): Components;
     // createSlashSubcommandGroup(
     //   bot: AkumaKodoBotInterface,
     //   command: string,

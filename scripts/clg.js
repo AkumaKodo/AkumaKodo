@@ -93,7 +93,7 @@ const changelog = new Changelog("AkumaKodo")
             ),
     ).addRelease(
         "0.1.4",
-        "2022-3-26",
+        "2022-3-27",
         "Finishing up basic framework features, and making it stable for production.",
     )
     .added("Command guild only protection.").added(
@@ -101,12 +101,26 @@ const changelog = new Changelog("AkumaKodo")
     ).added("Components for commands: Button, TextInput, SelectMenu.")
     .added("More utility helper functions")
     .added("Added createButton Utility for commands")
+    .added("Application component handler")
     .fixed(
         "Owner Only command checks not caching owners from configuration or api.",
     ).changed("Added error handling to createBot function.")
     .changed("Provider object no longer needed in config by default.")
     .fixed("Provider checking for provider object before launching bot.")
-    .security("Upgraded required pkg version to deno v1.20.3");
+    .security("Upgraded required pkg version to deno v1.20.3")
+    .removed("Button creation utility.").removed(
+        "Task initialization on bot startup by default.",
+    )
+    .fixed("Owner Only function working!")
+    .changed(
+        "Providers no longer automatically register using the bot configuration.",
+    )
+    .deprecated(
+        "Removed provider object from config. Now providers can be accessed from the bot class directly. Example 'Bot.mongodb'.",
+    ).deprecated(
+        "Removed provider configurations from the bot object. From now on users will have to import and manage their own providers.",
+    )
+    .removed("Mongodb provider until i fix it.");
 
 console.clear();
 console.log("\n- - - COPY THE GENERATED LOG BELOW - - -\n");

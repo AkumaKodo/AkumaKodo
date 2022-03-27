@@ -1,7 +1,9 @@
 import {
+    ApplicationCommandOptionTypes,
     botHasGuildPermissions,
     BotWithCache,
     DiscordenoInteraction,
+    InteractionResponseTypes,
     InteractionTypes,
     validatePermissions,
 } from "../../../deps.ts";
@@ -13,6 +15,7 @@ import {
     AkumaKodoCommand,
     CommandScopeType,
 } from "../../interfaces/Command.ts";
+import { componentCollectors } from "../utils/collectors/component.ts";
 import { Milliseconds } from "../utils/helpers.ts";
 import { AkumaKodoCommandModule } from "./CommandModule.ts";
 
@@ -106,11 +109,17 @@ export class AkumaKodoEventModule {
             // Only start listening for events after all slash commands are posted!
         } finally {
             // Runs the interactionCreate event for all active slash commands in the bot.
-            this.instance.events.interactionCreate = (_, interaction) => {
-                if (!interaction.data) return;
-
+            this.instance.events.interactionCreate = async (_, interaction) => {
                 switch (interaction.type) {
+                    // Handle slash commands
                     case InteractionTypes.ApplicationCommand:
+                        if (!interaction.data?.name) {
+                            return this.container.logger.debug(
+                                "warn",
+                                "InteractionCreate Handler",
+                                "No interaction name found!",
+                            );
+                        }
                         try {
                             // get the command then run out checks before execution
                             const command = this.container.commands.get(
@@ -143,6 +152,41 @@ export class AkumaKodoEventModule {
                             );
                         }
                         break;
+
+                    // Handle autocomplete for commands
+
+                    case InteractionTypes.ApplicationCommandAutocomplete:
+                        if (!interaction.data?.name) {
+                            return this.container.logger.debug(
+                                "warn",
+                                "InteractionCreate Handler",
+                                "No interaction name found!",
+                            );
+                        }
+                        try {
+                            //TODO(#4) - Handler for autocomplete
+                        } catch (e) {
+                            this.container.logger.debug(
+                                "error",
+                                "Interaction create",
+                                `Error while running command autocomplete. \n${e}`,
+                            );
+                        }
+                        break;
+
+                    // handler message components
+
+                    case InteractionTypes.MessageComponent:
+                        try {
+                            await this.interactionComponentChecks(interaction);
+                        } catch (e) {
+                            this.container.logger.debug(
+                                "error",
+                                "Interaction create",
+                                `Error while running command component. \n${e}`,
+                            );
+                        }
+                        break;
                 }
             };
         }
@@ -172,18 +216,18 @@ export class AkumaKodoEventModule {
             }, true);
         }
 
-        // Owner only check\
+        // Owner only check
         if (
             command.ownerOnly &&
             !this.container.bot_owners_cache.has(interaction.user.id)
         ) {
-            if (!this.configuration.optional.bot_fetch_owners) {
-                this.container.logger.debug(
-                    "warn",
-                    "Owner Only Command",
-                    "You do not have fetch bot owners enabled but you set a command as owner only. Make sure to enable this or fetch the owner Id yourself and save it.",
-                );
-            }
+            // if (!this.configuration.optional.bot_fetch_owners) {
+            //     this.container.logger.debug(
+            //         "warn",
+            //         "Owner Only Command",
+            //         "You do not have fetch bot owners enabled but you set a command as owner only. Make sure to enable this or fetch the owner Id yourself and save it.",
+            //     );
+            // }
             return this.launcher.command.createCommandReply(interaction, {
                 content: `Only the bot owner can use this command!`,
             }, true);
@@ -316,5 +360,62 @@ export class AkumaKodoEventModule {
         });
 
         return command.run(interaction);
+    }
+
+    /**
+     * TODO(#5) - Get this working!
+     * Handles the check system for the auto command handler.
+     * @param command - The command to be run
+     * @param interaction - The interaction to be run
+     * @returns
+     */
+    private interactionAutoCompleteChecks(
+        command: AkumaKodoCommand,
+        interaction: DiscordenoInteraction,
+    ) {
+        if (!command) return;
+    }
+
+    private async interactionComponentChecks(
+        interaction: DiscordenoInteraction,
+    ) {
+        const idToUse = interaction.message?.messageReference?.messageId ??
+            interaction.message?.interaction?.id ??
+            interaction.message?.id;
+
+        const collector = idToUse && componentCollectors.get(idToUse);
+        if (!collector) return;
+
+        const collectorReturn = {
+            customId: interaction.data?.customId!,
+            interaction: interaction,
+        };
+        if (collector.collectCondition) {
+            const passed = collector.collectCondition(collectorReturn);
+            if (!passed) return;
+        }
+
+        collector.state?.collected?.push(interaction);
+
+        // Acknowledge
+        let shouldDefer = false;
+        if (typeof collector.state.defer === "function") {
+            shouldDefer = collector.state.defer(collectorReturn);
+        } else {
+            shouldDefer = collector.state.defer ?? true;
+        }
+        if (shouldDefer) {
+            await this.instance.helpers
+                .sendInteractionResponse(interaction.id, interaction.token, {
+                    type: InteractionResponseTypes.DeferredUpdateMessage,
+                })
+                .catch(() => {});
+        }
+        if (collector.resolveCondition) {
+            const passed = collector.resolveCondition(collectorReturn);
+            if (!passed) return;
+        }
+        collector.resolve(collectorReturn);
+        componentCollectors.delete(collector.key);
     }
 }

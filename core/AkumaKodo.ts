@@ -20,12 +20,10 @@ import { delay } from "../internal/utils.ts";
 import { Milliseconds } from "./lib/utils/helpers.ts";
 import { AkumaKodoEmbed, createAkumaKodoEmbed } from "./lib/utils/Embed.ts";
 import { AkumaKodoVersionControl } from "../internal/VersionControl.ts";
-import { AkumaKodoMongodbProvider } from "./providers/mongodb.ts";
 import { AkumaKodoTaskModule } from "./lib/modules/TaskModule.ts";
 import { AkumaKodoCommandModule } from "./lib/modules/CommandModule.ts";
 import { FileSystemModule } from "../internal/fs.ts";
 import { AkumaKodoEventModule } from "./lib/modules/EventModule.ts";
-import { Components } from "./lib/utils/Components/mod.ts";
 
 /**
  * AkumaKodo is a discord bot framework, designed to be modular and easy to extend.
@@ -68,6 +66,7 @@ export class AkumaKodoBotCore {
      * @description The container - a collection of all the instance modules, classes, and utils that cen be used by the bot developer.
      */
     public container: AkumaKodoContainerInterface;
+    // public mongodb: AkumaKodoMongodbProvider;
 
     public constructor(
         botOptions: AkumaCreateBotOptions,
@@ -105,18 +104,6 @@ export class AkumaKodoBotCore {
         enablePermissionsPlugin(this.instance);
 
         this.container = {
-            providers: {
-                type: config.optional.providers?.type,
-                // Checks if the provider was enabled or disabled by user
-                mongodb: config.optional.providers?.type === "mongodb" ||
-                        config.optional.providers?.type !== "disabled"
-                    ? new AkumaKodoMongodbProvider({
-                        provider: "mongodb",
-                        mongodb_connection_url: config.optional.providers
-                            ?.mongodb_connection_url,
-                    }, { ...config })
-                    : undefined,
-            },
             defaultRateLimit: {
                 duration: Milliseconds.Second * 5,
                 limit: 1,
@@ -148,12 +135,6 @@ export class AkumaKodoBotCore {
                         hidden,
                         ctx,
                         type,
-                    );
-                },
-                createCommandButton(bot, label, optional): Components {
-                    return bot.launcher.command.createButtonComponent(
-                        label,
-                        optional,
                     );
                 },
                 // createSlashSubcommand(bot, command, subcommandGroup, options) {
@@ -201,6 +182,21 @@ export class AkumaKodoBotCore {
             ),
         };
 
+        // If the user provided users in the option, we save them to cache
+        if (this.configuration.optional.bot_owners_ids!.length > 0) {
+            for (
+                const owners of this.configuration.optional.bot_owners_ids
+                    ?.values()!
+            ) {
+                this.container.bot_owners_cache.add(BigInt(owners));
+                this.container.logger.debug(
+                    "info",
+                    "Bot Owner Cache",
+                    `Added ID of [${owners}] to bot owners cache.`,
+                );
+            }
+        }
+
         this.container.logger.debug(
             "info",
             "AkumaKodo Bot Core",
@@ -217,15 +213,6 @@ export class AkumaKodoBotCore {
             this.instance.events.ready = async (_, payload) => {
                 // Wait till shards are loaded to start the bot
                 if (payload.shardId + 1 === this.instance.gateway.maxShards) {
-                    this.launcher.task.initializeTask();
-                    // If the user provided users in the option, we save them to cache
-                    for (
-                        const owners in this.configuration.optional
-                            .bot_owners_ids
-                            ?.values()
-                    ) {
-                        this.container.bot_owners_cache.add(BigInt(owners));
-                    }
                     // if the internal events are enabled run this code:
                     if (this.configuration.optional.bot_internal_events) {
                         await this.handleInternalEvents();
