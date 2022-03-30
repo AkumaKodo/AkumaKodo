@@ -1,8 +1,6 @@
 # Todo list for framework
 
-- [x] Split internal events so users can have a more custom handler
-- [x] Add more permission checks to our command handler (ratelimit, ownerOnly, etc)
-- [ ] Add component support (buttons, etc)
+- [ ] Supporter only commands. Similar to owner only checks and they will be cached on startup. The developer can input an array of users who will have this permission.
 
 # Current big problems
 

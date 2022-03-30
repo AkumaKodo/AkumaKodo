@@ -30,7 +30,9 @@ export interface AkumaKodoCommand {
     /**If the command can only be used in guilds*/
     guildOnly?: true;
     /**If the command can only be used in dms*/
-    dmOnly?: false;
+    dmOnly?: boolean;
+    /** If the command can only be used by the bot support team. */
+    supportOnly?: boolean;
     /**A list of member and role ids that can bypass the command cooldown*/
     ignoreRateLimit?: bigint[];
     /**The bot permissions needed by the bot to execute the command*/
