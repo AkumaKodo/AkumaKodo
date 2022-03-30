@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="framework/chapter_1/index.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li><li class="chapter-item expanded "><a href="framework/chapter_1/common_errors.html"><strong aria-hidden="true">1.5.</strong> Common Errors</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Extended Types</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> SubCommands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.4.</strong> Modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Task</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">3.</strong> information</a></li><li class="chapter-item expanded affix "><li class="part-title">Other Tools</li><li class="chapter-item expanded "><a href="yoki/index.html"><strong aria-hidden="true">4.</strong> Yoki</a></li><li class="chapter-item expanded affix "><li class="part-title">Miscellaneous</li><li class="chapter-item expanded "><a href="misc/seven_steps.html"><strong aria-hidden="true">5.</strong> The Seven steps</a></li><li class="chapter-item expanded "><a href="misc/contributors.html"><strong aria-hidden="true">6.</strong> Contributors</a></li><li class="chapter-item expanded "><a href="misc/changelog.html"><strong aria-hidden="true">7.</strong> Change-log</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html" class="active">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="framework/chapter_1/index.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li><li class="chapter-item expanded "><a href="framework/chapter_1/common_errors.html"><strong aria-hidden="true">1.5.</strong> Common Errors</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Configuration Settings</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Extended Types</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> SubCommands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.4.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.6.</strong> Task</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">API</li><li class="chapter-item expanded "><a href="api/index.html"><strong aria-hidden="true">3.</strong> information</a></li><li class="chapter-item expanded affix "><li class="part-title">Other Tools</li><li class="chapter-item expanded "><a href="yoki/index.html"><strong aria-hidden="true">4.</strong> Yoki</a></li><li class="chapter-item expanded affix "><li class="part-title">Miscellaneous</li><li class="chapter-item expanded "><a href="misc/seven_steps.html"><strong aria-hidden="true">5.</strong> The Seven steps</a></li><li class="chapter-item expanded "><a href="misc/contributors.html"><strong aria-hidden="true">6.</strong> Contributors</a></li><li class="chapter-item expanded "><a href="misc/changelog.html"><strong aria-hidden="true">7.</strong> Change-log</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -183,11 +183,11 @@ maintaining a high level of <code>performance</code>.</p>
 <li>You like functional programming only.</li>
 </ul>
 <h2 id="installation"><a class="header" href="#installation">Installation</a></h2>
-<pre><code>deno install https://deno.land/x/akumakodo@0.1.3/mod.ts
+<pre><code>deno install https://deno.land/x/akumakodo@0.1.5/mod.ts
 </code></pre>
 <p><em>akumakodo will be installed in your deno cache</em></p>
 <h2 id="example-bot"><a class="header" href="#example-bot">Example bot</a></h2>
-<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.3/mod.ts&quot;;
+<pre><code class="language-typescript">import { AkumaKodoBotCore } from &quot;https://deno.land/x/akumakodo@0.1.5/mod.ts&quot;;
 import { config as dotEnvConfig } from &quot;https://deno.land/x/dotenv@v3.1.0/mod.ts&quot;;
 
 const env = dotEnvConfig({ export: true });
@@ -195,48 +195,53 @@ const TOKEN = env.DISCORD_BOT_TOKEN || &quot;&quot;;
 
 // Bot configuration
 const Bot = new AkumaKodoBotCore(
-  {
-    botId: BigInt(&quot;your-bot-id&quot;),
-    events: {},
-    intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
-    token: TOKEN,
-  },
-  {
-    optional: {
-      // False by default but we recommend using the built in logging system
-      bot_debug_mode: false,
-      providers: {
-        type: &quot;disabled&quot;,
-      },
+    {
+        botId: BigInt(&quot;your-bot-id&quot;),
+        events: {},
+        intents: [&quot;Guilds&quot;, &quot;GuildMessages&quot;, &quot;GuildMembers&quot;],
+        token: TOKEN,
     },
-    required: {
-      bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
+    {
+        optional: {
+            // False by default but we recommend using the built
+            // in logging system until your app hits production.
+            bot_debug_mode: true,
+            // Enables the built in events in the framework
+            bot_internal_events: {
+                // Allows the bot to reply to slash commands
+                interactionCreate: true,
+            },
+        },
+        required: {
+            // needed if you wish to use test slash commands.
+            bot_development_server_id: BigInt(&quot;your-guild-id&quot;),
+        },
     },
-  },
 );
 
 // Our own custom event handler
 Bot.client.events.ready = (_, payload) =&gt; {
-  Bot.container.logger.log(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
+    Bot.container.logger.log(&quot;info&quot;, &quot;ready&quot;, &quot;Online and ready to work!&quot;);
 };
 
 // Creates a command
 Bot.container.utils.createCommand(Bot, {
-  trigger: &quot;ping&quot;,
-  description: &quot;ping pong me!&quot;,
-  scope: &quot;Development&quot;,
-  run: async (interaction) =&gt; {
-    await Bot.container.utils.createCommandReply(
-      Bot,
-      interaction,
-      {
-        embeds: [
-          Bot.container.utils.embed().setColor(&quot;random&quot;).setDescription(&quot;pong!&quot;),
-        ],
-      },
-      false,
-    );
-  },
+    trigger: &quot;ping&quot;,
+    description: &quot;ping pong&quot;,
+    scope: &quot;Development&quot;,
+    run: async (interaction) =&gt; {
+        await Bot.container.utils.createCommandReply(
+            Bot,
+            interaction,
+            {
+                embeds: [
+                    Bot.container.utils.embed().setColor(&quot;random&quot;)
+                        .setDescription(&quot;pong!&quot;),
+                ],
+            },
+            false,
+        );
+    },
 });
 
 // Creates ws connection and starts listening
@@ -269,6 +274,20 @@ await Bot.createBot();
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 

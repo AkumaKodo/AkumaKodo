@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="../../framework/chapter_1/index.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="../../framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li><li class="chapter-item expanded "><a href="../../framework/chapter_1/common_errors.html" class="active"><strong aria-hidden="true">1.5.</strong> Common Errors</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Extended Types</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> SubCommands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.4.</strong> Modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Task</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../../api/index.html"><strong aria-hidden="true">3.</strong> information</a></li><li class="chapter-item expanded affix "><li class="part-title">Other Tools</li><li class="chapter-item expanded "><a href="../../yoki/index.html"><strong aria-hidden="true">4.</strong> Yoki</a></li><li class="chapter-item expanded affix "><li class="part-title">Miscellaneous</li><li class="chapter-item expanded "><a href="../../misc/seven_steps.html"><strong aria-hidden="true">5.</strong> The Seven steps</a></li><li class="chapter-item expanded "><a href="../../misc/contributors.html"><strong aria-hidden="true">6.</strong> Contributors</a></li><li class="chapter-item expanded "><a href="../../misc/changelog.html"><strong aria-hidden="true">7.</strong> Change-log</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">Framework</li><li class="chapter-item expanded "><a href="../../framework/chapter_1/index.html"><strong aria-hidden="true">1.</strong> Getting started</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../framework/chapter_1/new_discord_devs.html"><strong aria-hidden="true">1.1.</strong> Discord Developers</a></li><li class="chapter-item expanded "><a href="../../framework/chapter_1/akumakodo_noobs.html"><strong aria-hidden="true">1.2.</strong> AkumaKodo beginners</a></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.3.</strong> Command handling</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">1.4.</strong> Event handling</div></li><li class="chapter-item expanded "><a href="../../framework/chapter_1/common_errors.html" class="active"><strong aria-hidden="true">1.5.</strong> Common Errors</a></li></ol></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.</strong> AkumaKodo Advanced</div></li><li><ol class="section"><li class="chapter-item expanded "><div><strong aria-hidden="true">2.1.</strong> Configuration Settings</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.2.</strong> Extended Types</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.3.</strong> SubCommands</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.4.</strong> Providers</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.5.</strong> Modules</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">2.6.</strong> Task</div></li></ol></li><li class="chapter-item expanded "><li class="part-title">API</li><li class="chapter-item expanded "><a href="../../api/index.html"><strong aria-hidden="true">3.</strong> information</a></li><li class="chapter-item expanded affix "><li class="part-title">Other Tools</li><li class="chapter-item expanded "><a href="../../yoki/index.html"><strong aria-hidden="true">4.</strong> Yoki</a></li><li class="chapter-item expanded affix "><li class="part-title">Miscellaneous</li><li class="chapter-item expanded "><a href="../../misc/seven_steps.html"><strong aria-hidden="true">5.</strong> The Seven steps</a></li><li class="chapter-item expanded "><a href="../../misc/contributors.html"><strong aria-hidden="true">6.</strong> Contributors</a></li><li class="chapter-item expanded "><a href="../../misc/changelog.html"><strong aria-hidden="true">7.</strong> Change-log</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -175,12 +175,12 @@ this scope, kick the bot and reinvite it.</p>
 </li>
 </ol>
 <h3 id="owner-only-commands"><a class="header" href="#owner-only-commands">Owner Only Commands</a></h3>
-<!--
-This error is when the developer sets a command to type ownerOnly = true but does not enable the owner fetch function.
-
-They can either fetch the owner themselves or enable this.
- -->
-<p><em>coming soon</em></p>
+<p>In AkumaKodo command have the param <code>devOnly</code>. The command handler checks the cache for the list of bot owners by id on each command with this param.
+If your the bot owner make sure you have:</p>
+<pre><code class="language-ts"> bot_owners_ids: [BigInt(&quot;your-id&quot;)],
+</code></pre>
+<p>in your bot configuration. At startup, the bot will save this Array of BitInt ID's. If you want you can also fetch all bot application owners from the discord
+api. You can enabled <code>bot_fetch_owners: true</code>.</p>
 
                     </main>
 
@@ -211,6 +211,20 @@ They can either fetch the owner themselves or enable this.
 
         </div>
 
+        <!-- Livereload script (if served using the cli tool) -->
+        <script type="text/javascript">
+            var socket = new WebSocket("ws://localhost:3000/__livereload");
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
 
 
 
