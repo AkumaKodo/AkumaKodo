@@ -121,6 +121,14 @@ const changelog = new Changelog("AkumaKodo")
                 "Removed provider configurations from the bot object. From now on users will have to import and manage their own providers.",
             )
             .removed("Mongodb provider until i fix it."),
+    ).addRelease(
+        new Release(
+            "0.1.5",
+            "2022-3-28",
+            "Stable release for production.",
+        ).fixed("More export options to mod.ts file").added(
+            "Updated documentation for v0.1.5",
+        ),
     );
 
 console.clear();

@@ -32,10 +32,12 @@ If you have seen this error on start-up of your bot it could mean a few things:
 
 ### Owner Only Commands
 
-<!--
-This error is when the developer sets a command to type ownerOnly = true but does not enable the owner fetch function.
+In AkumaKodo command have the param `devOnly`. The command handler checks the cache for the list of bot owners by id on each command with this param.
+If your the bot owner make sure you have:
 
-They can either fetch the owner themselves or enable this.
- -->
+```ts
+bot_owners_ids: [BigInt("your-id")],
+```
 
-_coming soon_
+in your bot configuration. At startup, the bot will save this Array of BitInt ID's. If you want you can also fetch all bot application owners from the discord
+api. You can enabled `bot_fetch_owners: true`.

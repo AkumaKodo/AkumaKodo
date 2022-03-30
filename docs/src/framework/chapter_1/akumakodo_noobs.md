@@ -50,15 +50,20 @@ commands. You can read all the available options for a command [here](https://gi
 The base options are here:
 
 ```ts
+// Showing the typings:
+
 // the command trigger that runs the command
 trigger:
 string;
+
 // The command description
 description:
 string;
+
 // The command scope
 scope:
 CommandScopeType;
+
 // Runs the command callback
 run:
 ((data: DiscordenoInteraction) => unknown);
@@ -117,6 +122,8 @@ Bot.instance.events.ready = (_, payload) => {
     // Do something...
 };
 ```
+
+You can use the `payload` param to access more data on the event. The first param can be used to access the bot instance from discordeno.
 
 ## Template Bot
 

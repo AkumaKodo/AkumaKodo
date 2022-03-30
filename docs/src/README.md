@@ -41,7 +41,7 @@ We took inspiration from these frameworks to help develop AkumaKodo into the too
 ## Installation
 
 ```
-deno install https://deno.land/x/akumakodo@0.1.4/mod.ts
+deno install https://deno.land/x/akumakodo@0.1.5/mod.ts
 ```
 
 _akumakodo will be installed in your deno cache_
@@ -49,7 +49,7 @@ _akumakodo will be installed in your deno cache_
 ## Example bot
 
 ```typescript
-import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.4/mod.ts";
+import { AkumaKodoBotCore } from "https://deno.land/x/akumakodo@0.1.5/mod.ts";
 import { config as dotEnvConfig } from "https://deno.land/x/dotenv@v3.1.0/mod.ts";
 
 const env = dotEnvConfig({ export: true });
@@ -68,6 +68,11 @@ const Bot = new AkumaKodoBotCore(
             // False by default but we recommend using the built
             // in logging system until your app hits production.
             bot_debug_mode: true,
+            // Enables the built in events in the framework
+            bot_internal_events: {
+                // Allows the bot to reply to slash commands
+                interactionCreate: true,
+            },
         },
         required: {
             // needed if you wish to use test slash commands.
@@ -84,7 +89,7 @@ Bot.client.events.ready = (_, payload) => {
 // Creates a command
 Bot.container.utils.createCommand(Bot, {
     trigger: "ping",
-    description: "ping pong me!",
+    description: "ping pong",
     scope: "Development",
     run: async (interaction) => {
         await Bot.container.utils.createCommandReply(
