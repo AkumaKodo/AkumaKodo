@@ -6,14 +6,6 @@ A blazing fast discord bot framework built on top of [discordeno](https://github
 
 [Click me](https://akumakodo.github.io/AkumaKodo/index.html#installation)
 
-## Read the [documentation](https://akumakodo.github.io/AkumaKodo/) here!
-
-### Change Log
-
-The current can be found [here](https://akumakodo.github.io/AkumaKodo/misc/changelog.html)
-
-Join my discord [@link](https://discord.com/invite/N79DZsm3m2) for support and feedback!
-
 ## Example bot
 
 ```ts
@@ -77,3 +69,11 @@ Bot.container.utils.createCommand(Bot, {
 // Creates ws connection and starts listening
 await Bot.createBot();
 ```
+
+## Read the [documentation](https://akumakodo.github.io/AkumaKodo/) here!
+
+### Change Log
+
+The current can be found [here](https://akumakodo.github.io/AkumaKodo/misc/changelog.html)
+
+Join my discord [@link](https://discord.com/invite/N79DZsm3m2) for support and feedback!
