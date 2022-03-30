@@ -221,15 +221,18 @@ export class AkumaKodoEventModule {
             command.ownerOnly &&
             !this.container.bot_owners_cache.has(interaction.user.id)
         ) {
-            // if (!this.configuration.optional.bot_fetch_owners) {
-            //     this.container.logger.debug(
-            //         "warn",
-            //         "Owner Only Command",
-            //         "You do not have fetch bot owners enabled but you set a command as owner only. Make sure to enable this or fetch the owner Id yourself and save it.",
-            //     );
-            // }
             return this.launcher.command.createCommandReply(interaction, {
                 content: `Only the bot owner can use this command!`,
+            }, true);
+        }
+
+        // Support team check
+        if (
+            command.supportOnly &&
+            !this.container.bot_supporters_cache.has(interaction.user.id)
+        ) {
+            return this.launcher.command.createCommandReply(interaction, {
+                content: `Only the bot support team use this command!`,
             }, true);
         }
 
@@ -307,57 +310,59 @@ export class AkumaKodoEventModule {
             this.container.defaultRateLimit;
         const memberId = interaction.member?.id;
 
+        // if they pass run the command
         if (
             !commandRateLimits ||
             (memberId &&
                 (this.container.ignoreRateLimit?.includes(memberId) ||
                     command.ignoreRateLimit?.includes(memberId)))
         ) {
-            return true;
-        }
+            return command.run(interaction);
+        } else {
+            const key = `${interaction.guildId}-${memberId}-${command.trigger}`;
+            const limit_check = this.commandCachePool.get(key);
 
-        const key = `${interaction.guildId}-${memberId}-${command.trigger}`;
-        const limit_check = this.commandCachePool.get(key);
-
-        if (limit_check) {
-            // Check if the user has used all their allowed limits for this command
-            if (limit_check.hits >= (commandRateLimits.limit)) {
-                if (limit_check.timestamp > Date.now()) {
-                    return this.launcher.command.createCommandReply(
-                        interaction,
-                        {
-                            content:
-                                `This command can only be used __${commandRateLimits.limit}__ ${
-                                    commandRateLimits.limit > 1
-                                        ? "times"
-                                        : "time"
-                                } per ${
-                                    commandRateLimits.duration / 1000
-                                } seconds! Please try again in ${
-                                    (limit_check.timestamp - Date.now()) / 1000
-                                } seconds.`,
-                        },
-                        true,
-                    );
-                } else {
-                    limit_check.hits = 0;
+            if (limit_check) {
+                // Check if the user has used all their allowed limits for this command
+                if (limit_check.hits >= (commandRateLimits.limit)) {
+                    if (limit_check.timestamp > Date.now()) {
+                        return this.launcher.command.createCommandReply(
+                            interaction,
+                            {
+                                content:
+                                    `This command can only be used __${commandRateLimits.limit}__ ${
+                                        commandRateLimits.limit > 1
+                                            ? "times"
+                                            : "time"
+                                    } per ${
+                                        commandRateLimits.duration / 1000
+                                    } seconds! Please try again in ${
+                                        (limit_check.timestamp - Date.now()) /
+                                        1000
+                                    } seconds.`,
+                            },
+                            true,
+                        );
+                    } else {
+                        limit_check.hits = 0;
+                    }
                 }
+
+                this.commandCachePool.set(key, {
+                    hits: limit_check.hits++,
+                    timestamp: Date.now() + commandRateLimits.duration,
+                });
+                // TODO(#2) - Add a way to reply to ratelimit hits
+                // return this.launcher.command.createCommandReply(interaction, {
+                //   content: `You hit a rate-limit! Please try again in ${(limit_check.timestamp - Date.now()) / 1000} seconds.`,
+                // }, true);
             }
 
             this.commandCachePool.set(key, {
-                hits: limit_check.hits++,
+                hits: 1,
                 timestamp: Date.now() + commandRateLimits.duration,
             });
-            // TODO(#2) - Add a way to reply to ratelimit hits
-            // return this.launcher.command.createCommandReply(interaction, {
-            //   content: `You hit a rate-limit! Please try again in ${(limit_check.timestamp - Date.now()) / 1000} seconds.`,
-            // }, true);
         }
-
-        this.commandCachePool.set(key, {
-            hits: 1,
-            timestamp: Date.now() + commandRateLimits.duration,
-        });
 
         return command.run(interaction);
     }

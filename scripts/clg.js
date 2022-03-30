@@ -123,12 +123,14 @@ const changelog = new Changelog("AkumaKodo")
             .removed("Mongodb provider until i fix it."),
     ).addRelease(
         new Release(
-            "0.1.5",
+            "0.1.6",
             "2022-3-28",
             "Stable release for production.",
         ).fixed("More export options to mod.ts file").added(
-            "Updated documentation for v0.1.5",
-        ),
+            "Updated documentation for v0.1.6",
+        ).changed("Added optional slash command updater").added(
+            "Support team only command checks.",
+        ).fixed("Cool down handler bug with not replying to commands."),
     );
 
 console.clear();

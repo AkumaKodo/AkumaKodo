@@ -13,8 +13,6 @@ import { AkumaKodoLogger } from "../../internal/logger.ts";
 import { AkumaKodoMonitor } from "./Monitor.ts";
 import { AkumaKodoEmbed, AkumaKodoEmbedInterface } from "../lib/utils/Embed.ts";
 import { AkumaKodoBotCore } from "../AkumaKodo.ts";
-import { AkumaKodoMongodbProvider } from "../providers/mongodb.ts";
-import { Components } from "../lib/utils/Components/mod.ts";
 
 // deno-lint-ignore no-empty-interface
 export interface AkumaCreateBotOptions extends CreateBotOptions {}
@@ -34,6 +32,9 @@ export const defaultConfigOptions = {
         bot_internal_events: {
             interactionCreate: true,
             ready: true,
+        },
+        commands: {
+            upsert: true,
         },
     },
     required: {
@@ -66,7 +67,11 @@ export interface AkumaKodoConfigurationInterface {
         bot_internal_events?: {
             interactionCreate?: boolean;
         };
-
+        /** Command config */
+        commands?: {
+            /** If slash commands should be upsert on each bot startup. defaults to true for development commands.*/
+            upsert?: boolean;
+        };
         /** If the bot should fetch all the bot owners on startup */
         bot_fetch_owners?: boolean;
     };
@@ -116,6 +121,7 @@ export interface AkumaKodoContainerInterface {
     ignoreRateLimit: bigint[];
     logger: AkumaKodoLogger;
     bot_owners_cache: Set<bigint>;
+    bot_supporters_cache: Set<bigint>;
     fullyReady: boolean;
     prefix?: AkumaKodoPrefix;
     mentionWithPrefix: boolean;

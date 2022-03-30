@@ -29,7 +29,9 @@
 # Miscellaneous
 
 - [The Seven steps](misc/seven_steps.md)
+
 <!-- Bots made with the framework -->
+
 - [Showcase]()
 - [Contributors](misc/contributors.md)
 - [Change-log](misc/changelog.md)

@@ -119,6 +119,7 @@ export class AkumaKodoBotCore {
             monitorCollection: new AkumaKodoCollection(),
             languageCollection: new AkumaKodoCollection(),
             bot_owners_cache: new Set(),
+            bot_supporters_cache: new Set(),
             fullyReady: false,
             logger: new AkumaKodoLogger(this.configuration),
             mentionWithPrefix: true,
@@ -193,6 +194,21 @@ export class AkumaKodoBotCore {
                     "info",
                     "Bot Owner Cache",
                     `Added ID of [${owners}] to bot owners cache.`,
+                );
+            }
+        }
+
+        // Saves all the bot supporters to the cache
+        if (this.configuration.optional.bot_supporters_ids!.length > 0) {
+            for (
+                const supporters of this.configuration.optional
+                    .bot_supporters_ids?.values()!
+            ) {
+                this.container.bot_supporters_cache.add(BigInt(supporters));
+                this.container.logger.debug(
+                    "info",
+                    "Bot Supporter Cache",
+                    `Added ID of [${supporters}] to bot supporters cache.`,
                 );
             }
         }

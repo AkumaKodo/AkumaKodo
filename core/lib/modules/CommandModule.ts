@@ -253,103 +253,117 @@ export class AkumaKodoCommandModule {
      * @param scope The scope of commands to upgrade
      */
     public async updateApplicationCommands(scope?: CommandScopeType) {
-        const globalCommands: MakeRequired<
-            EditGlobalApplicationCommand,
-            "name"
-        >[] = [];
-        const developmentCommands: MakeRequired<
-            EditGlobalApplicationCommand,
-            "name"
-        >[] = [];
+        if (this.configuration.optional.commands?.upsert) {
+            const globalCommands: MakeRequired<
+                EditGlobalApplicationCommand,
+                "name"
+            >[] = [];
+            const developmentCommands: MakeRequired<
+                EditGlobalApplicationCommand,
+                "name"
+            >[] = [];
 
-        for (const command of this.container.commands.values()) {
-            if (scope === "Development") {
-                if (command.scope === "Development") {
-                    developmentCommands.push({
-                        name: command.trigger,
-                        description: command.description,
-                        type: command.type,
-                        options: command.options ? command.options : undefined,
-                    });
-                }
-                /**
-                 * Update the development commands
-                 */
-                if (
-                    developmentCommands.length &&
-                    (scope === "Development" || scope === undefined)
-                ) {
+            for (const command of this.container.commands.values()) {
+                if (scope === "Development") {
+                    if (command.scope === "Development") {
+                        developmentCommands.push({
+                            name: command.trigger,
+                            description: command.description,
+                            type: command.type,
+                            options: command.options
+                                ? command.options
+                                : undefined,
+                        });
+                    }
+                    /**
+                     * Update the development commands
+                     */
                     if (
-                        !this.configuration.required.bot_development_server_id
+                        developmentCommands.length &&
+                        (scope === "Development" || scope === undefined)
                     ) {
-                        throw new Error(
-                            "Development server id is not set in config options!",
+                        if (
+                            !this.configuration.required
+                                .bot_development_server_id
+                        ) {
+                            throw new Error(
+                                "Development server id is not set in config options!",
+                            );
+                        }
+                        await upsertApplicationCommands(
+                            this.instance,
+                            developmentCommands,
+                            this.configuration.required
+                                .bot_development_server_id,
+                        ).catch((e) =>
+                            this.container.logger.debug(
+                                "error",
+                                "Update development commands Error",
+                                e,
+                            )
+                        );
+
+                        this.container.logger.debug(
+                            "info",
+                            "Update development commands",
+                            "Updating Development Commands, this will only take a few seconds...",
                         );
                     }
-                    await upsertApplicationCommands(
-                        this.instance,
-                        developmentCommands,
-                        this.configuration.required.bot_development_server_id,
-                    ).catch((e) =>
-                        this.container.logger.debug(
-                            "error",
-                            "Update development commands Error",
-                            e,
-                        )
-                    );
+                } else {
+                    if (command.scope === "Global") {
+                        globalCommands.push({
+                            name: command.trigger,
+                            description: command.description,
+                            type: command.type,
+                            options: command.options
+                                ? command.options
+                                : undefined,
+                        });
+                    }
 
-                    this.container.logger.debug(
-                        "info",
-                        "Update development commands",
-                        "Updating Development Commands, this will only take a few seconds...",
-                    );
-                }
-            } else {
-                if (command.scope === "Global") {
-                    globalCommands.push({
-                        name: command.trigger,
-                        description: command.description,
-                        type: command.type,
-                        options: command.options ? command.options : undefined,
-                    });
-                }
-
-                /**
-                 * Updates the global application commands
-                 */
-                if (
-                    globalCommands.length &&
-                    (scope === "Global" || scope === undefined)
-                ) {
-                    this.container.logger.debug(
-                        "info",
-                        "Update global commands",
-                        "Updating Global Commands, this takes up to 1 hour to take effect...",
-                    );
-                    this.container.logger.debug(
-                        "info",
-                        "Update global commands",
-                        `Commands added: ${globalCommands.join(", ")}`,
-                    );
-                    await this.instance.helpers.upsertApplicationCommands(
-                        globalCommands,
-                    ).catch((e) =>
+                    /**
+                     * Updates the global application commands
+                     */
+                    if (
+                        globalCommands.length &&
+                        (scope === "Global" || scope === undefined)
+                    ) {
                         this.container.logger.debug(
-                            "error",
-                            "Update global commands Error",
-                            e,
-                        )
-                    ).catch((e) =>
+                            "info",
+                            "Update global commands",
+                            "Updating Global Commands, this takes up to 1 hour to take effect...",
+                        );
                         this.container.logger.debug(
-                            "error",
-                            "Update global commands Error",
-                            e,
-                        )
-                    );
+                            "info",
+                            "Update global commands",
+                            `Commands added: ${globalCommands.join(", ")}`,
+                        );
+                        await this.instance.helpers.upsertApplicationCommands(
+                            globalCommands,
+                        ).catch((e) =>
+                            this.container.logger.debug(
+                                "error",
+                                "Update global commands Error",
+                                e,
+                            )
+                        ).catch((e) =>
+                            this.container.logger.debug(
+                                "error",
+                                "Update global commands Error",
+                                e,
+                            )
+                        );
+                    }
                 }
             }
+            this.PermissionLevelsHandlers().Admin;
+        } else {
+            this.container.logger.debug(
+                "info",
+                "Update commands",
+                "Skipping slash commands updates...",
+            );
         }
-        this.PermissionLevelsHandlers().Admin;
     }
 
     /**
